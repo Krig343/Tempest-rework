@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     std::vector<Lane> list;
     std::array<Uint8, 4> Color = {0, 255, 0, 255};
     ElectricWell ew{Color, "circle", list};
-    ew.createCircle(width, height);
+    ew.createSquare(width, height);
 
     bool quit = false;
     while (!quit)
