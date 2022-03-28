@@ -19,7 +19,7 @@ public:
     ~Game() = default;
 
     // Game controls
-    void endGame();                      // Stops the game and goes to the end screen
+    bool endGame();                      // Stops the game and goes to the end screen
     void addCharacter(Character car);    // Adds a car to the caracter_list_
     void removeCharacter(Character car); // Removes car from the caracter_list_
     void levelUp();                      // Increases level_ and goes to the next stage

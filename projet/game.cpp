@@ -9,8 +9,11 @@ Game::Game(const std::vector<Character> &car_list, const ElectricWell &well, con
 }
 
 // Game controls
-void Game::endGame()
+bool Game::endGame()
 {
+    // Ajout juste pour créer la branche gameplay
+    if (collisionTest)
+        return true;
     // TODO
 }
 
