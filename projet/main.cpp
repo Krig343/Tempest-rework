@@ -3,6 +3,21 @@
 
 #include "game.h"
 
+void prepareFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &flag)
+{
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+    SDL_SetWindowFullscreen(window, flag);
+}
+
+void applyFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &width, const int &height, const int &w, const int &h, ElectricWell &ew)
+{
+    SDL_Rect rect{(w - width) / 2, (h - height) / 2, width, height};
+    SDL_RenderSetViewport(renderer, &rect);
+    ew.draw(renderer);
+    SDL_RenderPresent(renderer);
+}
+
 int main(int argc, char **argv)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -26,6 +41,8 @@ int main(int argc, char **argv)
     ew.createSquare(width, height);
 
     bool quit = false;
+    ew.draw(renderer);
+    SDL_RenderPresent(renderer);
     while (!quit)
     {
         SDL_Event event;
@@ -43,12 +60,17 @@ int main(int argc, char **argv)
                 {
                     if (!fullscreen)
                     {
-                        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                        prepareFullscreen(window, renderer, SDL_WINDOW_FULLSCREEN);
+                        int w, h;
+                        SDL_GetWindowSize(window, &w, &h);
+                        applyFullscreen(window, renderer, width, height, w, h, ew);
                         fullscreen = true;
                     }
                     else
                     {
-                        SDL_SetWindowFullscreen(window, 0);
+                        prepareFullscreen(window, renderer, 0);
+                        SDL_SetWindowSize(window, width, height);
+                        applyFullscreen(window, renderer, width, height, width, height, ew);
                         fullscreen = false;
                     }
                 }
@@ -57,8 +79,6 @@ int main(int argc, char **argv)
         }
 
         // Game loop
-        ew.draw(renderer); // TESTS
-        SDL_RenderPresent(renderer);
     }
     SDL_Quit();
     return 0;
