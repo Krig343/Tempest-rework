@@ -1,8 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "character.h"
+#include "character.h" // class character
 
+/* The playable character. Son of the character class
+ */
 class Player : public Character
 {
 private:

@@ -1,10 +1,15 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "character.h"    // classe character
-#include "electricwell.h" // classe electricwell
+#include "character.h"    // class character
+#include "electricwell.h" // class electricwell
 #include <vector>         // container vector
 
+/* Main class of the project. It has the list of the currently displayed
+ * caracters and the currently displayed electric well. It also contains two int,
+ * one for the current level and one for the score. Those int are for display
+ * purpose.
+ */
 class Game
 {
 private:

@@ -6,9 +6,13 @@
 #include <SDL.h>    // graphical interface
 #include <array>    // container array
 #include <vector>   // container vector
-#include <cmath>
-#include "lane.h" // classe lane
+#include <cmath>    // for M_PI (useless for now)
+#include "lane.h"   // class lane
 
+/* This class represents the the geometrical patern on whitch the player and the
+ * ennemies evoluate. It has a unique color depending on the level, a shape and
+ * the list of the lanes composing it
+ */
 class ElectricWell
 {
 private:
@@ -25,23 +29,23 @@ public:
     void addLane(Vec2 x1, Vec2 y1, Vec2 x2, Vec2 y2);
 
     //Éventuellement supprimer paramètres
-    void createCircle(int width, int height);
-    void createSquare(int width, int height);
-    void createPlus(int width, int height);
-    void createBinoculars(int width, int height);
-    void createCross(int width, int height);
-    void createTriangle(int width, int height);
-    void createX(int width, int height);
-    void createV(int width, int height);
-    void createStaires(int width, int height);
-    void createU(int width, int height);
-    void createFlat(int width, int height);
-    void createHeart(int width, int height);
-    void createStar(int width, int height);
-    void createW(int width, int height);
-    void createBird(int width, int height);
-    void createInfinite(int width, int height);
-    void draw(SDL_Renderer *renderer);
+    void createCircle(int width, int height);     // Add lanes to create a circle
+    void createSquare(int width, int height);     // Add lanes to create a square
+    void createPlus(int width, int height);       // Add lanes to create a plus
+    void createBinoculars(int width, int height); // Add lanes to create binoculars
+    void createCross(int width, int height);      // Add lanes to create a cross
+    void createTriangle(int width, int height);   // Add lanes to create a triangle
+    void createX(int width, int height);          // Add lanes to create an X
+    void createV(int width, int height);          // Add lanes to create a V
+    void createStaires(int width, int height);    // Add lanes to create staires
+    void createU(int width, int height);          // Add lanes to create a U
+    void createFlat(int width, int height);       // Add lanes to create a plan
+    void createHeart(int width, int height);      // Add lanes to create a heart
+    void createStar(int width, int height);       // Add lanes to create a star
+    void createW(int width, int height);          // Add lanes to create a W
+    void createBird(int width, int height);       // Add lanes to create a bird
+    void createInfinite(int width, int height);   // Add lanes to create an infinite symbole
+    void draw(SDL_Renderer *renderer);            // Print the electric well in its color
 };
 
 #endif // ELECTRICWELL_H

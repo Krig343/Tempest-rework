@@ -1,8 +1,11 @@
 #ifndef ENNEMI_H
 #define ENNEMI_H
 
-#include "character.h"
+#include "character.h" // class character
 
+/* All ennemi characters. Son of the character class and parent of some ennemi
+ * classes
+ */
 class Ennemi : public Character
 {
 private:

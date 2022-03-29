@@ -19,11 +19,11 @@ int main(int argc, char **argv)
     assert(renderer != NULL);
 
     // Init game components
-    // Test de draw un circle
+    // Draw a square test
     std::vector<Lane> list;
     std::array<Uint8, 4> Color = {0, 255, 0, 255};
-    ElectricWell ew{Color, "circle", list};
-    ew.createCircle(width, height);
+    ElectricWell ew{Color, "square", list};
+    ew.createSquare(width, height);
 
     bool quit = false;
     while (!quit)

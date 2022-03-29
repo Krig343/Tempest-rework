@@ -1,13 +1,15 @@
 #include "electricwell.h"
 
-// Constructors
+//----------------------------- Constructors -----------------------------------
+
 ElectricWell::ElectricWell(const std::array<Uint8, 4> &color, const std::string &shape, const std::vector<Lane> &lanes) : color_{color},
                                                                                                                           shape_{shape},
                                                                                                                           lane_list_{lanes}
 {
 }
 
-// Electric well controls
+//------------------------- Electric well controls -----------------------------
+
 void ElectricWell::addLane(Vec2 pb, Vec2 pe, Vec2 eb, Vec2 ee)
 {
     Lane lane{pb, pe, eb, ee, color_};

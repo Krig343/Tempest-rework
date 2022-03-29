@@ -1,6 +1,7 @@
 #include "lane.h"
 
-// Constructors
+//----------------------------- Constructors -----------------------------------
+
 Lane::Lane(const Vec2 &pp1, const Vec2 &pp2, const Vec2 &ep1, const Vec2 &ep2, std::array<Uint8, 4> color) : player_begin_point_{pp1},
                                                                                                              player_end_point_{pp2},
                                                                                                              ennemi_begin_point_{ep1},
@@ -9,7 +10,7 @@ Lane::Lane(const Vec2 &pp1, const Vec2 &pp2, const Vec2 &ep1, const Vec2 &ep2, s
 {
 }
 
-// Lane controls
+//----------------------------- Lane controls ----------------------------------
 
 void Lane::drawLane(SDL_Renderer *renderer)
 {

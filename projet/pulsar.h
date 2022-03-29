@@ -1,7 +1,10 @@
 #ifndef PULSAR_H
 #define PULSAR_H
 
-#include "ennemi.h"
+#include "ennemi.h" // class ennemi
+
+/* A specific class for the pulsar since it has a particular ability
+ */
 
 class Pulsar : public Ennemi
 {
@@ -15,7 +18,7 @@ public:
     ~Pulsar() = default;
 
     // Pulsar controls
-    void pulse(); // Create a collidable objet & print it
+    void pulse(); // Pulse on its current lane
 };
 
 #endif // PULSAR_H

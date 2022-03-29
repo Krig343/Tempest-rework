@@ -1,6 +1,7 @@
 #include "character.h"
 
-// Constructors
+//----------------------------- Constructors -----------------------------------
+
 Character::Character(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color) : is_shooting_{shooting},
                                                                                                 position_{pos},
                                                                                                 color_{color}
@@ -13,19 +14,25 @@ Character::Character(const Character &car) : Character::Character(car.is_shootin
 {
 }
 
-// Caracter controls
-void shoot()
+//-------------------------- Caracter controls ---------------------------------
+
+void Character::shoot()
+{
+    is_shooting_ = true;
+    // TODO : print the bullets and wait
+    is_shooting_ = false;
+}
+
+/* Get the input key and move the lane by one according to the direction
+ */
+void Character::move(const int &pos)
 {
     // TODO
 }
 
-void move(const int &pos)
-{
-    // TODO
-}
+//--------------------------------- IO -----------------------------------------
 
-// IO
-void printCaracter()
+void Character::drawCaracter()
 {
     // TODO
 }

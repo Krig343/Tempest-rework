@@ -7,6 +7,10 @@
 #include <utility>  // container pair
 #include <array>    // container array
 
+/* The parent class for all the the characters, player and ennemies. The boolean
+ * is_shooting_ is set to prevent the player to spam shooting, the position is
+ * just the lane index in the electric_wells lane list and the color is and array
+ */
 class Character
 {
 protected:
@@ -22,10 +26,10 @@ public:
 
     // Caracter controls
     void shoot();              // Sets is_shooting_ at true
-    void move(const int &pos); // changes position_ to pos
+    void move(const int &pos); // Changes position_ to pos
 
     // IO
-    void drawCaracter(); // print the caracter on its position in its color
+    void drawCaracter(); // Print the character on its position in its color
 };
 
 #endif // CARATER_H

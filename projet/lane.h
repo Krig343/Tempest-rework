@@ -1,14 +1,18 @@
 #ifndef LANE_H
 #define LANE_H
 
-#include <utility> // container pair
-#include <array>   // container array
-#include <iostream>
-#include <cstdlib>
-#include <SDL.h>
+#include <utility>  // container pair
+#include <array>    // container array
+#include <iostream> // sring
+#include <cstdlib>  // in & out -put
+#include <SDL.h>    // graphical interface
 
+// Defining a Vec2 as a couple of int
 using Vec2 = std::pair<int, int>;
 
+/* A lane is a combination of 4 points (Vec2) and that has a color depending if
+ * the player is on it, if a pulsar used pulse or if none of these
+ */
 class Lane
 {
 private:
@@ -24,8 +28,8 @@ public:
     ~Lane() = default;
 
     // Lane controls
-    void drawLane(SDL_Renderer *renderer);
-    // void updateCoord(SDL_Window *window);
+    void drawLane(SDL_Renderer *renderer); // Print all four lines of the lane in its color
+    // void updateCoord(SDL_Window *window);  // Update the points positions to adapte to fullscreen
 };
 
 #endif // LANE_H

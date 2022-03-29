@@ -1,6 +1,7 @@
 #include "player.h"
 
-// Constructors
+//----------------------------- Constructors -----------------------------------
+
 Player::Player(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color, const int &life, const bool &zapper) : Character::Character(shooting,
                                                                                                                                                     pos,
                                                                                                                                                     color),
@@ -9,7 +10,8 @@ Player::Player(const bool &shooting, const int &pos, const std::array<Uint8, 4> 
 {
 }
 
-// Player controls
+//--------------------------- Player controls-----------------------------------
+
 void Player::loseLife()
 {
     lives_--;
@@ -29,6 +31,7 @@ void Player::regenZapper()
 {
     used_zapper_ = false;
 }
+
 void Player::zapperModifier()
 {
     if (used_zapper_)
