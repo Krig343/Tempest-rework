@@ -1,3 +1,5 @@
+// Will be removed
+
 #ifndef SPIKER_H
 #define SPIKER_H
 

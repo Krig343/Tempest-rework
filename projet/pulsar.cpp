@@ -1,3 +1,5 @@
+// Will be removed
+
 #include "pulsar.h"
 
 //----------------------------- Constructors -----------------------------------
