@@ -1,5 +1,3 @@
-// Will be removed
-
 #include "spiker.h"
 
 //----------------------------- Constructors -----------------------------------
