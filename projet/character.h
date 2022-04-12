@@ -15,17 +15,20 @@ protected:
     std::array<Uint8, 4> color_; // Container <r,g,b,a>
 
 public:
+    static int index_; // Global index for all characters
+
+public:
     // Constructors
     Character(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color);
     Character(const Character &car);
-    ~Character() = default;
+    ~Character();
 
     // Caracter controls
-    void shoot();              // Sets is_shooting_ at true
-    void move(const int &pos); // changes position_ to pos
+    void shoot(SDL_Renderer *renderer); // Sets is_shooting_ at true
+    void move(const int *pos);          // changes position_ to pos
 
     // IO
-    void drawCaracter(); // print the caracter on its position in its color
+    void drawCaracter(SDL_Renderer *renderer); // print the caracter on its position in its color
 };
 
 #endif // CARATER_H

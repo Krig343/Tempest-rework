@@ -1,7 +1,7 @@
 #include "game.h"
 
 // Constructors
-Game::Game(const std::vector<Character> &car_list, const ElectricWell &well, const int &lvl, const int &scr) : caracter_list_{car_list},
+Game::Game(const std::vector<Character> &car_list, const ElectricWell &well, const int &lvl, const int &scr) : character_list_{car_list},
                                                                                                                electric_well_{well},
                                                                                                                level_{lvl},
                                                                                                                score_{scr}
@@ -19,24 +19,29 @@ bool Game::endGame()
 
 void Game::addCharacter(Character car)
 {
-    caracter_list_.insert(caracter_list_.end(), car);
+    character_list_.insert(character_list_.end(), car);
 }
 
-void Game::removeCharacter(Character car)
+void Game::removeCharacter(const Character *car)
 {
-    // Pas le bon car
-    caracter_list_.pop_back();
+    auto car_index = std::find(character_list_.begin(), character_list_.end(), car);
+    if (car_index == character_list_.end())
+    {
+        std::cout << "L'élément " << car->index_ << " n'est pas dans la liste" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    else
+        character_list_.erase(car_index);
 }
 
 void Game::levelUp()
 {
     ++level_;
-    // TODO
 }
 
-void Game::addScore(int score)
+void Game::addScore(const int *score)
 {
-    score_ += score;
+    score_ += *score;
 }
 
 bool Game::collisionTest()
