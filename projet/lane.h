@@ -28,8 +28,7 @@ public:
     ~Lane() = default;
 
     // Lane controls
-    void drawLane(SDL_Renderer *renderer); // Print all four lines of the lane in its color
-    // void updateCoord(SDL_Window *window);  // Update the points positions to adapte to fullscreen
+    void drawLane(SDL_Renderer *renderer);
 };
 
 #endif // LANE_H

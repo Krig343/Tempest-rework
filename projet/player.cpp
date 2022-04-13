@@ -31,11 +31,3 @@ void Player::regenZapper()
 {
     used_zapper_ = false;
 }
-
-void Player::zapperModifier()
-{
-    if (used_zapper_)
-        regenZapper();
-    else
-        useZapper();
-}
