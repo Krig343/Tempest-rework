@@ -125,7 +125,7 @@ void ElectricWell::createCircle(int width, int height)
     // Lane 12
     // Player side
     pb = {587, 386};
-    pe = {602, 298};
+    pe = {600, 298};
     // Ennemi side
     eb = {428, 423};
     ee = {430, 409};
@@ -133,7 +133,7 @@ void ElectricWell::createCircle(int width, int height)
 
     // Lane 13
     // Player side
-    pb = {602, 298};
+    pb = {600, 298};
     pe = {577, 224};
     // Ennemi side
     eb = {430, 409};
@@ -177,144 +177,144 @@ void ElectricWell::createSquare(int width, int height)
     // Lane 1
     // Player side
     pb = {400, 100};
-    pe = {325, 120};
+    pe = {300, 100};
     // Ennemi side
     eb = {400, 375};
-    ee = {388, 378};
+    ee = {383, 375};
     addLane(pb, pe, eb, ee);
 
     // Lane 2
     // Player side
-    pb = {325, 120};
-    pe = {261, 160};
+    pb = {300, 100};
+    pe = {200, 100};
     // Ennemi side
-    eb = {388, 378};
-    ee = {377, 385};
+    eb = {383, 375};
+    ee = {367, 375};
     addLane(pb, pe, eb, ee);
 
     // Lane 3
     // Player side
-    pb = {261, 160};
-    pe = {224, 226};
+    pb = {200, 100};
+    pe = {200, 225};
     // Ennemi side
-    eb = {377, 385};
-    ee = {372, 394};
+    eb = {367, 375};
+    ee = {367, 395};
     addLane(pb, pe, eb, ee);
 
     // Lane 4
     // Player side
-    pb = {224, 226};
-    pe = {200, 300};
+    pb = {200, 225};
+    pe = {200, 350};
     // Ennemi side
-    eb = {372, 394};
-    ee = {367, 409};
+    eb = {367, 395};
+    ee = {367, 416};
     addLane(pb, pe, eb, ee);
 
     // Lane 5
     // Player side
-    pb = {200, 300};
-    pe = {213, 386};
+    pb = {200, 350};
+    pe = {200, 450};
     // Ennemi side
-    eb = {367, 409};
-    ee = {372, 423};
+    eb = {367, 416};
+    ee = {367, 433};
     addLane(pb, pe, eb, ee);
 
     // Lane 6
     // Player side
-    pb = {213, 386};
-    pe = {253, 464};
+    pb = {200, 450};
+    pe = {200, 550};
     // Ennemi side
-    eb = {372, 423};
-    ee = {378, 436};
+    eb = {367, 433};
+    ee = {367, 450};
     addLane(pb, pe, eb, ee);
 
     // Lane 7
     // Player side
-    pb = {253, 464};
-    pe = {307, 526};
+    pb = {200, 550};
+    pe = {300, 550};
     // Ennemi side
-    eb = {378, 436};
-    ee = {388, 447};
+    eb = {367, 450};
+    ee = {383, 450};
     addLane(pb, pe, eb, ee);
 
     // Lane 8
     // Player side
-    pb = {307, 526};
+    pb = {300, 550};
     pe = {400, 550};
     // Ennemi side
-    eb = {388, 447};
+    eb = {383, 450};
     ee = {400, 450};
     addLane(pb, pe, eb, ee);
 
     // Lane 9
     // Player side
     pb = {400, 550};
-    pe = {493, 526};
+    pe = {500, 550};
     // Ennemi side
     eb = {400, 450};
-    ee = {412, 447};
+    ee = {416, 450};
     addLane(pb, pe, eb, ee);
 
     // Lane 10
     // Player side
-    pb = {493, 526};
-    pe = {547, 464};
+    pb = {500, 550};
+    pe = {600, 550};
     // Ennemi side
-    eb = {412, 447};
-    ee = {422, 436};
+    eb = {416, 450};
+    ee = {433, 450};
     addLane(pb, pe, eb, ee);
 
     // Lane 11
     // Player side
-    pb = {547, 464};
-    pe = {587, 386};
+    pb = {600, 550};
+    pe = {600, 450};
     // Ennemi side
-    eb = {422, 436};
-    ee = {428, 423};
+    eb = {433, 450};
+    ee = {433, 433};
     addLane(pb, pe, eb, ee);
 
     // Lane 12
     // Player side
-    pb = {587, 386};
-    pe = {602, 298};
+    pb = {600, 450};
+    pe = {600, 350};
     // Ennemi side
-    eb = {428, 423};
-    ee = {433, 409};
+    eb = {433, 433};
+    ee = {433, 416};
     addLane(pb, pe, eb, ee);
 
     // Lane 13
     // Player side
-    pb = {602, 298};
-    pe = {577, 224};
+    pb = {600, 350};
+    pe = {600, 225};
     // Ennemi side
-    eb = {433, 409};
-    ee = {428, 394};
+    eb = {433, 416};
+    ee = {433, 395};
     addLane(pb, pe, eb, ee);
 
     // Lane 14
     // Player side
-    pb = {577, 224};
-    pe = {540, 159};
+    pb = {600, 225};
+    pe = {600, 100};
     // Ennemi side
-    eb = {428, 394};
-    ee = {423, 385};
+    eb = {433, 395};
+    ee = {433, 375};
     addLane(pb, pe, eb, ee);
 
     // Lane 15
     // Player side
-    pb = {540, 159};
-    pe = {476, 119};
+    pb = {600, 100};
+    pe = {500, 100};
     // Ennemi side
-    eb = {423, 385};
-    ee = {412, 378};
+    eb = {433, 375};
+    ee = {416, 375};
     addLane(pb, pe, eb, ee);
 
     // Lane 16
     // Player side
-    pb = {476, 119};
+    pb = {500, 100};
     pe = {400, 100};
     // Ennemi side
-    eb = {412, 378};
+    eb = {416, 375};
     ee = {400, 375};
     addLane(pb, pe, eb, ee);
 }
