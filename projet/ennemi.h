@@ -2,6 +2,7 @@
 #define ENNEMI_H
 
 #include "character.h" // class character
+#include <type_traits>
 
 /* All ennemi characters. Son of the character class and parent of some ennemi
  * classes
@@ -9,7 +10,7 @@
 class Ennemi : public Character
 {
 private:
-    std::string type_; // Maybe more an enum than a string
+    std::string type_; // Use rather an enum
 
 public:
     // Constructors
