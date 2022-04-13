@@ -25,7 +25,9 @@ Character::~Character()
 // Caracter controls
 void Character::shoot(SDL_Renderer *renderer)
 {
+    is_shooting_ = true;
     // TODO
+    is_shooting_ = false;
 }
 
 void Character::move(const int *pos)

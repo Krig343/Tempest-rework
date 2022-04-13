@@ -11,10 +11,12 @@ Game::Game(const std::vector<Character> &car_list, const ElectricWell &well, con
 // Game controls
 bool Game::endGame()
 {
-    // Ajout juste pour créer la branche gameplay
     if (collisionTest)
+    {
+        printEndScreen();
         return true;
-    // TODO
+    }
+    return false;
 }
 
 void Game::addCharacter(Character car)
@@ -61,6 +63,11 @@ void Game::printScore()
 }
 
 void Game::printLevel()
+{
+    // TODO
+}
+
+void Game::printEndScreen()
 {
     // TODO
 }

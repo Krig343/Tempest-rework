@@ -19,20 +19,3 @@ void Lane::drawLane(SDL_Renderer *renderer)
     SDL_RenderDrawLine(renderer, ennemi_end_point_.first, ennemi_end_point_.second, ennemi_begin_point_.first, ennemi_begin_point_.second);
     SDL_RenderDrawLine(renderer, ennemi_begin_point_.first, ennemi_begin_point_.second, player_begin_point_.first, player_begin_point_.second);
 }
-
-// void Lane::updateCoord(SDL_Window *window)
-// {
-//     int width, height;
-//     SDL_GetWindowSize(window, &width, &height);
-//     player_begin_point_.first = width / 2 - 80;
-//     player_begin_point_.second = height / 2 - 150;
-
-//     player_end_point_.first = width / 2 + 80;
-//     player_end_point_.second = height / 2 - 150;
-
-//     ennemi_begin_point_.first = width / 2 + 20;
-//     ennemi_begin_point_.second = height / 2 + 150;
-
-//     ennemi_end_point_.first = width / 2 - 20;
-//     ennemi_end_point_.second = height / 2 + 150;
-// }

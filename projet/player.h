@@ -15,11 +15,10 @@ public:
     ~Player() = default;
 
     // Player controls
-    void loseLife();       // Decrease lives_
-    void addLife();        // Increase lives_ (don't know when yet)
-    void useZapper();      // Sets used_zapper_ to true
-    void regenZapper();    // Sets used_zapper_ to false
-    void zapperModifier(); // Checks used_zapper_'s current state and calls on top functions
+    void loseLife();    // Decrease lives_
+    void addLife();     // Increase lives_ (don't know when yet)
+    void useZapper();   // Sets used_zapper_ to true
+    void regenZapper(); // Sets used_zapper_ to false
 };
 
 #endif // PLAYER_H

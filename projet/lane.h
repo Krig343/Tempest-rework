@@ -25,7 +25,6 @@ public:
 
     // Lane controls
     void drawLane(SDL_Renderer *renderer);
-    // void updateCoord(SDL_Window *window);
 };
 
 #endif // LANE_H
