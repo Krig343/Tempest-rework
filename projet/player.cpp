@@ -12,22 +12,10 @@ Player::Player(const bool &shooting, const int &pos, const std::array<Uint8, 4> 
 
 //--------------------------- Player controls-----------------------------------
 
-void Player::loseLife()
-{
-    lives_--;
-}
-
-void Player::addLife()
-{
-    lives_++;
-}
-
+/* Checks if the zapper has been used and, if not, kills all the ennemies on the
+ * electricwell. It does not destroy the spikes
+ */
 void Player::useZapper()
 {
     used_zapper_ = true;
-}
-
-void Player::regenZapper()
-{
-    used_zapper_ = false;
 }

@@ -25,10 +25,9 @@ private:
 public:
     // Constructors
     Lane(const Vec2 &pp1, const Vec2 &pp2, const Vec2 &ep1, const Vec2 &ep2, std::array<Uint8, 4> color);
-    ~Lane() = default;
 
     // Lane controls
-    void drawLane(SDL_Renderer *renderer);
+    void drawLane(SDL_Renderer *renderer); // Draws a lane on the screen
 };
 
 #endif // LANE_H

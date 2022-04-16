@@ -20,7 +20,7 @@ Pulsar::Pulsar(const Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
 
 //--------------------------- Spiker controls ----------------------------------
 
-/* if the player is on the same lane as the pulsar, then he loses a life
+/* If the player is on the same lane as the pulsar, then he loses a life
  */
 
 void Pulsar::pulse()

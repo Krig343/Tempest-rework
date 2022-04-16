@@ -12,6 +12,12 @@ Lane::Lane(const Vec2 &pp1, const Vec2 &pp2, const Vec2 &ep1, const Vec2 &ep2, s
 
 //----------------------------- Lane controls ----------------------------------
 
+/* The function sets the renderer's color to the color of the lane and then
+ * prints the four lines composing a lane :
+ * - the one on which the blaster is
+ * - the one on which the ennemies appear
+ * - the two binding the first ones without crossing eachother
+ */
 void Lane::drawLane(SDL_Renderer *renderer)
 {
     SDL_SetRenderDrawColor(renderer, color_[0], color_[1], color_[2], color_[3]);

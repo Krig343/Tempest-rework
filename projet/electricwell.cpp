@@ -17,7 +17,7 @@ void ElectricWell::addLane(Vec2 pb, Vec2 pe, Vec2 eb, Vec2 ee)
 }
 
 // Toujours 16 lanes
-void ElectricWell::createCircle(int width, int height)
+void ElectricWell::createCircle()
 {
     Vec2 pb;
     Vec2 pe;
@@ -168,7 +168,7 @@ void ElectricWell::createCircle(int width, int height)
     addLane(pb, pe, eb, ee);
 }
 
-void ElectricWell::createSquare(int width, int height)
+void ElectricWell::createSquare()
 {
     Vec2 pb;
     Vec2 pe;
@@ -319,7 +319,7 @@ void ElectricWell::createSquare(int width, int height)
     addLane(pb, pe, eb, ee);
 }
 
-void ElectricWell::createPlus(int width, int height)
+void ElectricWell::createPlus()
 {
     // Lane 1
     // Player side
@@ -402,7 +402,7 @@ void ElectricWell::createPlus(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createBinoculars(int width, int height)
+void ElectricWell::createBinoculars()
 {
     // Lane 1
     // Player side
@@ -485,7 +485,7 @@ void ElectricWell::createBinoculars(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createCross(int width, int height)
+void ElectricWell::createCross()
 {
     // Lane 1
     // Player side
@@ -568,7 +568,7 @@ void ElectricWell::createCross(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createTriangle(int width, int height)
+void ElectricWell::createTriangle()
 {
     // Lane 1
     // Player side
@@ -651,7 +651,7 @@ void ElectricWell::createTriangle(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createX(int width, int height)
+void ElectricWell::createX()
 {
     // Lane 1
     // Player side
@@ -734,7 +734,7 @@ void ElectricWell::createX(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createV(int width, int height)
+void ElectricWell::createV()
 {
     // Lane 1
     // Player side
@@ -817,7 +817,7 @@ void ElectricWell::createV(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createStaires(int width, int height)
+void ElectricWell::createStaires()
 {
     // Lane 1
     // Player side
@@ -900,7 +900,7 @@ void ElectricWell::createStaires(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createU(int width, int height)
+void ElectricWell::createU()
 {
     // Lane 1
     // Player side
@@ -983,7 +983,7 @@ void ElectricWell::createU(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createFlat(int width, int height)
+void ElectricWell::createFlat()
 {
     // Lane 1
     // Player side
@@ -1066,7 +1066,7 @@ void ElectricWell::createFlat(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createHeart(int width, int height)
+void ElectricWell::createHeart()
 {
     // Lane 1
     // Player side
@@ -1149,7 +1149,7 @@ void ElectricWell::createHeart(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createStar(int width, int height)
+void ElectricWell::createStar()
 {
     // Lane 1
     // Player side
@@ -1232,7 +1232,7 @@ void ElectricWell::createStar(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createW(int width, int height)
+void ElectricWell::createW()
 {
     // Lane 1
     // Player side
@@ -1315,7 +1315,7 @@ void ElectricWell::createW(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createBird(int width, int height)
+void ElectricWell::createBird()
 {
     // Lane 1
     // Player side
@@ -1398,7 +1398,7 @@ void ElectricWell::createBird(int width, int height)
     // Ennemi side
 }
 
-void ElectricWell::createInfinite(int width, int height)
+void ElectricWell::createInfinite()
 {
     // Lane 1
     // Player side
