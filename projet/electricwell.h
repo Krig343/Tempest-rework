@@ -10,9 +10,10 @@
  */
 class ElectricWell
 {
+public:
+    std::array<Uint8, 4> color_; // Container <r,g,b,a>
+    std::string shape_;          // One of all shapes a well can have
 private:
-    std::array<Uint8, 4> color_;  // Container <r,g,b,a>
-    std::string shape_;           // One of all shapes a well can have
     std::vector<Lane> lane_list_; // List of the lane composing the shape
 
 public:

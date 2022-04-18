@@ -13,7 +13,9 @@ Game::Game(const Player &player, const std::vector<Ennemi> &enm_list, const Elec
 //---------------------------- Game controls -----------------------------------
 
 /* The game should stop (ie. go to the end screen) when, either the player
- * has no lives left, or when he finishes level 99
+ * has no lives left, or when he finishes level 99. Return true so the main
+ * script known he has to exit th egame loop. If false is returned the nothing
+ * appens
  */
 bool Game::endGame()
 {
@@ -38,6 +40,143 @@ void Game::removeCharacter(const Ennemi &car)
     }
     else
         ennemi_list_.erase(car_index);
+}
+
+void Game::levelUp()
+{
+    ++level_;
+
+    if (level_ < 97)
+    {
+        switch (level_ % 16) // The list starts again every 16 levels until level 97
+        {
+        case 1:
+            electric_well_.shape_ = "Circle";
+            break;
+        case 2:
+            electric_well_.shape_ = "Square";
+            break;
+        case 3:
+            electric_well_.shape_ = "Plus";
+            break;
+        case 4:
+            electric_well_.shape_ = "Binoculars";
+            break;
+        case 5:
+            electric_well_.shape_ = "Cross";
+            break;
+        case 6:
+            electric_well_.shape_ = "Triangle";
+            break;
+        case 7:
+            electric_well_.shape_ = "X";
+            break;
+        case 8:
+            electric_well_.shape_ = "V";
+            break;
+        case 9:
+            electric_well_.shape_ = "Staires";
+            break;
+        case 10:
+            electric_well_.shape_ = "U";
+            break;
+        case 11:
+            electric_well_.shape_ = "Flat";
+            break;
+        case 12:
+            electric_well_.shape_ = "Heart";
+            break;
+        case 13:
+            electric_well_.shape_ = "Star";
+            break;
+        case 14:
+            electric_well_.shape_ = "W";
+            break;
+        case 15:
+            electric_well_.shape_ = "Bird";
+            break;
+        case 0:
+            electric_well_.shape_ = "Infinite";
+            break;
+        }
+    }
+    else // From level 97 the levels are chosen randomly
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(1, 16);
+        auto rndm_level = distrib(gen);
+        switch (rndm_level)
+        {
+        case 1:
+            electric_well_.shape_ = "Circle";
+            break;
+        case 2:
+            electric_well_.shape_ = "Square";
+            break;
+        case 3:
+            electric_well_.shape_ = "Plus";
+            break;
+        case 4:
+            electric_well_.shape_ = "Binoculars";
+            break;
+        case 5:
+            electric_well_.shape_ = "Cross";
+            break;
+        case 6:
+            electric_well_.shape_ = "Triangle";
+            break;
+        case 7:
+            electric_well_.shape_ = "X";
+            break;
+        case 8:
+            electric_well_.shape_ = "V";
+            break;
+        case 9:
+            electric_well_.shape_ = "Staires";
+            break;
+        case 10:
+            electric_well_.shape_ = "U";
+            break;
+        case 11:
+            electric_well_.shape_ = "Flat";
+            break;
+        case 12:
+            electric_well_.shape_ = "Heart";
+            break;
+        case 13:
+            electric_well_.shape_ = "Star";
+            break;
+        case 14:
+            electric_well_.shape_ = "W";
+            break;
+        case 15:
+            electric_well_.shape_ = "Bird";
+            break;
+        case 16:
+            electric_well_.shape_ = "Infinite";
+            break;
+        }
+    }
+
+    switch (level_) // Change the color for the next set of levels
+    {
+    case 17:
+        electric_well_.color_ = {255, 0, 0, 255}; //
+        break;
+    case 33:
+        electric_well_.color_ = {255, 255, 0, 255};
+        break;
+    case 49:
+        electric_well_.color_ = {0, 255, 255, 255};
+        break;
+    case 65:
+        electric_well_.color_ = {0, 0, 0, 255};
+        break;
+    case 81:
+        electric_well_.color_ = {0, 255, 0, 255};
+        break;
+    }
 }
 
 Game::enm_types_ Game::resolve(std::string type)
@@ -88,11 +227,34 @@ void Game::addScore(const std::string &type)
     };
 }
 
-/* Return true if the players lane corresponds to an ennemi's lane
+/* Tests the collision between objects. The collision test depends on the number
+ * test_nb.
+ * - 1 : collision test between an ennemi and the player
+ * - 2 : collision between an ennemi and a missile
+ * - 3 : collision between the player and a missile
+ * - 4 : collision between the player and a Spike (maybe it will be an ennemi)
  */
-bool Game::collisionTest()
+bool Game::collisionTest(const int &test_nb)
 {
-    // TODO
+    switch (test_nb)
+    {
+    case 1:
+        for (auto e : ennemi_list_)
+        {
+            if (player_.position_ == e.position_)
+                return true;
+        }
+        break;
+    case 2:
+        // Collision between player's missiles and ennemies
+        break;
+    case 3:
+        // Collision between player and ennemie's missiles
+        break;
+    case 4:
+        // Collision between player and spike
+        break;
+    }
 }
 
 //--------------------------------- IO -----------------------------------------

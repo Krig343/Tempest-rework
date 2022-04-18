@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     // Init game components
     // Draw a square test
     std::vector<Lane> list;
-    std::array<Uint8, 4> Color = {0, 255, 0, 255};
+    std::array<Uint8, 4> Color = {0, 0, 255, 255};
     ElectricWell ew{Color, "square", list};
 
     Player player{false, 1, Color, 3, false};

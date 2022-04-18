@@ -6,6 +6,7 @@
 #include "electricwell.h" // class electricwell
 #include <algorithm>      // method find
 #include <map>            // map container
+#include <random>         // random toolbox
 
 /* Main class of the project. It has the list of the currently displayed
  * ennemies and the currently displayed electric well as the player class as
@@ -44,12 +45,9 @@ public:
         ennemi_list_.insert(ennemi_list_.end(), car);
     };                                       // Adds car to the character_list_
     void removeCharacter(const Ennemi &car); // Removes car from the caracter_list_
-    inline void levelUp()
-    {
-        ++level_;
-    };                                      // Increases level_ and chenges the EW color and shape
-    void addScore(const std::string &type); // Adds to the score the car.type corresponding value
-    bool collisionTest();                   // Tests if there is a collision
+    void levelUp();                          // Increases level_ and changes the EW color and shape
+    void addScore(const std::string &type);  // Adds to the score the car.type corresponding value
+    bool collisionTest(const int &test_nb);  // Tests if there is a collision
 
     // IO
     void printAvoidSpikes(); // Prints the "Avoid Spikes" message in the middle of the screen

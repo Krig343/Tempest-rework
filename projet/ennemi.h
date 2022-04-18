@@ -14,12 +14,9 @@ public:
 
 public:
     // Constructors
-    Ennemi(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color, const std::string &tpe);
+    Ennemi(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
     Ennemi(const Ennemi &enmi);
     ~Ennemi();
-
-    // Ennemi controls
-    void getKilled(); // Maybe replaced with combination of collisionTest and removeCaracter
 };
 
 #endif // ENNEMI_H

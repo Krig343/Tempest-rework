@@ -2,16 +2,18 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Pulsar::Pulsar(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color, const std::string &tpe, bool pulse) : Ennemi::Ennemi(shooting,
-                                                                                                                                             pos,
-                                                                                                                                             color,
-                                                                                                                                             "pulsar"),
-                                                                                                                              is_pulsing_{pulse}
+Pulsar::Pulsar(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe, bool pulse) : Ennemi::Ennemi(shooting,
+                                                                                                                                                              pos,
+                                                                                                                                                              lane,
+                                                                                                                                                              color,
+                                                                                                                                                              "pulsar"),
+                                                                                                                                               is_pulsing_{pulse}
 {
 }
 
 Pulsar::Pulsar(const Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
                                                     puls.position_,
+                                                    puls.lane_number_,
                                                     puls.color_,
                                                     "pulsar",
                                                     puls.is_pulsing_)
@@ -20,12 +22,16 @@ Pulsar::Pulsar(const Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
 
 //--------------------------- Spiker controls ----------------------------------
 
-/* If the player is on the same lane as the pulsar, then he loses a life
+/* If the player is on the same lane as the pulsar, then he loses a life. Return
+ * the number of lives left. You need to change the color of the lane when
+ * calling this function.
  */
 
-void Pulsar::pulse()
+int Pulsar::pulse(int &lives, const int &lane)
 {
     is_pulsing_ = true;
-    // TODO : change se lane color and test if the player is on the lane (and eventualy lose life)
+    if (lane == lane_number_)
+        return --lives;
+    return lives;
     is_pulsing_ = false;
 }

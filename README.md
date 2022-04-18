@@ -7,4 +7,5 @@
 
 * Une classe mechanics pour gérer les évènements concernants plusieurs classes.
 * Une classe spike qui est la trace laissée par les spikers.
-* Il faut également trouver un moyen de déterminer des paliers de profondeur pour les spikes et le nombre de points données par un fuseball.
+* Il faut également trouver un moyen de déterminer des paliers de profondeur pour les spikes et le nombre de points données par un fuseball (cahnger le système de prosiiton).
+* Revérifier les que attributs et méthodes aient bien le statut le plus adéquat (public, private et protected).
