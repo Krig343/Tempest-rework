@@ -2,11 +2,21 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Game::Game(const Player &player, const std::vector<Ennemi> &enm_list, const ElectricWell &well, const int &lvl, const int &scr) : player_{player},
-                                                                                                                                  ennemi_list_{enm_list},
-                                                                                                                                  electric_well_{well},
-                                                                                                                                  level_{lvl},
-                                                                                                                                  score_{scr}
+Game::Game(const Player &player,
+           const std::vector<Ennemi> &enm_list,
+           const std::vector<Missile> &enm_msl_list,
+           const std::vector<Missile> &plr_msl_list,
+           const std::vector<Spike> &spk_list,
+           const ElectricWell &well,
+           const int &lvl,
+           const int &scr) : player_{player},
+                             ennemi_list_{enm_list},
+                             ennemi_missile_list_{enm_msl_list},
+                             player_missile_list_{plr_msl_list},
+                             spike_list_{spk_list},
+                             electric_well_{well},
+                             level_{lvl},
+                             score_{scr}
 {
 }
 
