@@ -21,3 +21,11 @@ Ennemi::Ennemi(Ennemi &enmi) : Ennemi::Ennemi(enmi.is_shooting_,
                                               enmi.type_)
 {
 }
+
+Ennemi::Ennemi(const Ennemi &enmi) : Ennemi::Ennemi(enmi.is_shooting_,
+                                                    enmi.position_,
+                                                    enmi.lane_number_,
+                                                    enmi.color_,
+                                                    enmi.type_)
+{
+}
