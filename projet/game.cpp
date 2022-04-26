@@ -2,18 +2,10 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Game::Game(const Player &player,
-           const std::vector<Ennemi> &enm_list,
-           const std::vector<Missile> &enm_msl_list,
-           const std::vector<Missile> &plr_msl_list,
-           const std::vector<Spike> &spk_list,
+Game::Game(Player &player,
            const ElectricWell &well,
            const int &lvl,
            const int &scr) : player_{player},
-                             ennemi_list_{enm_list},
-                             ennemi_missile_list_{enm_msl_list},
-                             player_missile_list_{plr_msl_list},
-                             spike_list_{spk_list},
                              electric_well_{well},
                              level_{lvl},
                              score_{scr}
@@ -37,6 +29,11 @@ bool Game::endGame()
     return false;
 }
 
+void Game::addCharacter(Ennemi &car)
+{
+    ennemi_list_.emplace_back(car);
+}
+
 /* This function searches for the character car in the ennemi list and removes
  * it when found and stops with an error message if not
  */
@@ -45,7 +42,7 @@ void Game::removeCharacter(const Ennemi &car)
     auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), car);
     if (car_index == ennemi_list_.end())
     {
-        std::cout << "L'élément " << car.index_ << " n'est pas dans la liste" << std::endl;
+        std::cout << "L'élément " << car.type_ << " n'est pas dans la liste" << std::endl;
         exit(EXIT_FAILURE);
     }
     else

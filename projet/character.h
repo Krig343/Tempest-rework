@@ -22,7 +22,7 @@ public:
 public:
     // Constructors
     Character(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color);
-    Character(const Character &car);
+    Character(Character &car);
 
     // Caracter controls
     void shoot(SDL_Renderer *renderer); // Sets is_shooting_ at true

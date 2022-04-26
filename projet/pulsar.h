@@ -13,7 +13,7 @@ private:
 public:
     // Constructors
     Pulsar(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe, bool pulse);
-    Pulsar(const Pulsar &puls);
+    Pulsar(Pulsar &puls);
 
     // Pulsar controls
     int pulse(int &lives, const int &lane); // Pulses on its current lane

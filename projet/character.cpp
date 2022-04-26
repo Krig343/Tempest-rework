@@ -2,14 +2,17 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Character::Character(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color) : is_shooting_{shooting},
-                                                                                                                 position_{pos},
-                                                                                                                 lane_number_{lane},
-                                                                                                                 color_{color}
+Character::Character(const bool &shooting,
+                     const int &pos,
+                     const int &lane,
+                     const std::array<Uint8, 4> &color) : is_shooting_{shooting},
+                                                          position_{pos},
+                                                          lane_number_{lane},
+                                                          color_{color}
 {
 }
 
-Character::Character(const Character &car) : Character::Character(car.is_shooting_,
+Character::Character(Character &car) : Character::Character(car.is_shooting_,
                                                                   car.position_,
                                                                   car.lane_number_,
                                                                   car.color_)

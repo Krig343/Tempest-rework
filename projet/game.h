@@ -41,21 +41,14 @@ public:
 
 public:
     // Constructors
-    Game(const Player &player,
-         const std::vector<Ennemi> &enm_list,
-         const std::vector<Missile> &enm_msl_list,
-         const std::vector<Missile> &plr_msl_list,
-         const std::vector<Spike> &spk_list,
+    Game(Player &player,
          const ElectricWell &well,
          const int &lvl,
          const int &scr);
 
     // Game controls
-    bool endGame(); // Stops the game and goes to the end screen
-    inline void addCharacter(Ennemi car)
-    {
-        ennemi_list_.insert(ennemi_list_.end(), car);
-    };                                       // Adds car to the character_list_
+    bool endGame();                          // Stops the game and goes to the end screen
+    void addCharacter(Ennemi &car);          // Adds car to the character_list_
     void removeCharacter(const Ennemi &car); // Removes car from the caracter_list_
     void levelUp();                          // Increases level_ and changes the EW color and shape
     void addScore(const std::string &type);  // Adds to the score the car.type corresponding value

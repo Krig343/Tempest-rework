@@ -10,13 +10,11 @@ class Ennemi : public Character
 {
 public:
     const std::string type_; // The type of the ennemi
-    static int index_;       // Common index for all ennemies
 
 public:
     // Constructors
     Ennemi(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
-    Ennemi(const Ennemi &enmi);
-    ~Ennemi();
+    Ennemi(Ennemi &enmi);
 };
 
 #endif // ENNEMI_H

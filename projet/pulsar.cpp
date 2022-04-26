@@ -2,21 +2,26 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Pulsar::Pulsar(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe, bool pulse) : Ennemi::Ennemi(shooting,
-                                                                                                                                                              pos,
-                                                                                                                                                              lane,
-                                                                                                                                                              color,
-                                                                                                                                                              "pulsar"),
-                                                                                                                                               is_pulsing_{pulse}
+Pulsar::Pulsar(const bool &shooting,
+               const int &pos,
+               const int &lane,
+               const std::array<Uint8, 4> &color,
+               const std::string &tpe,
+               bool pulse) : Ennemi::Ennemi(shooting,
+                                            pos,
+                                            lane,
+                                            color,
+                                            "pulsar"),
+                             is_pulsing_{pulse}
 {
 }
 
-Pulsar::Pulsar(const Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
-                                                    puls.position_,
-                                                    puls.lane_number_,
-                                                    puls.color_,
-                                                    "pulsar",
-                                                    puls.is_pulsing_)
+Pulsar::Pulsar(Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
+                                              puls.position_,
+                                              puls.lane_number_,
+                                              puls.color_,
+                                              "pulsar",
+                                              puls.is_pulsing_)
 {
 }
 
@@ -29,6 +34,7 @@ Pulsar::Pulsar(const Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
 
 int Pulsar::pulse(int &lives, const int &lane)
 {
+    // Change lane color
     is_pulsing_ = true;
     if (lane == lane_number_)
         return --lives;

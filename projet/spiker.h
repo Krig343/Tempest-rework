@@ -10,7 +10,7 @@ class Spiker : public Ennemi
 public:
     // Constructors
     Spiker(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
-    Spiker(const Spiker &spik);
+    Spiker(Spiker &spik);
 
     // Spiker controls
     void createSpike(); // Creates a collidable objet & print it
