@@ -2,11 +2,14 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Lane::Lane(const Vec2 &pp1, const Vec2 &pp2, const Vec2 &ep1, const Vec2 &ep2, std::array<Uint8, 4> color) : player_begin_point_{pp1},
-                                                                                                             player_end_point_{pp2},
-                                                                                                             ennemi_begin_point_{ep1},
-                                                                                                             ennemi_end_point_{ep2},
-                                                                                                             color_{color}
+Lane::Lane(const Vec2 &pp1,
+           const Vec2 &pp2,
+           const Vec2 &ep1,
+           const Vec2 &ep2, std::array<Uint8, 4> color) : player_begin_point_{pp1},
+                                                          player_end_point_{pp2},
+                                                          ennemi_begin_point_{ep1},
+                                                          ennemi_end_point_{ep2},
+                                                          color_{color}
 {
 }
 

@@ -2,17 +2,23 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Spiker::Spiker(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color, const std::string &tpe) : Ennemi::Ennemi(shooting,
-                                                                                                                                 pos,
-                                                                                                                                 color,
-                                                                                                                                 "spiker")
+Spiker::Spiker(const bool &shooting,
+               const int &pos,
+               const int &lane,
+               const std::array<Uint8, 4> &color,
+               const std::string &tpe) : Ennemi::Ennemi(shooting,
+                                                        pos,
+                                                        lane,
+                                                        color,
+                                                        "spiker")
 {
 }
 
-Spiker::Spiker(const Spiker &spik) : Spiker::Spiker(spik.is_shooting_,
-                                                    spik.position_,
-                                                    spik.color_,
-                                                    "spiker")
+Spiker::Spiker(Spiker &spik) : Spiker::Spiker(spik.is_shooting_,
+                                              spik.position_,
+                                              spik.lane_number_,
+                                              spik.color_,
+                                              "spiker")
 {
 }
 

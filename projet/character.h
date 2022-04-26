@@ -13,15 +13,16 @@
  */
 class Character
 {
-protected:
+public:
     bool is_shooting_;           // True when player is shooting
-    int position_;               // Lane number
+    int position_;               // The 2D position (needs to be fixed)
+    int lane_number_;            // The lane number
     std::array<Uint8, 4> color_; // Container <r,g,b,a>
 
 public:
     // Constructors
-    Character(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color);
-    Character(const Character &car);
+    Character(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color);
+    Character(Character &car);
 
     // Caracter controls
     void shoot(SDL_Renderer *renderer); // Sets is_shooting_ at true

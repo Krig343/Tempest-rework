@@ -10,16 +10,32 @@ class Ennemi : public Character
 {
 public:
     const std::string type_; // The type of the ennemi
-    static int index_;       // Common index for all ennemies
 
 public:
     // Constructors
-    Ennemi(const bool &shooting, const int &pos, const std::array<Uint8, 4> &color, const std::string &tpe);
+    Ennemi(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
+    Ennemi(Ennemi &enmi);
     Ennemi(const Ennemi &enmi);
-    ~Ennemi();
+    inline Ennemi &operator=(Ennemi &other)
+    {
+        if (this == &other)
+            return *this;
+    };
+    inline Ennemi &operator=(Ennemi &&other)
+    {
+        if (this == &other)
+            return *this;
+    };
 
-    // Ennemi controls
-    void getKilled(); // Maybe replaced with combination of collisionTest and removeCaracter
+private:
+    friend inline bool operator==(const Ennemi &lhs, const Ennemi &rhs)
+    {
+        if (lhs.type_ == rhs.type_ &&
+            lhs.position_ == rhs.position_ &&
+            lhs.lane_number_ == rhs.lane_number_)
+            return true;
+        return false;
+    };
 };
 
 #endif // ENNEMI_H

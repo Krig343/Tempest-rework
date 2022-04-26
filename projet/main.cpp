@@ -36,15 +36,15 @@ int main(int argc, char **argv)
     // Init game components
     // Draw a square test
     std::vector<Lane> list;
-    std::array<Uint8, 4> Color = {0, 255, 0, 255};
+    std::array<Uint8, 4> Color = {0, 0, 255, 255};
     ElectricWell ew{Color, "square", list};
 
-    Player player{false, 1, Color, 3, false};
+    // Player player{false, 1, Color, 3, false};
 
-    std::vector<Ennemi> ennemi_list;
+    // std::vector<Ennemi> ennemi_list;
 
-    Game game{player, ennemi_list, ew, 1, 0};
-    game.electric_well_.createSquare();
+    // Game game{player, ennemi_list, ew, 1, 0};
+    ew.createSquare();
 
     bool quit = false;
     ew.draw(renderer);
@@ -80,10 +80,10 @@ int main(int argc, char **argv)
                         fullscreen = false;
                     }
                 }
-                if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                    game.player_.move(1);
-                if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                    game.player_.move(-1);
+                // if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
+                //     game.player_.move(1);
+                // if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+                //     game.player_.move(-1);
                 break;
             }
         }

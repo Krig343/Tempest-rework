@@ -4,8 +4,11 @@
 #include "ennemi.h"       // class ennemi
 #include "player.h"       // class player
 #include "electricwell.h" // class electricwell
+#include "missile.h"      // class missile
+#include "spike.h"        // class spike
 #include <algorithm>      // method find
 #include <map>            // map container
+#include <random>         // random toolbox
 
 /* Main class of the project. It has the list of the currently displayed
  * ennemies and the currently displayed electric well as the player class as
@@ -24,32 +27,32 @@ private:
         Spiker,
         Fuseball,
         Pulsar
-    };
+    }; // All the ennemi types
 
 public:
-    Player player_;                   // The player's blaster
-    std::vector<Ennemi> ennemi_list_; // Current scene ennemies list
-    ElectricWell electric_well_;      // Current electric well
-    int level_;                       // Current level
-    int score_;                       // Current score
+    Player player_;                            // The player's blaster
+    std::vector<Ennemi> ennemi_list_;          // Current scene ennemies list
+    std::vector<Missile> ennemi_missile_list_; // All the missiles launched by the ennemies
+    std::vector<Missile> player_missile_list_; // All the missiles launched by the player
+    std::vector<Spike> spike_list_;            // The list of all the printed spikes
+    ElectricWell electric_well_;               // Current electric well
+    int level_;                                // Current level
+    int score_;                                // Current score
 
 public:
     // Constructors
-    Game(const Player &player, const std::vector<Ennemi> &enm_list, const ElectricWell &well, const int &lvl, const int &scr);
+    Game(Player &player,
+         const ElectricWell &well,
+         const int &lvl,
+         const int &scr);
 
     // Game controls
-    bool endGame(); // Stops the game and goes to the end screen
-    inline void addCharacter(Ennemi car)
-    {
-        ennemi_list_.insert(ennemi_list_.end(), car);
-    };                                       // Adds car to the character_list_
+    bool endGame();                          // Stops the game and goes to the end screen
+    void addCharacter(Ennemi &car);          // Adds car to the character_list_
     void removeCharacter(const Ennemi &car); // Removes car from the caracter_list_
-    inline void levelUp()
-    {
-        ++level_;
-    };                                      // Increases level_ and chenges the EW color and shape
-    void addScore(const std::string &type); // Adds to the score the car.type corresponding value
-    bool collisionTest();                   // Tests if there is a collision
+    void levelUp();                          // Increases level_ and changes the EW color and shape
+    void addScore(const std::string &type);  // Adds to the score the car.type corresponding value
+    bool collisionTest(const int &test_nb);  // Tests if there is a collision
 
     // IO
     void printAvoidSpikes(); // Prints the "Avoid Spikes" message in the middle of the screen
