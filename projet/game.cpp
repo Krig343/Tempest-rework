@@ -266,23 +266,55 @@ bool Game::collisionTest(const int &test_nb)
 
 //--------------------------------- IO -----------------------------------------
 
+void Game::printLetter(const int &letter_index, const int &offset, SDL_Renderer *renderer)
+{
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    for (int i = 2; i < 112; i += 2)
+    {
+        int x1 = simplex[letter_index][i];
+        int y1 = simplex[letter_index][i + 1];
+        int x2 = simplex[letter_index][i + 2];
+        int y2 = simplex[letter_index][i + 3];
+        if (x1 != -1 && y1 != -1 && x2 != -1 && y2 != -1)
+            SDL_RenderDrawLine(renderer, x1 + offset, -y1 + 50, x2 + offset, -y2 + 50);
+    }
+}
+
 /* Prints the string "avoid spikes" on the middle top of the screen
  */
-void Game::printAvoidSpikes()
+void Game::printAvoidSpikes(SDL_Renderer *renderer)
 {
     // TODO
+    int offset = 200;
+    // C = 35
+    printLetter(35, offset, renderer);
+    offset += simplex[35][1];
+    // O = 47
+    printLetter(47, offset, renderer);
+    offset += simplex[47][1];
+    // U = 53
+    printLetter(53, offset, renderer);
+    offset += simplex[53][1];
+    // C = 35
+    printLetter(35, offset, renderer);
+    offset += simplex[35][1];
+    // O = 47
+    printLetter(47, offset, renderer);
+    offset += simplex[47][1];
+    // U = 53
+    printLetter(53, offset, renderer);
 }
 
 /* Prints continiously the score on top of the screen
  */
-void Game::printScore()
+void Game::printScore(SDL_Renderer *renderer)
 {
     // TODO
 }
 
 /* Prints continiously the level on top left of the screen
  */
-void Game::printLevel()
+void Game::printLevel(SDL_Renderer *renderer)
 {
     // TODO
 }

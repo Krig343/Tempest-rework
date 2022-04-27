@@ -9,6 +9,9 @@
 #include <algorithm>      // method find
 #include <map>            // map container
 #include <random>         // random toolbox
+#include "text.hpp"
+
+using namespace Text;
 
 /* Main class of the project. It has the list of the currently displayed
  * ennemies and the currently displayed electric well as the player class as
@@ -55,13 +58,14 @@ public:
     bool collisionTest(const int &test_nb);  // Tests if there is a collision
 
     // IO
-    void printAvoidSpikes(); // Prints the "Avoid Spikes" message in the middle of the screen
-    void printScore();       // Prints the current score
-    void printLevel();       // Prints the current level
-    void printEndScreen();   // Prints the end screen
+    void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen
+    void printScore(SDL_Renderer *renderer);       // Prints the current score
+    void printLevel(SDL_Renderer *renderer);       // Prints the current level
+    void printEndScreen();                         // Prints the end screen
 
 private:
     enm_types_ resolve(std::string type);
+    void printLetter(const int &letter_index, const int &offset, SDL_Renderer *renderer);
 };
 
 #endif // GAME_H

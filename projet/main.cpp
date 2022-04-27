@@ -39,15 +39,16 @@ int main(int argc, char **argv)
     std::array<Uint8, 4> Color = {0, 0, 255, 255};
     ElectricWell ew{Color, "square", list};
 
-    // Player player{false, 1, Color, 3, false};
+    Player player{false, 1, 1, Color, 1, false};
 
     // std::vector<Ennemi> ennemi_list;
 
-    // Game game{player, ennemi_list, ew, 1, 0};
-    ew.createSquare();
+    Game game{player, ew, 1, 0};
+    game.printAvoidSpikes(renderer);
+    game.electric_well_.createSquare();
 
     bool quit = false;
-    ew.draw(renderer);
+    game.electric_well_.draw(renderer);
     SDL_RenderPresent(renderer);
     while (!quit)
     {
