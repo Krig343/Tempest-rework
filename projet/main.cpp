@@ -5,7 +5,7 @@
 
 void prepareFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &flag)
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_SetWindowFullscreen(window, flag);
 }
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     std::array<Uint8, 4> Color = {0, 0, 255, 255};
     ElectricWell ew{Color, "square", list};
 
-    Player player{false, 1, 1, Color, 1, false};
+    Player player{false, 1, 1, Color, 0, false};
 
     // std::vector<Ennemi> ennemi_list;
 
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     bool quit = false;
     while (!quit)
     {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         SDL_Event event;
@@ -96,6 +96,33 @@ int main(int argc, char **argv)
         game.printAvoidSpikes(renderer);
         game.score_ = (game.score_ + 1) % 999999;
         SDL_RenderPresent(renderer);
+    }
+    std::cout << "player lives : " << game.player_.lives_ << std::endl;
+    std::cout << "ennemi number : " << game.ennemi_list_.size() << std::endl;
+    std::cout << "level : " << game.level_ << std::endl;
+    std::string msg;
+    auto res = game.endGame(renderer);
+    if (res)
+        msg = "true";
+    else
+        msg = "false";
+    std::cout << "is ended : " << msg << std::endl;
+    quit = false;
+    while (!quit)
+    {
+        SDL_Event event;
+        while (!quit && SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT: // Quits with the window cross
+                quit = true;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_ESCAPE) // Press "escape" to quit
+                    quit = true;
+            }
+        }
     }
     SDL_Quit();
     return 0;

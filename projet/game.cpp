@@ -19,11 +19,12 @@ Game::Game(Player &player,
  * script known he has to exit th egame loop. If false is returned the nothing
  * appens
  */
-bool Game::endGame()
+bool Game::endGame(SDL_Renderer *renderer)
 {
     if (player_.lives_ == 0 || (level_ == 99 && ennemi_list_.size() == 0))
     {
-        printEndScreen();
+        std::cout << "hello ???" << std::endl;
+        printEndScreen(renderer);
         return true;
     }
     return false;
@@ -49,6 +50,9 @@ void Game::removeCharacter(const Ennemi &car)
         ennemi_list_.erase(car_index);
 }
 
+/* This function adds one to the current level and modifies the shape and the color
+ * of the electricwell, as well as the color of the ennemies and the player
+ */
 void Game::levelUp()
 {
     ++level_;
@@ -186,6 +190,9 @@ void Game::levelUp()
     }
 }
 
+/* This function returns the ennemi type from the enm_types_ enum corresponding
+ * to the type string in input
+ */
 Game::enm_types_ Game::resolve(std::string type)
 {
     static const std::map<std::string, enm_types_> typeStrings{
@@ -206,6 +213,9 @@ Game::enm_types_ Game::resolve(std::string type)
     exit(EXIT_FAILURE);
 }
 
+/* This function add a certain int to the score depending on the type given in
+ * input
+ */
 void Game::addScore(const std::string &type)
 {
     switch (resolve(type))
@@ -266,6 +276,9 @@ bool Game::collisionTest(const int &test_nb)
 
 //--------------------------------- IO -----------------------------------------
 
+/* This function goes through the columns of the letter_index line of simplex,
+ * and, if the coordinates pair isn't equal to -1, it draws the line between them
+ */
 void Game::printLetter(const int &letter_index, const int &offset_x, const int &offset_y, SDL_Renderer *renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -280,6 +293,9 @@ void Game::printLetter(const int &letter_index, const int &offset_x, const int &
     }
 }
 
+/* This function takes simplex indexes list as input and computes the total width
+ * of thoses symbols
+ */
 const int Game::computeOffset(const std::vector<int> &letters)
 {
     int offset = 0;
@@ -290,6 +306,9 @@ const int Game::computeOffset(const std::vector<int> &letters)
     return offset;
 }
 
+/* This function draws all the symbols indexed by indexes in the way that w is
+ * the middle of the width of the symbols and offset_y if the bottom of the symbols
+ */
 void Game::printMessage(const std::vector<int> &indexes, SDL_Renderer *renderer, const int &w, const int &offset_y)
 {
     int offset_sum = computeOffset(indexes);
@@ -301,7 +320,7 @@ void Game::printMessage(const std::vector<int> &indexes, SDL_Renderer *renderer,
     }
 }
 
-/* Prints the string "avoid spikes" on the middle top of the screen
+/* Prints the string "avoid spikes" on the center top of the screen
  */
 void Game::printAvoidSpikes(SDL_Renderer *renderer)
 {
@@ -311,6 +330,12 @@ void Game::printAvoidSpikes(SDL_Renderer *renderer)
     printMessage(letters, renderer, w / 2, 200);
 }
 
+/* This function checks if the input number is a score or a level. If it is a
+ * a level, the first digit is the result of the int division by 10 and the second
+ * digit is the rest of this division. If the number is a score, with isolate each
+ * digit with successive division by 10^x (from 100000 to 10). Those digits are stored
+ * in a vector container after adding 16 to each (16 reprensents the 0 symbol in simplex).
+ */
 const std::vector<int> Game::decomposeNumbers(const int &number, const bool &is_level)
 {
     std::vector<int> numbers;
@@ -357,7 +382,53 @@ void Game::printLevel(SDL_Renderer *renderer)
 /* Erases the screen and prints "game over", the score and the level in the
  * center of the screen
  */
-void Game::printEndScreen()
+void Game::printEndScreen(SDL_Renderer *renderer)
 {
-    // TODO
+    int w, h;
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    std::vector<int> message;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    std::cout << "why don't you clear ?" << std::endl;
+    if (level_ == 99)
+    {
+        // Game over
+        message = {39, 65, 77, 69, 0, 79, 86, 69, 82};
+        printMessage(message, renderer, w / 2, 100);
+        // Victory !
+        message = {54, 73, 67, 84, 79, 82, 89, 0, 1};
+        printMessage(message, renderer, w / 2, 200);
+        // Score :
+        message = {51, 67, 79, 82, 69, 0, 26};
+        printMessage(message, renderer, (2 * w) / 5, 300);
+        printMessage(decomposeNumbers(score_, false), renderer, (3 * w) / 5, 300);
+        // Level :
+        message = {44, 69, 86, 69, 76, 0, 26};
+        printMessage(message, renderer, (2 * w) / 5, 400);
+        printMessage(decomposeNumbers(level_, true), renderer, (3 * w) / 5, 400);
+        // Press exit to quit
+        message = {48, 82, 69, 83, 83, 0, 69, 88, 73, 84, 0, 84, 79, 0, 81, 85, 73, 84};
+        printMessage(message, renderer, w / 2, 500);
+    }
+    if (player_.lives_ == 0)
+    {
+        // Game over
+        message = {39, 65, 77, 69, 0, 79, 86, 69, 82};
+        printMessage(message, renderer, w / 2, 100);
+        // Defeat >.<
+        message = {36, 69, 70, 69, 65, 84, 0, 30, 14, 28};
+        printMessage(message, renderer, w / 2, 200);
+        // Score :
+        message = {51, 67, 79, 82, 69, 0, 26};
+        printMessage(message, renderer, (2 * w) / 5, 300);
+        printMessage(decomposeNumbers(score_, false), renderer, (3 * w) / 5, 300);
+        // Level :
+        message = {44, 69, 86, 69, 76, 0, 26};
+        printMessage(message, renderer, (2 * w) / 5, 400);
+        printMessage(decomposeNumbers(level_, true), renderer, (3 * w) / 5, 400);
+        // Press exit to quit
+        message = {48, 82, 69, 83, 83, 0, 69, 88, 73, 84, 0, 84, 79, 0, 81, 85, 73, 84};
+        printMessage(message, renderer, w / 2, 500);
+    }
+    SDL_RenderPresent(renderer);
 }
