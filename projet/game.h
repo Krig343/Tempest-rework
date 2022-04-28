@@ -53,9 +53,10 @@ public:
     bool endGame(SDL_Renderer *renderer);    // Stops the game and goes to the end screen
     void addCharacter(Ennemi &car);          // Adds car to the character_list_
     void removeCharacter(const Ennemi &car); // Removes car from the caracter_list_
-    void levelUp();                          // Increases level_ and changes the EW color and shape
-    void addScore(const std::string &type);  // Adds to the score the car.type corresponding value
-    bool collisionTest(const int &test_nb);  // Tests if there is a collision
+    template <class T>
+    void levelUp();                         // Increases level_ and changes the EW color and shape
+    void addScore(const std::string &type); // Adds to the score the car.type corresponding value
+    bool collisionTest(const int &test_nb); // Tests if there is a collision
 
     // IO
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen

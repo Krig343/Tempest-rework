@@ -49,9 +49,33 @@ void Game::removeCharacter(const Ennemi &car)
         ennemi_list_.erase(car_index);
 }
 
+/* This function returns the ennemi type from the enm_types_ enum corresponding
+ * to the type string in input
+ */
+Game::enm_types_ Game::resolve(std::string type)
+{
+    static const std::map<std::string, enm_types_> typeStrings{
+        {"Flipper", Flipper},
+        {"Tanker_flipper", Tanker_flipper},
+        {"Tanker_fuseball", Tanker_fuseball},
+        {"Tanker_pulsar", Tanker_pulsar},
+        {"Spiker", Spiker},
+        {"Fuseball", Fuseball},
+        {"Pulsar", Pulsar}};
+
+    auto itr = typeStrings.find(type);
+    if (itr != typeStrings.end())
+    {
+        return itr->second;
+    }
+    std::cout << "Le type " << type << " n'existe pas" << std::endl;
+    exit(EXIT_FAILURE);
+}
+
 /* This function adds one to the current level and modifies the shape and the color
  * of the electricwell, as well as the color of the ennemies and the player
  */
+template <class T>
 void Game::levelUp()
 {
     ++level_;
@@ -169,51 +193,96 @@ void Game::levelUp()
         }
     }
 
+    std::array<Uint8, 4> color_flipper;
+    std::array<Uint8, 4> color_tanker;
+    std::array<Uint8, 4> color_spiker;
+    std::array<Uint8, 4> color_pulsar;
+
+    // Ce serait cool de pouvoir la templater pour faire passer les spikes et les ennemies
+    auto changeColor = [this, &color_flipper, &color_tanker, &color_spiker, &color_pulsar](T &enm)
+    {
+        switch (resolve(enm.type_))
+        {
+        case Game::Flipper:
+            enm.color_ = {color_flipper};
+            break;
+        case Game::Tanker_flipper:
+            enm.color_ = {color_tanker};
+            break;
+        case Game::Tanker_fuseball:
+            enm.color_ = {color_tanker};
+            break;
+        case Game::Tanker_pulsar:
+            enm.color_ = {color_tanker};
+            break;
+        case Game::Spiker:
+            enm.color_ = {color_spiker};
+            break;
+        case Game::Pulsar:
+            enm.color_ = {color_pulsar};
+            break;
+        default:
+            break;
+        }
+    };
+
     switch (level_) // Change the color for the next set of levels
     {
     case 17:
         electric_well_.color_ = {255, 0, 0, 255};
         player_.color_ = {0, 255, 0, 255};
+        player_.zapper_color_ = {0, 255, 255, 255};
+        color_flipper = {138, 43, 226, 255};
+        color_tanker = {0, 0, 255, 255};
+        color_spiker = {0, 255, 255, 255};
+        color_pulsar = {255, 255, 0, 255};
+        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
+        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
         break;
     case 33:
         electric_well_.color_ = {255, 255, 0, 255};
         player_.color_ = {0, 0, 255, 255};
+        player_.zapper_color_ = {0, 0, 255, 255};
+        color_flipper = {0, 255, 0, 255};
+        color_tanker = {0, 255, 255, 255};
+        color_spiker = {255, 0, 0, 255};
+        color_pulsar = {0, 0, 255, 255};
+        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
+        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
         break;
     case 49:
         electric_well_.color_ = {0, 255, 255, 255};
+        player_.zapper_color_ = {255, 0, 0, 255};
+        color_flipper = {0, 255, 0, 255};
+        color_tanker = {138, 43, 226, 255};
+        color_spiker = {255, 0, 0, 255};
+        color_pulsar = {255, 255, 0, 255};
+        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
+        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
         break;
     case 65:
         electric_well_.color_ = {0, 0, 0, 255};
         player_.color_ = {255, 255, 0, 255};
+        player_.zapper_color_ = {255, 255, 255, 255};
+        color_flipper = {255, 0, 0, 255};
+        color_tanker = {138, 43, 226, 255};
+        color_spiker = {0, 255, 0, 255};
+        color_pulsar = {0, 255, 255, 255};
+        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
+        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
         break;
     case 81:
         electric_well_.color_ = {0, 255, 0, 255};
         player_.color_ = {255, 0, 0, 255};
+        player_.zapper_color_ = {138, 43, 226, 255};
+        color_flipper = {225, 225, 0, 255};
+        color_tanker = {138, 43, 226, 255};
+        color_spiker = {0, 0, 255, 255};
+        color_pulsar = {255, 255, 0, 255};
+        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
+        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
         break;
     }
-}
-
-/* This function returns the ennemi type from the enm_types_ enum corresponding
- * to the type string in input
- */
-Game::enm_types_ Game::resolve(std::string type)
-{
-    static const std::map<std::string, enm_types_> typeStrings{
-        {"Flipper", Flipper},
-        {"Tanker_flipper", Tanker_flipper},
-        {"Tanker_fuseball", Tanker_fuseball},
-        {"Tanker_pulsar", Tanker_pulsar},
-        {"Spiker", Spiker},
-        {"Fuseball", Fuseball},
-        {"Pulsar", Pulsar}};
-
-    auto itr = typeStrings.find(type);
-    if (itr != typeStrings.end())
-    {
-        return itr->second;
-    }
-    std::cout << "Le type " << type << " n'existe pas" << std::endl;
-    exit(EXIT_FAILURE);
 }
 
 /* This function add a certain int to the score depending on the type given in
@@ -244,7 +313,7 @@ void Game::addScore(const std::string &type)
     case Game::Pulsar:
         score_ += 200;
         break;
-    };
+    }
 }
 
 /* Tests the collision between objects. The collision test depends on the number

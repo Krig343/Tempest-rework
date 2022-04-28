@@ -2,7 +2,8 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Spike::Spike(const int &pos) : position_{pos}
+Spike::Spike(const int &pos) : position_{pos},
+                               type_{"spiker"}
 {
 }
 

@@ -8,12 +8,19 @@
 class Player : public Character
 {
 public:
-    int lives_;        // Player's lives number
-    bool used_zapper_; // True if player used his zapper
+    int lives_;                         // Player's lives number
+    bool used_zapper_;                  // True if player used his zapper
+    std::array<Uint8, 4> zapper_color_; // Container <r,g,b,a>
 
 public:
     // Constructors
-    Player(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const int &life, const bool &zapper);
+    Player(const bool &shooting,
+           const int &pos,
+           const int &lane,
+           const std::array<Uint8, 4> &color,
+           const int &life,
+           const bool &zapper,
+           const std::array<Uint8, 4> &zapper_color);
 
     // Player controls
     inline void loseLife() { --lives_; };                // Decrease lives_

@@ -34,17 +34,9 @@ int main(int argc, char **argv)
     assert(renderer != NULL);
 
     // Init game components
-    // Draw a square test
-    std::vector<Lane> list;
-    std::array<Uint8, 4> Color = {0, 0, 255, 255};
-    ElectricWell ew{Color, "square", list};
 
-    Player player{false, 1, 1, Color, 0, false};
-
-    // std::vector<Ennemi> ennemi_list;
-
-    Game game{player, ew, 1, 0};
-    game.electric_well_.createSquare();
+    std::array<Uint8, 4> color{255, 255, 255, 255};
+    ElectricWell ew{color, "circle"};
 
     bool quit = false;
     while (!quit)
@@ -81,24 +73,12 @@ int main(int argc, char **argv)
                         fullscreen = false;
                     }
                 }
-                // if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                //     game.player_.move(1);
-                // if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                //     game.player_.move(-1);
                 break;
             }
         }
 
         // Game loop
-        game.printScore(renderer);
-        game.printLevel(renderer);
-        game.electric_well_.draw(renderer);
-        game.printAvoidSpikes(renderer);
-        game.score_ = (game.score_ + 1) % 999999;
-        SDL_RenderPresent(renderer);
     }
-    std::string msg;
-    auto res = game.endGame(renderer);
     quit = false;
     while (!quit)
     {

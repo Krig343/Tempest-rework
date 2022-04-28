@@ -3,10 +3,8 @@
 //----------------------------- Constructors -----------------------------------
 
 ElectricWell::ElectricWell(const std::array<Uint8, 4> &color,
-                           const std::string &shape,
-                           const std::vector<Lane> &lanes) : color_{color},
-                                                             shape_{shape},
-                                                             lane_list_{lanes}
+                           const std::string &shape) : color_{color},
+                                                       shape_{shape}
 {
 }
 

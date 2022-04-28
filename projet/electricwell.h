@@ -18,7 +18,7 @@ private:
 
 public:
     // Constructors
-    ElectricWell(const std::array<Uint8, 4> &color, const std::string &shape, const std::vector<Lane> &lanes);
+    ElectricWell(const std::array<Uint8, 4> &color, const std::string &shape);
 
     // Electric well controls
     void addLane(Vec2 x1, Vec2 y1, Vec2 x2, Vec2 y2); // Adds a lane composed of x1, y1, x2, y2 to the lane_list_
