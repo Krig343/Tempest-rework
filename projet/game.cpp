@@ -23,7 +23,6 @@ bool Game::endGame(SDL_Renderer *renderer)
 {
     if (player_.lives_ == 0 || (level_ == 99 && ennemi_list_.size() == 0))
     {
-        std::cout << "hello ???" << std::endl;
         printEndScreen(renderer);
         return true;
     }
@@ -389,7 +388,6 @@ void Game::printEndScreen(SDL_Renderer *renderer)
     std::vector<int> message;
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    std::cout << "why don't you clear ?" << std::endl;
     if (level_ == 99)
     {
         // Game over

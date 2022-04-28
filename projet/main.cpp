@@ -97,16 +97,8 @@ int main(int argc, char **argv)
         game.score_ = (game.score_ + 1) % 999999;
         SDL_RenderPresent(renderer);
     }
-    std::cout << "player lives : " << game.player_.lives_ << std::endl;
-    std::cout << "ennemi number : " << game.ennemi_list_.size() << std::endl;
-    std::cout << "level : " << game.level_ << std::endl;
     std::string msg;
     auto res = game.endGame(renderer);
-    if (res)
-        msg = "true";
-    else
-        msg = "false";
-    std::cout << "is ended : " << msg << std::endl;
     quit = false;
     while (!quit)
     {
