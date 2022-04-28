@@ -65,7 +65,10 @@ public:
 
 private:
     enm_types_ resolve(std::string type);
-    void printLetter(const int &letter_index, const int &offset, SDL_Renderer *renderer);
+    void printLetter(const int &letter_index, const int &offset_x, const int &offset_y, SDL_Renderer *renderer);
+    const int computeOffset(const std::vector<int> &letters);
+    const std::vector<int> decomposeNumbers(const int &number, const bool &is_level);
+    void printMessage(const std::vector<int> &indexes, SDL_Renderer *renderer, const int &w, const int &offset_y);
 };
 
 #endif // GAME_H

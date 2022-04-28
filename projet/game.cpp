@@ -266,7 +266,7 @@ bool Game::collisionTest(const int &test_nb)
 
 //--------------------------------- IO -----------------------------------------
 
-void Game::printLetter(const int &letter_index, const int &offset, SDL_Renderer *renderer)
+void Game::printLetter(const int &letter_index, const int &offset_x, const int &offset_y, SDL_Renderer *renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     for (int i = 2; i < 112; i += 2)
@@ -276,7 +276,28 @@ void Game::printLetter(const int &letter_index, const int &offset, SDL_Renderer 
         int x2 = simplex[letter_index][i + 2];
         int y2 = simplex[letter_index][i + 3];
         if (x1 != -1 && y1 != -1 && x2 != -1 && y2 != -1)
-            SDL_RenderDrawLine(renderer, x1 + offset, -y1 + 50, x2 + offset, -y2 + 50);
+            SDL_RenderDrawLine(renderer, x1 + offset_x, -y1 + offset_y, x2 + offset_x, -y2 + offset_y);
+    }
+}
+
+const int Game::computeOffset(const std::vector<int> &letters)
+{
+    int offset = 0;
+    for (auto l : letters)
+    {
+        offset += simplex[l][1];
+    }
+    return offset;
+}
+
+void Game::printMessage(const std::vector<int> &indexes, SDL_Renderer *renderer, const int &w, const int &offset_y)
+{
+    int offset_sum = computeOffset(indexes);
+    int offset_x = w - (offset_sum / 2);
+    for (auto i : indexes)
+    {
+        printLetter(i, offset_x, offset_y, renderer);
+        offset_x += simplex[i][1];
     }
 }
 
@@ -284,39 +305,53 @@ void Game::printLetter(const int &letter_index, const int &offset, SDL_Renderer 
  */
 void Game::printAvoidSpikes(SDL_Renderer *renderer)
 {
-    // TODO
-    int offset = 200;
-    // C = 35
-    printLetter(35, offset, renderer);
-    offset += simplex[35][1];
-    // O = 47
-    printLetter(47, offset, renderer);
-    offset += simplex[47][1];
-    // U = 53
-    printLetter(53, offset, renderer);
-    offset += simplex[53][1];
-    // C = 35
-    printLetter(35, offset, renderer);
-    offset += simplex[35][1];
-    // O = 47
-    printLetter(47, offset, renderer);
-    offset += simplex[47][1];
-    // U = 53
-    printLetter(53, offset, renderer);
+    int w, h;
+    std::vector<int> letters{33, 54, 47, 41, 36, 0, 51, 48, 41, 43, 37, 51};
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    printMessage(letters, renderer, w / 2, 200);
+}
+
+const std::vector<int> Game::decomposeNumbers(const int &number, const bool &is_level)
+{
+    std::vector<int> numbers;
+    if (is_level)
+    {
+        numbers.insert(numbers.begin(), (number / 10) + 16);
+        numbers.insert(numbers.end(), (number % 10) + 16);
+    }
+    if (!is_level)
+    {
+        int q = number;
+        int r;
+        for (int i = 100000; i > 0; i /= 10)
+        {
+            r = q % i;
+            q = q / i;
+            numbers.insert(numbers.end(), q + 16);
+            q = r;
+        }
+    }
+    return numbers;
 }
 
 /* Prints continiously the score on top of the screen
  */
 void Game::printScore(SDL_Renderer *renderer)
 {
-    // TODO
+    int w, h;
+    std::vector<int> letters = decomposeNumbers(score_, false);
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    printMessage(letters, renderer, (2 * w) / 5, 80);
 }
 
 /* Prints continiously the level on top left of the screen
  */
 void Game::printLevel(SDL_Renderer *renderer)
 {
-    // TODO
+    int w, h;
+    std::vector<int> letters = decomposeNumbers(level_, true);
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    printMessage(letters, renderer, (2 * w) / 3, 80);
 }
 
 /* Erases the screen and prints "game over", the score and the level in the

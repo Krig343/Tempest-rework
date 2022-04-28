@@ -44,14 +44,14 @@ int main(int argc, char **argv)
     // std::vector<Ennemi> ennemi_list;
 
     Game game{player, ew, 1, 0};
-    game.printAvoidSpikes(renderer);
     game.electric_well_.createSquare();
 
     bool quit = false;
-    game.electric_well_.draw(renderer);
-    SDL_RenderPresent(renderer);
     while (!quit)
     {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderClear(renderer);
+
         SDL_Event event;
         while (!quit && SDL_PollEvent(&event))
         {
@@ -90,6 +90,12 @@ int main(int argc, char **argv)
         }
 
         // Game loop
+        game.printScore(renderer);
+        game.printLevel(renderer);
+        game.electric_well_.draw(renderer);
+        game.printAvoidSpikes(renderer);
+        game.score_ = (game.score_ + 1) % 999999;
+        SDL_RenderPresent(renderer);
     }
     SDL_Quit();
     return 0;
