@@ -169,19 +169,23 @@ void Game::levelUp()
     switch (level_) // Change the color for the next set of levels
     {
     case 17:
-        electric_well_.color_ = {255, 0, 0, 255}; //
+        electric_well_.color_ = {255, 0, 0, 255};
+        player_.color_ = {0, 255, 0, 255};
         break;
     case 33:
         electric_well_.color_ = {255, 255, 0, 255};
+        player_.color_ = {0, 0, 255, 255};
         break;
     case 49:
         electric_well_.color_ = {0, 255, 255, 255};
         break;
     case 65:
         electric_well_.color_ = {0, 0, 0, 255};
+        player_.color_ = {255, 255, 0, 255};
         break;
     case 81:
         electric_well_.color_ = {0, 255, 0, 255};
+        player_.color_ = {255, 0, 0, 255};
         break;
     }
 }
