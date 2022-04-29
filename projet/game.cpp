@@ -26,6 +26,7 @@ bool Game::endGame(SDL_Renderer *renderer)
     return false;
 }
 
+// ADD DESCRIPTION
 void Game::movePlayer(int movement)
 {
     int newLane = player_.lane_ + movement;
@@ -52,16 +53,6 @@ void Game::movePlayer(int movement)
             player_.move(std::min(newLane, electric_well_.polygon_size_ - 2));
         }
     }
-}
-
-void Game::addPlayerMissile(int lane)
-{
-    player_missile_list_.push_back(Missile(lane, 0.0));
-}
-
-void Game::addCharacter(Ennemi &car)
-{
-    ennemi_list_.push_back(car);
 }
 
 /* This function searches for the object rem_obj in the correct list and removes

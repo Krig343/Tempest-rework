@@ -17,6 +17,13 @@ Ennemi::Ennemi(Ennemi &enmi) : Ennemi::Ennemi(enmi.is_shooting_,
 {
 }
 
+Ennemi::Ennemi(const Ennemi &enmi) : Ennemi::Ennemi(enmi.is_shooting_,
+                                                    enmi.position_,
+                                                    enmi.lane_,
+                                                    enmi.type_)
+{
+}
+
 void Ennemi::initModelPolygon()
 {
 }

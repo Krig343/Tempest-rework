@@ -93,7 +93,6 @@ int main(int argc, char **argv)
 
         // Game loop
         g.update();
-        SDL_RenderPresent(renderer);
     }
     quit = false;
     while (!quit)

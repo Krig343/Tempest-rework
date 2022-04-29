@@ -9,7 +9,7 @@
 #include <algorithm>      // method find
 #include <map>            // map container
 #include <random>         // random toolbox
-#include "text.h"
+#include "text.h"         // simplex list for text draw
 
 using namespace Text;
 
@@ -48,7 +48,10 @@ public:
 
     // Game controls
     bool endGame(SDL_Renderer *renderer); // Stops the game and goes to the end screen
-    void addCharacter(Ennemi &car);       // Adds car to the character_list_
+    inline void addCharacter(Ennemi &car)
+    {
+        ennemi_list_.push_back(car);
+    }; // Adds car to the character_list_
     template <class T>
     void removeObject(const T &rem_obj); // Removes rem_obj from the correct list
     template <class T>
@@ -57,7 +60,10 @@ public:
     void collisionTest();                   // Tests if there is a collision
     void update();                          // Update game state
     void movePlayer(int movement);          // Change the lane of the player
-    void addPlayerMissile(int lane);        // Spawn a player missile
+    inline void addPlayerMissile(int lane)
+    {
+        player_missile_list_.push_back(Missile(lane, 0.0));
+    }; // Spawn a player missile
 
     // IO
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen
