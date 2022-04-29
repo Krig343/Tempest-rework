@@ -42,9 +42,9 @@ void Game::movePlayer(int movement)
     } else {
         if(movement < 0)
         {
-            player_.move(std::min(0, newLane));
+            player_.move(std::max(0, newLane));
         } else {
-            player_.move(std::max(newLane, electric_well_.polygonSize_ - 1));
+            player_.move(std::min(newLane, electric_well_.polygonSize_ - 2));
         }
     }
 }
@@ -217,6 +217,7 @@ void Game::draw(SDL_Renderer *renderer)
 
     // Draw electric well
     electric_well_.draw(renderer);
+    electric_well_.highlightLane(renderer, player_.lane_);
 
     // Draw player
     player_.draw(renderer, 

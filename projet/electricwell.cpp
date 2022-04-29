@@ -72,6 +72,23 @@ void ElectricWell::initLevelPolygons(int level)
     }
 }
 
+void ElectricWell::highlightLane(SDL_Renderer *renderer, int lane)
+{
+    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+    
+    SDL_RenderDrawLine(renderer, 
+                       backPolygon_[lane].x,
+                       backPolygon_[lane].y,
+                       frontPolygon_[lane].x,
+                       frontPolygon_[lane].y);
+
+    SDL_RenderDrawLine(renderer, 
+                       backPolygon_[(lane + 1)%polygonSize_].x,
+                       backPolygon_[(lane + 1)%polygonSize_].y,
+                       frontPolygon_[(lane + 1)%polygonSize_].x,
+                       frontPolygon_[(lane + 1)%polygonSize_].y);   
+}
+
 void ElectricWell::draw(SDL_Renderer *renderer)
 {
     SDL_SetRenderDrawColor(renderer, color_[0], color_[1], color_[2], color_[3]);

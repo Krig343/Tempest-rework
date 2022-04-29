@@ -29,7 +29,9 @@ private:
 public:
     // Constructors
     ElectricWell(int level);
-
+    
+    // Draw
+    void highlightLane(SDL_Renderer *renderer, int lane);
     void draw(SDL_Renderer *renderer); // Print the electric well in its color
 };
 
