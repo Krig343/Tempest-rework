@@ -63,7 +63,8 @@ public:
     inline void addPlayerMissile(int lane)
     {
         player_missile_list_.push_back(Missile(lane, 0.0));
-    }; // Spawn a player missile
+    };                // Spawn a player missile
+    void useZapper(); // Sets used_zapper_ to true
 
     // IO
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen

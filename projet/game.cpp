@@ -2,8 +2,8 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Game::Game() : player_{Player{false, 0.0, 0, 5, false}},
-               electric_well_{ElectricWell{1, "circle"}}
+Game::Game() : player_{Player{false, 0.0, 0, 5}},
+               electric_well_{ElectricWell{1, "Circle"}}
 {
     score_ = 0;
     level_ = 1;
@@ -421,6 +421,28 @@ void Game::collisionTest()
                 removeObject(m);
                 removeObject(s);
             }
+}
+
+void Game::useZapper()
+{
+    if (player_.zapper_left == 2)
+    {
+        --player_.zapper_left;
+        ennemi_list_.clear();
+    }
+    else if (player_.zapper_left == 1)
+    {
+        auto remove_at = [this](int i)
+        { std::swap(ennemi_list_[i], ennemi_list_.back());
+            ennemi_list_.pop_back(); };
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distrib(1, ennemi_list_.size());
+        auto rndm_ennemi = distrib(gen);
+        remove_at(rndm_ennemi);
+    }
+    else
+        std::cout << "no more zappers left for this level" << std::endl;
 }
 
 //--------------------------------- IO -----------------------------------------

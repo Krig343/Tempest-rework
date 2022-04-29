@@ -9,7 +9,7 @@ class Player : public Character
 {
 public:
     int lives_;                         // Player's lives number
-    bool used_zapper_;                  // True if player used his zapper
+    int zapper_left;                    // Counts the number of zapper left
     std::array<Uint8, 4> zapper_color_; // Container <r,g,b,a>
 
 public:
@@ -17,14 +17,12 @@ public:
     Player(const bool &shooting,
            const float &pos,
            const int &lane,
-           const int &life,
-           const bool &zapper);
+           const int &life);
 
     // Player controls
-    inline void loseLife() { --lives_; };                // Decrease lives_
-    inline void addLife() { ++lives_; };                 // Increase lives_ (don't know when yet)
-    inline void useZapper() { used_zapper_ = true; };    // Sets used_zapper_ to true
-    inline void regenZapper() { used_zapper_ = false; }; // Sets used_zapper_ to false
+    inline void loseLife() { --lives_; };           // Decrease lives_
+    inline void addLife() { ++lives_; };            // Increase lives_ (don't know when yet)
+    inline void regenZapper() { zapper_left = 2; }; // Sets used_zapper_ to false
 
     // Draw
     virtual void initModelPolygon() override;

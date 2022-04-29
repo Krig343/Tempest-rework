@@ -5,7 +5,7 @@
 ElectricWell::ElectricWell(const int &level, const std::string &shape) : level_{level},
                                                                          shape_{shape}
 {
-    initLevelPolygons(level);
+    initLevelPolygons(shape);
     initLevelLanes();
 }
 
@@ -26,9 +26,38 @@ void ElectricWell::initLevelLanes()
     }
 }
 
-void ElectricWell::initLevelPolygons(int level)
+const int ElectricWell::resolve(std::string shape)
 {
-    switch (level)
+    static const std::map<std::string, int> typeStrings{
+        {"Circle", 1},
+        {"Square", 2},
+        {"Plus", 3},
+        {"Binoculars", 4},
+        {"Cross", 5},
+        {"Triangle", 6},
+        {"X", 7},
+        {"V", 8},
+        {"Staires", 9},
+        {"U", 10},
+        {"Flat", 11},
+        {"Heart", 12},
+        {"Star", 13},
+        {"W", 14},
+        {"Bird", 15},
+        {"Infinite", 16}};
+
+    auto itr = typeStrings.find(shape);
+    if (itr != typeStrings.end())
+    {
+        return itr->second;
+    }
+    std::cout << "La forme " << shape << " n'existe pas" << std::endl;
+    exit(EXIT_FAILURE);
+}
+
+void ElectricWell::initLevelPolygons(std::string shape)
+{
+    switch (resolve(shape))
     {
     case 1:
         is_cyclic_ = true;

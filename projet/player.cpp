@@ -5,13 +5,12 @@
 Player::Player(const bool &shooting,
                const float &pos,
                const int &lane,
-               const int &life,
-               const bool &zapper) : Character::Character(shooting,
-                                                          pos,
-                                                          lane),
-                                     lives_{life},
-                                     used_zapper_{zapper}
+               const int &life) : Character::Character(shooting,
+                                                       pos,
+                                                       lane),
+                                  lives_{life}
 {
+    zapper_left = 2;
     initModelPolygon();
 }
 
