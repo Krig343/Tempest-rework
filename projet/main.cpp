@@ -93,7 +93,12 @@ int main(int argc, char **argv)
 
         // Game loop
         g.update();
+        quit = g.endGame();
+
+        std::cout << g.score_ << g.player_.lives_ << std::endl;
     }
+
+    std::cout << "Final score : " << g.score_ << std::endl;
 
     SDL_Quit();
     return 0;

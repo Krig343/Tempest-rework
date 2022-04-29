@@ -24,6 +24,8 @@ target_sources(${PROJECT_NAME}
                missile.cpp
                flipper.h
                flipper.cpp
+               tanker.h
+               tanker.cpp
                main.cpp)
 
 target_include_directories(${PROJECT_NAME}

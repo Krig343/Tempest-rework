@@ -6,6 +6,7 @@
 #include "electricwell.h" // class electricwell
 #include "missile.h"      // class missile
 #include "flipper.h"
+#include "tanker.h"
 #include <algorithm>      // method find
 #include <map>            // map container
 #include <random>         // random toolbox
@@ -32,7 +33,8 @@ private:
 
 public:
     Player player_;                                     // The player's blaster
-    std::vector<Flipper> flipper_list_;                 // Current scene ennemies list
+    std::vector<Flipper> flipper_list_;                 // Current scene flippers list
+    std::vector<Tanker> tanker_list_;                 // Current scene tankers list
     std::vector<Missile> ennemy_missile_list_;          // All the missiles launched by the ennemies
     std::vector<Missile> player_missile_list_;          // All the missiles launched by the player
     //std::vector<Spike> spike_list_;                   // The list of all the printed spikes

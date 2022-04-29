@@ -18,7 +18,7 @@ void Missile::move()
 
     // Dead when crossing the horizon
     if(position_ > 1.0)
-        dead_ = true;
+        kill();
 }
 
 //--------------------------------- IO -----------------------------------------
