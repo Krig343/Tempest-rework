@@ -93,7 +93,7 @@ void Game::spawnEnnemies()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(1, 16);
+    std::uniform_int_distribution<> distrib(0, 15);
     auto rndm_lane = distrib(gen);
     if (time_ % (200 - level_) == 0)
         flipper_list_.push_back(Flipper(1.0, rndm_lane));
@@ -546,7 +546,7 @@ void Game::printScore(SDL_Renderer *renderer)
     int w, h;
     std::vector<int> letters = decomposeNumbers(score_, false);
     SDL_GetRendererOutputSize(renderer, &w, &h);
-    printMessage(letters, renderer, (2 * w) / 5, 80);
+    printMessage(letters, renderer, (2 * w) / 6, 80);
 }
 
 /* Prints continiously the level on top left of the screen
@@ -564,8 +564,9 @@ void Game::printLifes(SDL_Renderer *renderer)
     int w, h;
     std::vector<int> letters = {44, 73, 70, 69, 83, 0, 26};
     SDL_GetRendererOutputSize(renderer, &w, &h);
-    printMessage(letters, renderer, (8 * w) / 15, 80);
+    printMessage(letters, renderer, (7 * w) / 15, 80);
     std::vector<int> numbers = decomposeNumbers(player_.lives_, true);
+    printMessage(numbers, renderer, (9 * w) / 15, 80);
 }
 
 /* Erases the screen and prints "game over", the score and the level in the
@@ -791,7 +792,7 @@ void Game::draw(SDL_Renderer *renderer)
 
     // Print informations
     printLevel(renderer);
-    // printLifes(renderer);
+    printLifes(renderer);
     printScore(renderer);
 
     // Draw electric well
