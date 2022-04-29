@@ -22,7 +22,7 @@ Game::Game() : player_{Player{false, 0.0, 0, 5}},
  */
 bool Game::endGame(SDL_Renderer *renderer)
 {
-    if (player_.lives_ == 0 || (level_ == 99) && (flipper_list_.size() + tanker_list_.size() == 0))
+    if (player_.lives_ == 0 || (level_ == 6) && (flipper_list_.size() + tanker_list_.size() == 0))
     {
         printEndScreen(renderer);
         return true;
@@ -554,9 +554,18 @@ void Game::printScore(SDL_Renderer *renderer)
 void Game::printLevel(SDL_Renderer *renderer)
 {
     int w, h;
-    std::vector<int> letters = decomposeNumbers(level_, true);
+    std::vector<int> numbers = decomposeNumbers(level_, true);
     SDL_GetRendererOutputSize(renderer, &w, &h);
-    printMessage(letters, renderer, (2 * w) / 3, 80);
+    printMessage(numbers, renderer, (2 * w) / 3, 80);
+}
+
+void Game::printLifes(SDL_Renderer *renderer)
+{
+    int w, h;
+    std::vector<int> letters = {44, 73, 70, 69, 83, 0, 26};
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    printMessage(letters, renderer, (8 * w) / 15, 80);
+    std::vector<int> numbers = decomposeNumbers(player_.lives_, true);
 }
 
 /* Erases the screen and prints "game over", the score and the level in the
@@ -776,8 +785,14 @@ void Game::draw(SDL_Renderer *renderer)
     // If level is changing
     if ((isMorphing_) && (morphingStep_ > 0))
     {
+        printAvoidSpikes(renderer);
         morphLevel();
     }
+
+    // Print informations
+    printLevel(renderer);
+    // printLifes(renderer);
+    printScore(renderer);
 
     // Draw electric well
     electric_well_.draw(renderer);

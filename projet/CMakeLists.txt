@@ -31,6 +31,8 @@ target_sources(${PROJECT_NAME}
                tanker.h
                tanker.cpp
                text.h
+               flipper.h
+               flipper.cpp
                main.cpp)
 
 target_include_directories(${PROJECT_NAME}

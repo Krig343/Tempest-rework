@@ -87,6 +87,10 @@ int main(int argc, char **argv)
                 if (event.key.keysym.sym == SDLK_SPACE)
                     g.addPlayerMissile(g.player_.lane_);
 
+                // z to super zapper
+                if (event.key.keysym.sym == SDLK_z)
+                    g.useZapper();
+
                 break;
             }
         }

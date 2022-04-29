@@ -76,6 +76,7 @@ public:
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen
     void printScore(SDL_Renderer *renderer);       // Prints the current score
     void printLevel(SDL_Renderer *renderer);       // Prints the current level
+    void printLifes(SDL_Renderer *renderer);       // Prints the current life number
     void printEndScreen(SDL_Renderer *renderer);   // Prints the end screen
 
     // Draw
