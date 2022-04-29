@@ -2,11 +2,5 @@
 
 1) Il faut ajouter la lib SDL au même niveau que projet/ et le CMakeList.
 2) Il faut créer un dossier build au même niveau que projet/ et le CMakeList
-
-# Ajouts pour le projet
-
-* Une classe mechanics pour gérer les évènements concernants plusieurs classes.
-* Une classe spike qui est la trace laissée par les spikers.
-* Un maximum de huit missiles peuvent avoir été tirés. Après il faudra attendre qu'ils se soient crashés pour tirer à nouveau.
-* Il faut également trouver un moyen de déterminer des paliers de profondeur pour les spikes et le nombre de points données par un fuseball (changer le système de position).
-* Revérifier les que attributs et méthodes aient bien le statut le plus adéquat (public, private et protected).
+3) Le dossier de la SDL ne contient plus le je de test des vecteurs dans nos dépôts locaux
+4) La version la plus aboutie du projet se trouve sur la branche vlv_copy. C'est elle qui fera fois pour l'évaluation
