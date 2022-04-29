@@ -12,7 +12,7 @@ public:
 
 public:
     // Constructors
-    Spike(const int &pos);
+    Spike(const std::string &type, const float &pos);
 
     // IO
     void draw(SDL_Renderer *renderer);
@@ -24,7 +24,7 @@ private:
             lhs.position_ == rhs.position_)
             return true;
         return false;
-    };
+    }
 };
 
 #endif // SPIKE_H

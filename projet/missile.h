@@ -11,6 +11,7 @@ class Missile
 public:
     int lane_;
     float position_;
+    bool dead_;
 
 protected:
     std::vector<SDL_Point> model_polygon_;
@@ -22,6 +23,7 @@ public:
 
     // Missile controls
     void move();
+    inline void kill() { dead_ = true; };
 
     // IO
     void initModelPolygon();

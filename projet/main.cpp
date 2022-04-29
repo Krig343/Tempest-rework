@@ -77,11 +77,11 @@ int main(int argc, char **argv)
 
                 // Left or q to move clockwise
                 if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                    g.movePlayer(1);
+                    g.player_.move(1, g.electric_well_.is_cyclic_, g.electric_well_.polygon_size_);
 
                 // Right or d to move anti-clockwise
                 if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                    g.movePlayer(-1);
+                    g.player_.move(-1, g.electric_well_.is_cyclic_, g.electric_well_.polygon_size_);
 
                 // Space to fire
                 if (event.key.keysym.sym == SDLK_SPACE)
@@ -93,6 +93,7 @@ int main(int argc, char **argv)
 
         // Game loop
         g.update();
+        quit = g.endGame(renderer);
     }
     quit = false;
     while (!quit)
@@ -111,6 +112,8 @@ int main(int argc, char **argv)
             }
         }
     }
+
+    std::cout << "Final score : " << g.score_ << std::endl;
 
     SDL_Quit();
     return 0;

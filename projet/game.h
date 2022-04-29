@@ -1,15 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "enemy.h"        // class enemy
 #include "player.h"       // class player
+#include "character.h"    // class caracter
 #include "electricwell.h" // class electricwell
 #include "missile.h"      // class missile
-#include "spike.h"        // class spike
+#include "flipper.h"      // class flipper
+#include "tanker.h"       // class tanker
 #include <algorithm>      // method find
 #include <map>            // map container
 #include <random>         // random toolbox
-#include "text.h"         // simplex list for text draw
+#include <memory>
+#include "text.h" // simplex list for text draw
 
 using namespace Text;
 
@@ -23,24 +25,24 @@ class Game
 private:
     enum enm_types_
     {
-        Flipper,
-        Tanker_flipper,
-        Tanker_fuseball,
-        Tanker_pulsar,
-        Spiker,
-        Fuseball,
-        Pulsar
-    }; // All the enemy types
+        Flipper_t,
+        Tanker_t,
+        Spiker_t,
+        Fuseball_t,
+        Pulsar_t
+    }; // All the ennemi types
 
 public:
-    Player player_;                            // The player's blaster
-    std::vector<Enemy> ennemi_list_;           // Current scene ennemies list
-    std::vector<Missile> ennemi_missile_list_; // All the missiles launched by the ennemies
+    Player player_;                     // The player's blaster
+    std::vector<Flipper> flipper_list_; // Current scene flippers list
+    std::vector<Tanker> tanker_list_;   // Current scene tankers list
+    // std::vector<Missile> ennemy_missile_list_; // All the missiles launched by the ennemies
     std::vector<Missile> player_missile_list_; // All the missiles launched by the player
-    std::vector<Spike> spike_list_;            // The list of all the printed spikes
-    ElectricWell electric_well_;               // Current electric well
-    int level_;                                // Current level
-    int score_;                                // Current score
+    // std::vector<Spike> spike_list_;                   // The list of all the printed spikes
+    ElectricWell electric_well_; // Current electric well
+    int level_;                  // Current level
+    int score_;                  // Current score
+    unsigned long time_;         // Game "time"
 
 public:
     // Constructors
@@ -48,23 +50,21 @@ public:
 
     // Game controls
     bool endGame(SDL_Renderer *renderer); // Stops the game and goes to the end screen
-    inline void addCharacter(Enemy &car)
-    {
-        ennemi_list_.push_back(car);
-    }; // Adds car to the character_list_
-    template <class T>
-    void removeObject(const T &rem_obj); // Removes rem_obj from the correct list
+    // template <class T>
+    // void removeObject(const T &rem_obj); // Removes rem_obj from the correct list
     template <class T>
     void levelUp();                         // Increases level_ and changes the EW color and shape
     void addScore(const std::string &type); // Adds to the score the car.type corresponding value
-    void collisionTest();                   // Tests if there is a collision
-    void update();                          // Update game state
-    void movePlayer(int movement);          // Change the lane of the player
-    inline void addPlayerMissile(int lane)
-    {
-        player_missile_list_.push_back(Missile(lane, 0.0));
-    };                // Spawn a player missile
-    void useZapper(); // Sets used_zapper_ to true
+    // void collisionTest();                   // Tests if there is a collision
+    void update();                       // Update game state
+    void movePlayer(int movement);       // Change the lane of the player
+    void useZapper();                    // Sets used_zapper_ to true
+    void addPlayerMissile(int lane);     // Spawn a player missile
+    void spawnEnnemies();                // Spawn all relevant ennemies according to time_
+    bool collisionTest(const int &lane1, // Tests if there is a collision
+                       const int &lane2,
+                       const float &pos1,
+                       const float &pos2);
 
     // IO
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen

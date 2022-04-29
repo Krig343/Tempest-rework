@@ -26,11 +26,12 @@ protected:
 public:
     // Constructors
     Character(const bool &shooting, const float &pos, const int &lane);
-    Character(Character &c);
 
     // Character controls
-    void shoot(SDL_Renderer *renderer); // Sets is_shooting_ at true
-    void move(const int &lane);         // Changes lane
+    void shoot(SDL_Renderer *renderer);                                  // Sets isShooting_ at true
+    virtual void move(int movement, bool isCyclic, int polygonSize) = 0; // Changes lane
+
+    // Draw
     void draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position);
 
 protected:

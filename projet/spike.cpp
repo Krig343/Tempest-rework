@@ -2,14 +2,12 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Spike::Spike(const int &pos) : position_{pos},
-                               type_{"spiker"}
+Spike::Spike(const std::string &type, const float &pos) : type_{type},
+                                                          position_{pos}
 {
 }
 
 //--------------------------------- IO -----------------------------------------
-
 void Spike::draw(SDL_Renderer *renderer)
 {
-    // TODO
 }

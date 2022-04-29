@@ -2,20 +2,11 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Spiker::Spiker(const bool &shooting,
-               const int &pos,
-               const int &lane,
-               const std::string &tpe) : Enemy::Enemy(shooting,
-                                                      pos,
-                                                      lane,
-                                                      "spiker")
+Spiker::Spiker(const int &pos, const int &lane) : Character::Character(false, pos, lane)
 {
 }
 
-Spiker::Spiker(Spiker &spik) : Spiker::Spiker(spik.is_shooting_,
-                                              spik.position_,
-                                              spik.lane_,
-                                              spik.type_)
+void Spiker::initModelPolygon()
 {
 }
 

@@ -5,8 +5,10 @@
 Game::Game() : player_{Player{false, 0.0, 0, 5}},
                electric_well_{ElectricWell{1, "Circle"}}
 {
+    // Game attributes
     score_ = 0;
     level_ = 1;
+    time_ = 0;
 }
 
 //---------------------------- Game controls -----------------------------------
@@ -18,7 +20,7 @@ Game::Game() : player_{Player{false, 0.0, 0, 5}},
  */
 bool Game::endGame(SDL_Renderer *renderer)
 {
-    if (player_.lives_ == 0 || (level_ == 99 && ennemi_list_.size() == 0))
+    if (player_.lives_ == 0 || (level_ == 99) && (flipper_list_.size() + tanker_list_.size() == 0))
     {
         printEndScreen(renderer);
         return true;
@@ -26,85 +28,76 @@ bool Game::endGame(SDL_Renderer *renderer)
     return false;
 }
 
-// ADD DESCRIPTION
-void Game::movePlayer(int movement)
+// /* This function searches for the object rem_obj in the correct list and removes
+//  * it when found and stops with an error message if not
+//  */
+// template <class T>
+// void Game::removeObject(const T &rem_obj)
+// {
+//     // Remove a flipper
+//     if constexpr (std::is_same_v<T, Flipper>)
+//     {
+//         auto flp_index = std::find(flipper_list_.begin(), flipper_list_.end(), rem_obj);
+//         if (flp_index == flipper_list_.end())
+//         {
+//             std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
+//             exit(EXIT_FAILURE);
+//         }
+//         else
+//             flipper_list_.erase(flp_index);
+//     }
+
+//     // Remove a tanker
+//     else if constexpr (std::is_same_v<T, Tanker>)
+//     {
+//         auto tkr_index = std::find(tanker_list_.begin(), tanker_list_.end(), rem_obj);
+//         if (tkr_index == tanker_list_.end())
+//         {
+//             std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
+//             exit(EXIT_FAILURE);
+//         }
+//         else
+//             tanker_list_.erase(tkr_index);
+//     }
+
+//     // Remove a missile
+//     else if constexpr (std::is_same_v<T, Missile>)
+//     {
+//         auto msl_index = std::find(player_missile_list_.begin(), player_missile_list_.end(), rem_obj);
+//         if (msl_index == player_missile_list_.end())
+//         {
+//             msl_index = std::find(ennemi_missile_list_.begin(), ennemi_missile_list_.end(), rem_obj);
+//             if (msl_index == ennemi_missile_list_.end())
+//             {
+//                 std::cout << "Le missile n'est dans aucune liste" << std::endl;
+//                 exit(EXIT_FAILURE);
+//             }
+//             else
+//                 ennemi_missile_list_.erase(msl_index);
+//         }
+//         else
+//             player_missile_list_.erase(msl_index);
+//     }
+// }
+
+void Game::addPlayerMissile(int lane)
 {
-    int newLane = player_.lane_ + movement;
-
-    // To avoid % of negative integers
-    if ((electric_well_.is_cyclic_) && (newLane < 0))
-    {
-        player_.move(electric_well_.polygon_size_ - 1);
-        return;
-    }
-
-    if (electric_well_.is_cyclic_)
-    {
-        player_.move(newLane % electric_well_.polygon_size_);
-    }
-    else
-    {
-        if (movement < 0)
-        {
-            player_.move(std::max(0, newLane));
-        }
-        else
-        {
-            player_.move(std::min(newLane, electric_well_.polygon_size_ - 2));
-        }
-    }
+    // Maximum of 15 missiles at all time
+    if (player_missile_list_.size() < 15)
+        player_missile_list_.push_back(Missile(lane, 0.0));
 }
 
-/* This function searches for the object rem_obj in the correct list and removes
- * it when found and stops with an error message if not
- */
-template <class T>
-void Game::removeObject(const T &rem_obj)
+void Game::spawnEnnemies()
 {
-    // Remove an enemy
-    if constexpr (std::is_same_v<T, Enemy>)
-    {
-        auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), rem_obj);
-        if (car_index == ennemi_list_.end())
-        {
-            std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        else
-            ennemi_list_.erase(car_index);
-    }
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(1, 16);
+    auto rndm_lane = distrib(gen);
+    if (time_ % 250 == 0)
+        flipper_list_.push_back(Flipper{1.0, rndm_lane});
 
-    // Remove a spike
-    else if constexpr (std::is_same_v<T, Spike>)
-    {
-        auto spk_index = std::find(spike_list_.begin(), spike_list_.end(), rem_obj);
-        if (spk_index == spike_list_.end())
-        {
-            std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        else
-            spike_list_.erase(spk_index);
-    }
-
-    // Remove a missile
-    else if constexpr (std::is_same_v<T, Missile>)
-    {
-        auto msl_index = std::find(player_missile_list_.begin(), player_missile_list_.end(), rem_obj);
-        if (msl_index == player_missile_list_.end())
-        {
-            msl_index = std::find(ennemi_missile_list_.begin(), ennemi_missile_list_.end(), rem_obj);
-            if (msl_index == ennemi_missile_list_.end())
-            {
-                std::cout << "Le missile n'est dans aucune liste" << std::endl;
-                exit(EXIT_FAILURE);
-            }
-            else
-                ennemi_missile_list_.erase(msl_index);
-        }
-        else
-            player_missile_list_.erase(msl_index);
-    }
+    if (time_ % 500 == 0)
+        tanker_list_.push_back(Tanker{1.0, rndm_lane});
 }
 
 /* This function returns the enemy type from the enm_types_ enum corresponding
@@ -113,13 +106,11 @@ void Game::removeObject(const T &rem_obj)
 Game::enm_types_ Game::resolve(std::string type)
 {
     static const std::map<std::string, enm_types_> typeStrings{
-        {"Flipper", Flipper},
-        {"Tanker_flipper", Tanker_flipper},
-        {"Tanker_fuseball", Tanker_fuseball},
-        {"Tanker_pulsar", Tanker_pulsar},
-        {"Spiker", Spiker},
-        {"Fuseball", Fuseball},
-        {"Pulsar", Pulsar}};
+        {"Flipper", Flipper_t},
+        {"Tanker", Tanker_t},
+        {"Spiker", Spiker_t},
+        {"Fuseball", Fuseball_t},
+        {"Pulsar", Pulsar_t}};
 
     auto itr = typeStrings.find(type);
     if (itr != typeStrings.end())
@@ -130,13 +121,16 @@ Game::enm_types_ Game::resolve(std::string type)
     exit(EXIT_FAILURE);
 }
 
-/* This function adds one to the current level and modifies the shape and the color
+/* This function adds one to the current level and
+            // Points for each dead flipper
+            score_ += 100; modifies the shape and the color
  * of the electricwell, as well as the color of the ennemies and the player
  */
 template <class T>
 void Game::levelUp()
 {
     ++level_;
+    player_.regenZapper();
 
     if (level_ < 97)
     {
@@ -251,37 +245,12 @@ void Game::levelUp()
         }
     }
 
-    std::array<Uint8, 4> color_flipper;
-    std::array<Uint8, 4> color_tanker;
-    std::array<Uint8, 4> color_spiker;
-    std::array<Uint8, 4> color_pulsar;
+    std::array<Uint8, 4> color;
 
     // Ce serait cool de pouvoir la templater pour faire passer les spikes et les ennemies
-    auto changeColor = [this, &color_flipper, &color_tanker, &color_spiker, &color_pulsar](T &enm)
+    auto changeColor = [this, &color](T &list_elem)
     {
-        switch (resolve(enm.type_))
-        {
-        case Game::Flipper:
-            enm.model_color_ = {color_flipper};
-            break;
-        case Game::Tanker_flipper:
-            enm.model_color_ = {color_tanker};
-            break;
-        case Game::Tanker_fuseball:
-            enm.model_color_ = {color_tanker};
-            break;
-        case Game::Tanker_pulsar:
-            enm.model_color_ = {color_tanker};
-            break;
-        case Game::Spiker:
-            enm.model_color_ = {color_spiker};
-            break;
-        case Game::Pulsar:
-            enm.model_color_ = {color_pulsar};
-            break;
-        default:
-            break;
-        }
+        list_elem.model_color_ = {color};
     };
 
     switch (level_) // Change the color for the next set of levels
@@ -290,55 +259,45 @@ void Game::levelUp()
         electric_well_.color_ = {255, 0, 0, 255};
         player_.model_color_ = {0, 255, 0, 255};
         player_.zapper_color_ = {0, 255, 255, 255};
-        color_flipper = {138, 43, 226, 255};
-        color_tanker = {0, 0, 255, 255};
-        color_spiker = {0, 255, 255, 255};
-        color_pulsar = {255, 255, 0, 255};
-        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
-        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
+        color = {138, 43, 226, 255};
+        std::for_each(flipper_list_.begin(), flipper_list_.end(), changeColor);
+        color = {0, 0, 255, 255};
+        std::for_each(tanker_list_.begin(), tanker_list_.end(), changeColor);
         break;
     case 33:
         electric_well_.color_ = {255, 255, 0, 255};
         player_.model_color_ = {0, 0, 255, 255};
         player_.zapper_color_ = {0, 0, 255, 255};
-        color_flipper = {0, 255, 0, 255};
-        color_tanker = {0, 255, 255, 255};
-        color_spiker = {255, 0, 0, 255};
-        color_pulsar = {0, 0, 255, 255};
-        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
-        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
+        color = {0, 255, 0, 255};
+        std::for_each(flipper_list_.begin(), flipper_list_.end(), changeColor);
+        color = {0, 255, 255, 255};
+        std::for_each(tanker_list_.begin(), tanker_list_.end(), changeColor);
         break;
     case 49:
         electric_well_.color_ = {0, 255, 255, 255};
         player_.zapper_color_ = {255, 0, 0, 255};
-        color_flipper = {0, 255, 0, 255};
-        color_tanker = {138, 43, 226, 255};
-        color_spiker = {255, 0, 0, 255};
-        color_pulsar = {255, 255, 0, 255};
-        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
-        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
+        color = {0, 255, 0, 255};
+        std::for_each(flipper_list_.begin(), flipper_list_.end(), changeColor);
+        color = {138, 43, 226, 255};
+        std::for_each(tanker_list_.begin(), tanker_list_.end(), changeColor);
         break;
     case 65:
         electric_well_.color_ = {0, 0, 0, 255};
         player_.model_color_ = {255, 255, 0, 255};
         player_.zapper_color_ = {255, 255, 255, 255};
-        color_flipper = {255, 0, 0, 255};
-        color_tanker = {138, 43, 226, 255};
-        color_spiker = {0, 255, 0, 255};
-        color_pulsar = {0, 255, 255, 255};
-        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
-        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
+        color = {255, 0, 0, 255};
+        std::for_each(flipper_list_.begin(), flipper_list_.end(), changeColor);
+        color = {138, 43, 226, 255};
+        std::for_each(tanker_list_.begin(), tanker_list_.end(), changeColor);
         break;
     case 81:
         electric_well_.color_ = {0, 255, 0, 255};
         player_.model_color_ = {255, 0, 0, 255};
         player_.zapper_color_ = {138, 43, 226, 255};
-        color_flipper = {225, 225, 0, 255};
-        color_tanker = {138, 43, 226, 255};
-        color_spiker = {0, 0, 255, 255};
-        color_pulsar = {255, 255, 0, 255};
-        std::for_each(ennemi_list_.begin(), ennemi_list_.end(), changeColor);
-        std::for_each(spike_list_.begin(), spike_list_.end(), changeColor);
+        color = {225, 225, 0, 255};
+        std::for_each(flipper_list_.begin(), flipper_list_.end(), changeColor);
+        color = {138, 43, 226, 255};
+        std::for_each(tanker_list_.begin(), tanker_list_.end(), changeColor);
         break;
     }
 }
@@ -350,99 +309,118 @@ void Game::addScore(const std::string &type)
 {
     switch (resolve(type))
     {
-    case Game::Flipper:
+    case Game::Flipper_t:
         score_ += 150;
         break;
-    case Game::Tanker_flipper:
+    case Game::Tanker_t:
         score_ += 100;
         break;
-    case Game::Tanker_fuseball:
-        score_ += 100;
-        break;
-    case Game::Tanker_pulsar:
-        score_ += 100;
-        break;
-    case Game::Spiker:
+    case Game::Spiker_t:
         score_ += 50;
         break;
-    case Game::Fuseball: // Add 500 and 750
+    case Game::Fuseball_t: // Add 500 and 750
         score_ += 250;
         break;
-    case Game::Pulsar:
+    case Game::Pulsar_t:
         score_ += 200;
         break;
     }
 }
 
-/* Tests the collision between objects. The collision test depends on the number
- * test_nb.
- * - 1 : collision test between an enemy and the player
- * - 2 : collision between an enemy and a missile
- * - 3 : collision between the player and a missile
- * - 4 : collision between the player and a Spike (maybe it will be an enemy)
- */
-void Game::collisionTest()
-{
-    // Collision between player and ennemies
-    for (auto e : ennemi_list_)
-        if (player_.position_ == e.position_)
-        {
-            player_.loseLife();
-            removeObject(e);
-        }
+// /* Tests the collision between objects. The collision test depends on the number
+//  * test_nb.
+//  * - 1 : collision test between an enemy and the player
+//  * - 2 : collision between an enemy and a missile
+//  * - 3 : collision between the player and a missile
+//  * - 4 : collision between the player and a Spike (maybe it will be an enemy)
+//  */
+// void Game::collisionTest()
+// {
+//     // Collision between player and ennemies
+//     for (auto e : ennemi_list_)
+//         if (player_.position_ == e.position_)
+//         {
+//             player_.loseLife();
+//             removeObject(e);
+//         }
 
-    // Collision between player's missiles and ennemies
-    for (auto m : player_missile_list_)
-        for (auto e : ennemi_list_)
-            if (m.position_ == e.position_)
-            {
-                removeObject(e);
-                removeObject(m);
-            }
+//     // Collision between player's missiles and ennemies
+//     for (auto m : player_missile_list_)
+//         for (auto e : ennemi_list_)
+//             if (m.position_ == e.position_)
+//             {
+//                 removeObject(e);
+//                 removeObject(m);
+//             }
 
-    // Collision between player and ennemie's missiles
-    for (auto m : ennemi_missile_list_)
-        if (player_.position_ == m.position_)
-        {
-            removeObject(m);
-            player_.loseLife();
-        }
+//     // Collision between player and ennemie's missiles
+//     for (auto m : ennemi_missile_list_)
+//         if (player_.position_ == m.position_)
+//         {
+//             removeObject(m);
+//             player_.loseLife();
+//         }
 
-    // Collision between player and spike
-    for (auto s : spike_list_)
-        if (player_.position_ == s.position_)
-            player_.loseLife();
+//     // Collision between player and spike
+//     for (auto s : spike_list_)
+//         if (player_.position_ == s.position_)
+//             player_.loseLife();
 
-    // Collision between player's missile and spike
-    for (auto m : player_missile_list_)
-        for (auto s : spike_list_)
-            if (m.position_ == s.position_)
-            {
-                removeObject(m);
-                removeObject(s);
-            }
-}
+//     // Collision between player's missile and spike
+//     for (auto m : player_missile_list_)
+//         for (auto s : spike_list_)
+//             if (m.position_ == s.position_)
+//             {
+//                 removeObject(m);
+//                 removeObject(s);
+//             }
+// }
 
 void Game::useZapper()
 {
     if (player_.zapper_left == 2)
     {
         --player_.zapper_left;
-        ennemi_list_.clear();
+        flipper_list_.clear();
+        tanker_list_.clear();
     }
     else if (player_.zapper_left == 1)
     {
-        auto remove_at = [this](int i)
-        { std::swap(ennemi_list_[i], ennemi_list_.back());
-            ennemi_list_.pop_back(); };
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(1, ennemi_list_.size());
-        auto rndm_ennemi = distrib(gen);
-        remove_at(rndm_ennemi);
+        std::uniform_int_distribution<> distrib(1, 2);
+        auto rndm_enmi = distrib(gen);
+        if (rndm_enmi == 1)
+        {
+            auto remove_at_flipper = [this](int i)
+            {
+                std::swap(flipper_list_[i], flipper_list_.back());
+                flipper_list_.pop_back();
+            };
+            std::uniform_int_distribution<> distrib1(1, flipper_list_.size());
+            auto rndm_flipper = distrib1(gen);
+            remove_at_flipper(rndm_flipper);
+        }
+        else if (rndm_enmi == 2)
+        {
+            auto remove_at_tanker = [this](int i)
+            {
+                std::swap(tanker_list_[i], tanker_list_.back());
+                tanker_list_.pop_back();
+            };
+            std::uniform_int_distribution<> distrib2(1, tanker_list_.size());
+            auto rndm_tanker = distrib2(gen);
+            remove_at_tanker(rndm_tanker);
+        }
     }
     else
         std::cout << "no more zappers left for this level" << std::endl;
+}
+
+/* Tests the collision between objects. */
+bool Game::collisionTest(const int &lane1, const int &lane2, const float &pos1, const float &pos2)
+{
+    return (lane1 == lane2) && (pos1 * pos1 > pos2 * pos2 - 0.025) && (pos1 * pos1 < pos2 * pos2 + 0.025);
 }
 
 //--------------------------------- IO -----------------------------------------
@@ -606,23 +584,108 @@ void Game::printEndScreen(SDL_Renderer *renderer)
 void Game::update()
 {
     // Update ennemy positions
+    for (auto &f : flipper_list_)
+        f.move(1, electric_well_.is_cyclic_, electric_well_.polygon_size_);
 
-    // Update missile positions
+    for (auto &t : tanker_list_)
+        t.move(1, electric_well_.is_cyclic_, electric_well_.polygon_size_);
+
+    // Update missile positions and check for collisions
     for (auto &m : player_missile_list_)
+    {
         m.move();
+
+        for (auto &f : flipper_list_)
+        {
+            if (collisionTest(f.lane_, m.lane_, f.position_, m.position_))
+            {
+                m.kill();
+                f.kill();
+                addScore("Flipper");
+            }
+        }
+
+        for (auto &t : tanker_list_)
+        {
+            if (collisionTest(t.lane_, m.lane_, t.position_, m.position_))
+            {
+                m.kill();
+                t.kill();
+                addScore("Tanker");
+            }
+        }
+    }
+
+    // Spawn new ennemies
+    spawnEnnemies();
 
     // Check for dead missiles
     std::vector<Missile> newMissiles;
 
     for (auto m : player_missile_list_)
     {
-        if (m.position_ < 1.05)
+        // Keep non dead missiles
+        if (!m.dead_)
             newMissiles.push_back(m);
     }
 
     player_missile_list_ = newMissiles;
 
-    // Check for collisons
+    // Check for dead flippers
+    std::vector<Flipper> newFlippers;
+
+    for (auto f : flipper_list_)
+    {
+        // Keep non dead flippers
+        if (!f.dead_)
+            newFlippers.push_back(f);
+    }
+
+    flipper_list_ = newFlippers;
+
+    // Check for dead tankers
+    std::vector<Tanker> newTankers;
+
+    for (auto t : tanker_list_)
+    {
+        // Keep non dead tankers
+        if (!t.dead_)
+        {
+            newTankers.push_back(t);
+        }
+        else
+        {
+            // Points for each dead flipper
+            score_ += 100;
+            // Spawn 2 flippers (for now)
+            flipper_list_.push_back(Flipper(t.position_, t.lane_));
+            flipper_list_.push_back(Flipper(t.position_, t.lane_ + 1));
+        }
+    }
+
+    tanker_list_ = newTankers;
+
+    // Check for collisions with player
+    for (auto &f : flipper_list_)
+    {
+        if (collisionTest(f.lane_, player_.lane_, f.position_, player_.position_))
+        {
+            player_.loseLife();
+            f.kill();
+        }
+    }
+
+    for (auto &t : tanker_list_)
+    {
+        if (collisionTest(t.lane_, player_.lane_, t.position_, player_.position_))
+        {
+            player_.loseLife();
+            t.kill();
+        }
+    }
+
+    // Update time
+    time_++;
 }
 
 void Game::draw(SDL_Renderer *renderer)
@@ -651,6 +714,21 @@ void Game::draw(SDL_Renderer *renderer)
     }
 
     // Draw ennemies
+    for (auto f : flipper_list_)
+    {
+        f.draw(renderer,
+               electric_well_.lanes_[f.lane_].getScale(f.position_ * f.position_),
+               electric_well_.lanes_[f.lane_].getAngle(),
+               electric_well_.lanes_[f.lane_].getPosition(f.position_ * f.position_));
+    }
+
+    for (auto t : tanker_list_)
+    {
+        t.draw(renderer,
+               electric_well_.lanes_[t.lane_].getScale(t.position_ * t.position_),
+               electric_well_.lanes_[t.lane_].getAngle(),
+               electric_well_.lanes_[t.lane_].getPosition(t.position_ * t.position_));
+    }
 
     // Draw spikes
 

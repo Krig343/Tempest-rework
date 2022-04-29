@@ -3,8 +3,6 @@
 
 #include "character.h" // class character
 
-/* The playable character. Son of the character class
- */
 class Player : public Character
 {
 public:
@@ -20,6 +18,7 @@ public:
            const int &life);
 
     // Player controls
+    virtual void move(int movement, bool isCyclic, int polygonSize) override;
     inline void loseLife() { --lives_; };           // Decrease lives_
     inline void addLife() { ++lives_; };            // Increase lives_ (don't know when yet)
     inline void regenZapper() { zapper_left = 2; }; // Sets used_zapper_ to false
