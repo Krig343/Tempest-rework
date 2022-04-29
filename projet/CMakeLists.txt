@@ -30,7 +30,7 @@ target_sources(${PROJECT_NAME}
                electricwell.cpp
                lane.h
                lane.cpp
-               text.hpp
+               text.h
                main.cpp)
 
 target_include_directories(${PROJECT_NAME}

@@ -9,7 +9,7 @@ class Spiker : public Ennemi
 {
 public:
     // Constructors
-    Spiker(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
+    Spiker(const bool &shooting, const int &pos, const int &lane, const std::string &tpe);
     Spiker(Spiker &spik);
 
     // Spiker controls

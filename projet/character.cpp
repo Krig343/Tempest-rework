@@ -3,19 +3,14 @@
 //----------------------------- Constructors -----------------------------------
 
 Character::Character(const bool &shooting,
-                     const int &pos,
-                     const int &lane,
-                     const std::array<Uint8, 4> &color) : is_shooting_{shooting},
-                                                          position_{pos},
-                                                          lane_number_{lane},
-                                                          color_{color}
+                     const float &pos,
+                     const int &lane) : is_shooting_{shooting},
+                                        position_{pos},
+                                        lane_{lane}
 {
 }
 
-Character::Character(Character &car) : Character::Character(car.is_shooting_,
-                                                                  car.position_,
-                                                                  car.lane_number_,
-                                                                  car.color_)
+Character::Character(Character &c) : Character::Character(c.is_shooting_, c.lane_, c.position_)
 {
 }
 
@@ -28,19 +23,37 @@ void Character::shoot(SDL_Renderer *renderer)
     is_shooting_ = false;
 }
 
-/* Needs redesign
- */
-void Character::move(const int &pos)
+void Character::move(const int &lane)
 {
-    if (pos < 0)
-        position_ -= 1 % 16;
-    else if (pos > 0)
-        position_ += 1 % 16;
+    lane_ = lane;
 }
 
-//--------------------------------- IO -----------------------------------------
-
-void Character::drawCaracter(SDL_Renderer *renderer)
+void Character::draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position)
 {
-    // TODO
+    std::vector<SDL_Point> scaledModel;
+    std::vector<SDL_Point> rotatedModel;
+    std::vector<SDL_Point> translatedModel;
+
+    // Scaling
+    for (auto p : model_polygon_)
+        scaledModel.push_back({p.x * scale / 10.0,
+                               p.y * scale / 10.0});
+
+    // Rotating
+    for (auto p : scaledModel)
+        rotatedModel.push_back({p.x * cos(angle) - p.y * sin(angle),
+                                p.x * sin(angle) + p.y * cos(angle)});
+
+    // Translating
+    for (auto p : rotatedModel)
+        translatedModel.push_back({p.x + position.x,
+                                   p.y + position.y});
+
+    SDL_SetRenderDrawColor(renderer,
+                           model_color_[0],
+                           model_color_[1],
+                           model_color_[2],
+                           model_color_[3]);
+
+    SDL_RenderDrawLines(renderer, &translatedModel[0], translatedModel.size());
 }

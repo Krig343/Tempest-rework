@@ -10,11 +10,11 @@ void prepareFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &fl
     SDL_SetWindowFullscreen(window, flag);
 }
 
-void applyFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &width, const int &height, const int &w, const int &h, ElectricWell &ew)
+void applyFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &width, const int &height, const int &w, const int &h, Game game)
 {
     SDL_Rect rect{(w - width) / 2, (h - height) / 2, width, height};
     SDL_RenderSetViewport(renderer, &rect);
-    ew.draw(renderer);
+    game.draw(renderer);
     SDL_RenderPresent(renderer);
 }
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        std::cerr << "Pb init SDL" << std::endl;
+        std::cerr << "SDL initialization failed" << std::endl;
         return 0;
     }
 
@@ -33,19 +33,16 @@ int main(int argc, char **argv)
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     assert(renderer != NULL);
 
-    // Init game components
-
-    std::array<Uint8, 4> color{255, 0, 0, 255};
-    ElectricWell ew{color, "circle"};
-    ew.createCircle();
-
     bool quit = false;
+
+    Game g{};
+
     while (!quit)
     {
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+        g.draw(renderer);
 
         SDL_Event event;
+
         while (!quit && SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -54,32 +51,48 @@ int main(int argc, char **argv)
                 quit = true;
                 break;
             case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_ESCAPE) // Press "escape" to quit
+                // Escape to quit
+                if (event.key.keysym.sym == SDLK_ESCAPE)
                     quit = true;
-                if (event.key.keysym.sym == SDLK_f) // Press "f" to toggle fullscreen
+
+                // f to toggle fullscreen
+                if (event.key.keysym.sym == SDLK_f)
                 {
                     if (!fullscreen)
                     {
                         prepareFullscreen(window, renderer, SDL_WINDOW_FULLSCREEN);
                         int w, h;
                         SDL_GetWindowSize(window, &w, &h);
-                        applyFullscreen(window, renderer, width, height, w, h, ew);
+                        applyFullscreen(window, renderer, width, height, w, h, g);
                         fullscreen = true;
                     }
                     else
                     {
                         prepareFullscreen(window, renderer, 0);
                         SDL_SetWindowSize(window, width, height);
-                        applyFullscreen(window, renderer, width, height, width, height, ew);
+                        applyFullscreen(window, renderer, width, height, width, height, g);
                         fullscreen = false;
                     }
                 }
+
+                // Left or q to move clockwise
+                if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
+                    g.movePlayer(1);
+
+                // Right or d to move anti-clockwise
+                if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+                    g.movePlayer(-1);
+
+                // Space to fire
+                if (event.key.keysym.sym == SDLK_SPACE)
+                    g.addPlayerMissile(g.player_.lane_);
+
                 break;
             }
         }
 
         // Game loop
-        ew.draw(renderer);
+        g.update();
         SDL_RenderPresent(renderer);
     }
     quit = false;
@@ -99,6 +112,7 @@ int main(int argc, char **argv)
             }
         }
     }
+
     SDL_Quit();
     return 0;
 }

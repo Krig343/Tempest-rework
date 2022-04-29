@@ -44,10 +44,7 @@ public:
 
 public:
     // Constructors
-    Game(Player &player,
-         const ElectricWell &well,
-         const int &lvl,
-         const int &scr);
+    Game();
 
     // Game controls
     bool endGame(SDL_Renderer *renderer); // Stops the game and goes to the end screen
@@ -58,12 +55,18 @@ public:
     void levelUp();                         // Increases level_ and changes the EW color and shape
     void addScore(const std::string &type); // Adds to the score the car.type corresponding value
     void collisionTest();                   // Tests if there is a collision
+    void update();                          // Update game state
+    void movePlayer(int movement);          // Change the lane of the player
+    void addPlayerMissile(int lane);        // Spawn a player missile
 
     // IO
     void printAvoidSpikes(SDL_Renderer *renderer); // Prints the "Avoid Spikes" message in the middle of the screen
     void printScore(SDL_Renderer *renderer);       // Prints the current score
     void printLevel(SDL_Renderer *renderer);       // Prints the current level
     void printEndScreen(SDL_Renderer *renderer);   // Prints the end screen
+
+    // Draw
+    void draw(SDL_Renderer *renderer);
 
 private:
     enm_types_ resolve(std::string type); // Given string type, it returns the corresponding ennemi type from the enum

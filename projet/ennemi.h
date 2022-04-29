@@ -13,7 +13,10 @@ public:
 
 public:
     // Constructors
-    Ennemi(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const std::string &tpe);
+    Ennemi(const bool &shooting,
+           const float &pos,
+           const int &lane,
+           const std::string &tpe);
     Ennemi(Ennemi &enmi);
     Ennemi(const Ennemi &enmi);
     inline Ennemi &operator=(Ennemi &other)
@@ -27,12 +30,15 @@ public:
             return *this;
     };
 
+protected:
+    virtual void initModelPolygon() override;
+
 private:
     friend inline bool operator==(const Ennemi &lhs, const Ennemi &rhs)
     {
         if (lhs.type_ == rhs.type_ &&
             lhs.position_ == rhs.position_ &&
-            lhs.lane_number_ == rhs.lane_number_)
+            lhs.lane_ == rhs.lane_)
             return true;
         return false;
     };

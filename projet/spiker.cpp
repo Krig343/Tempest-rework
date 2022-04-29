@@ -5,20 +5,17 @@
 Spiker::Spiker(const bool &shooting,
                const int &pos,
                const int &lane,
-               const std::array<Uint8, 4> &color,
                const std::string &tpe) : Ennemi::Ennemi(shooting,
                                                         pos,
                                                         lane,
-                                                        color,
                                                         "spiker")
 {
 }
 
 Spiker::Spiker(Spiker &spik) : Spiker::Spiker(spik.is_shooting_,
                                               spik.position_,
-                                              spik.lane_number_,
-                                              spik.color_,
-                                              "spiker")
+                                              spik.lane_,
+                                              spik.type_)
 {
 }
 

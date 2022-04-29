@@ -2,30 +2,34 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Lane::Lane(const Vec2 &pp1,
-           const Vec2 &pp2,
-           const Vec2 &ep1,
-           const Vec2 &ep2, std::array<Uint8, 4> color) : player_begin_point_{pp1},
-                                                          player_end_point_{pp2},
-                                                          ennemi_begin_point_{ep1},
-                                                          ennemi_end_point_{ep2},
-                                                          color_{color}
+Lane::Lane(const SDL_Point &f1, const SDL_Point &f2,
+           const SDL_Point &b3, const SDL_Point &b4)
 {
+    frontMiddle_ = {(f1.x + f2.x)/2, 
+                    (f1.y + f2.y)/2};
+    backMiddle_ = {(b3.x + b4.x)/2, 
+                   (b3.y + b4.y)/2};
+
+    laneAngle_ = acos(((backMiddle_.y - frontMiddle_.y)) / 
+                      (sqrt((backMiddle_.x - frontMiddle_.x)*(backMiddle_.x - frontMiddle_.x) + 
+                            (backMiddle_.y - frontMiddle_.y)*(backMiddle_.y - frontMiddle_.y))));
+
+    if(frontMiddle_.x < backMiddle_.x)
+        laneAngle_ = -laneAngle_;
+
+    frontSize_ = sqrt((f2.x - f1.x)*(f2.x - f1.x) + (f2.y - f1.y)*(f2.y - f1.y));
+    backSize_ = sqrt((b3.x - b4.x)*(b3.x - b4.x) + (b3.y - b4.y)*(b3.y - b4.y));
 }
 
-//----------------------------- Lane controls ----------------------------------
+float Lane::getScale(const float position){
+    return position*frontSize_ + (1.0 - position)*backSize_;
+}
 
-/* The function sets the renderer's color to the color of the lane and then
- * prints the four lines composing a lane :
- * - the one on which the blaster is
- * - the one on which the ennemies appear
- * - the two binding the first ones without crossing eachother
- */
-void Lane::drawLane(SDL_Renderer *renderer)
-{
-    SDL_SetRenderDrawColor(renderer, color_[0], color_[1], color_[2], color_[3]);
-    SDL_RenderDrawLine(renderer, player_begin_point_.first, player_begin_point_.second, player_end_point_.first, player_end_point_.second);
-    SDL_RenderDrawLine(renderer, player_end_point_.first, player_end_point_.second, ennemi_end_point_.first, ennemi_end_point_.second);
-    SDL_RenderDrawLine(renderer, ennemi_end_point_.first, ennemi_end_point_.second, ennemi_begin_point_.first, ennemi_begin_point_.second);
-    SDL_RenderDrawLine(renderer, ennemi_begin_point_.first, ennemi_begin_point_.second, player_begin_point_.first, player_begin_point_.second);
+float Lane::getAngle(){
+    return laneAngle_;
+}
+
+SDL_Point Lane::getPosition(const float position){
+    return {position*frontMiddle_.x + (1.0 - position)*backMiddle_.x,
+            position*frontMiddle_.y + (1.0 - position)*backMiddle_.y};
 }

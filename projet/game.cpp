@@ -2,14 +2,11 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Game::Game(Player &player,
-           const ElectricWell &well,
-           const int &lvl,
-           const int &scr) : player_{player},
-                             electric_well_{well},
-                             level_{lvl},
-                             score_{scr}
+Game::Game() : player_{Player{false, 0.0, 0, 5, false}},
+               electric_well_{ElectricWell{1, "circle"}}
 {
+    score_ = 0;
+    level_ = 1;
 }
 
 //---------------------------- Game controls -----------------------------------
@@ -29,9 +26,42 @@ bool Game::endGame(SDL_Renderer *renderer)
     return false;
 }
 
+void Game::movePlayer(int movement)
+{
+    int newLane = player_.lane_ + movement;
+
+    // To avoid % of negative integers
+    if ((electric_well_.is_cyclic_) && (newLane < 0))
+    {
+        player_.move(electric_well_.polygon_size_ - 1);
+        return;
+    }
+
+    if (electric_well_.is_cyclic_)
+    {
+        player_.move(newLane % electric_well_.polygon_size_);
+    }
+    else
+    {
+        if (movement < 0)
+        {
+            player_.move(std::max(0, newLane));
+        }
+        else
+        {
+            player_.move(std::min(newLane, electric_well_.polygon_size_ - 2));
+        }
+    }
+}
+
+void Game::addPlayerMissile(int lane)
+{
+    player_missile_list_.push_back(Missile(lane, 0.0));
+}
+
 void Game::addCharacter(Ennemi &car)
 {
-    ennemi_list_.emplace_back(car);
+    ennemi_list_.push_back(car);
 }
 
 /* This function searches for the object rem_obj in the correct list and removes
@@ -241,22 +271,22 @@ void Game::levelUp()
         switch (resolve(enm.type_))
         {
         case Game::Flipper:
-            enm.color_ = {color_flipper};
+            enm.model_color_ = {color_flipper};
             break;
         case Game::Tanker_flipper:
-            enm.color_ = {color_tanker};
+            enm.model_color_ = {color_tanker};
             break;
         case Game::Tanker_fuseball:
-            enm.color_ = {color_tanker};
+            enm.model_color_ = {color_tanker};
             break;
         case Game::Tanker_pulsar:
-            enm.color_ = {color_tanker};
+            enm.model_color_ = {color_tanker};
             break;
         case Game::Spiker:
-            enm.color_ = {color_spiker};
+            enm.model_color_ = {color_spiker};
             break;
         case Game::Pulsar:
-            enm.color_ = {color_pulsar};
+            enm.model_color_ = {color_pulsar};
             break;
         default:
             break;
@@ -267,7 +297,7 @@ void Game::levelUp()
     {
     case 17:
         electric_well_.color_ = {255, 0, 0, 255};
-        player_.color_ = {0, 255, 0, 255};
+        player_.model_color_ = {0, 255, 0, 255};
         player_.zapper_color_ = {0, 255, 255, 255};
         color_flipper = {138, 43, 226, 255};
         color_tanker = {0, 0, 255, 255};
@@ -278,7 +308,7 @@ void Game::levelUp()
         break;
     case 33:
         electric_well_.color_ = {255, 255, 0, 255};
-        player_.color_ = {0, 0, 255, 255};
+        player_.model_color_ = {0, 0, 255, 255};
         player_.zapper_color_ = {0, 0, 255, 255};
         color_flipper = {0, 255, 0, 255};
         color_tanker = {0, 255, 255, 255};
@@ -299,7 +329,7 @@ void Game::levelUp()
         break;
     case 65:
         electric_well_.color_ = {0, 0, 0, 255};
-        player_.color_ = {255, 255, 0, 255};
+        player_.model_color_ = {255, 255, 0, 255};
         player_.zapper_color_ = {255, 255, 255, 255};
         color_flipper = {255, 0, 0, 255};
         color_tanker = {138, 43, 226, 255};
@@ -310,7 +340,7 @@ void Game::levelUp()
         break;
     case 81:
         electric_well_.color_ = {0, 255, 0, 255};
-        player_.color_ = {255, 0, 0, 255};
+        player_.model_color_ = {255, 0, 0, 255};
         player_.zapper_color_ = {138, 43, 226, 255};
         color_flipper = {225, 225, 0, 255};
         color_tanker = {138, 43, 226, 255};
@@ -557,5 +587,59 @@ void Game::printEndScreen(SDL_Renderer *renderer)
         message = {48, 82, 69, 83, 83, 0, 69, 88, 73, 84, 0, 84, 79, 0, 81, 85, 73, 84};
         printMessage(message, renderer, w / 2, 500);
     }
+    SDL_RenderPresent(renderer);
+}
+
+void Game::update()
+{
+    // Update ennemy positions
+
+    // Update missile positions
+    for (auto &m : player_missile_list_)
+        m.move();
+
+    // Check for dead missiles
+    std::vector<Missile> newMissiles;
+
+    for (auto m : player_missile_list_)
+    {
+        if (m.position_ < 1.05)
+            newMissiles.push_back(m);
+    }
+
+    player_missile_list_ = newMissiles;
+
+    // Check for collisons
+}
+
+void Game::draw(SDL_Renderer *renderer)
+{
+    // Clear display
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    // Draw electric well
+    electric_well_.draw(renderer);
+    electric_well_.highlightLane(renderer, player_.lane_);
+
+    // Draw player
+    player_.draw(renderer,
+                 electric_well_.lanes_[player_.lane_].getScale(player_.position_),
+                 electric_well_.lanes_[player_.lane_].getAngle(),
+                 electric_well_.lanes_[player_.lane_].getPosition(player_.position_));
+
+    // Draw missiles
+    for (auto m : player_missile_list_)
+    {
+        m.draw(renderer,
+               electric_well_.lanes_[m.lane_].getScale(m.position_ * m.position_),
+               electric_well_.lanes_[m.lane_].getAngle(),
+               electric_well_.lanes_[m.lane_].getPosition(m.position_ * m.position_));
+    }
+
+    // Draw ennemies
+
+    // Draw spikes
+
     SDL_RenderPresent(renderer);
 }

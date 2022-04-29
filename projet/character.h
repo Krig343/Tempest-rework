@@ -1,11 +1,12 @@
-#ifndef CARACTER_H
-#define CARACTER_H
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
 #include <iostream> // string
 #include <cstdlib>  // in & out -put
 #include <SDL.h>    // graphical interface
-#include <utility>  // container pair
 #include <array>    // container array
+#include <vector>
+#include <cmath>
 
 /* The parent class for all the the characters, player and ennemies. The boolean
  * is_shooting_ is set to prevent the player to spam shooting, the position is
@@ -14,22 +15,27 @@
 class Character
 {
 public:
-    bool is_shooting_;           // True when player is shooting
-    int position_;               // The 2D position (needs to be fixed)
-    int lane_number_;            // The lane number
-    std::array<Uint8, 4> color_; // Container <r,g,b,a>
+    bool is_shooting_; // True when player is shooting
+    int lane_;         // The lane number
+    float position_;
+    std::array<Uint8, 4> model_color_;
+
+protected:
+    std::vector<SDL_Point> model_polygon_;
 
 public:
     // Constructors
-    Character(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color);
-    Character(Character &car);
+    Character(const bool &shooting, const float &pos, const int &lane);
+    Character(Character &c);
 
-    // Caracter controls
+    // Character controls
     void shoot(SDL_Renderer *renderer); // Sets is_shooting_ at true
-    void move(const int &pos);          // Changes position_ according to the sign of pos
+    void move(const int &lane);         // Changes lane
+    void draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position);
 
-    // IO
-    void drawCaracter(SDL_Renderer *renderer); // Prints the caracter on its position in its color
+protected:
+    // Draw
+    virtual void initModelPolygon() = 0;
 };
 
-#endif // CARATER_H
+#endif // CHARATER_H
