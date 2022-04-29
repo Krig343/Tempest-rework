@@ -30,10 +30,10 @@ void Tanker::initModelPolygon()
     modelPolygon_.push_back({0,4});
 }
 
-void Tanker::move(int movement, bool isCyclic, int polygonSize)
+void Tanker::move(int movement, float speed, bool isCyclic, int polygonSize)
 {
     // Tanker speed
-    position_ = position_ - 0.0025;
+    position_ = position_ - 0.0025*speed;
 
     if(position_ < 0.0)
         kill();

@@ -3,7 +3,9 @@
 //----------------------------- Constructors -----------------------------------
 
 Game::Game() : player_{Player{false, 0.0, 0, 3, true}},
-               electric_well_{ElectricWell{1}}
+               electric_well_{ElectricWell{1}},
+               currentWellCopy_{ElectricWell{1}},
+               nextWellCopy_{ElectricWell{2}}
 {
     // Game attributes
     score_ = 0;
@@ -31,22 +33,47 @@ bool Game::endGame()
 
 void Game::addPlayerMissile(int lane)
 {
-    // Maximum of 15 missiles at all time
-    if(player_missile_list_.size() < 15)
+    // Maximum of 5 * level
+    if(player_missile_list_.size() < (5 * level_))
         player_missile_list_.push_back(Missile(lane, 0.0));
 }
 
 void Game::spawnEnnemies()
 {
-    if(time_%250 == 0)
+    if(time_%(200-level_) == 0)
         flipper_list_.push_back(Flipper(time_%3, 1.0));
 
-    if(time_%500 == 0)
+    if((time_%(400-level_) == 0)&&(level_ >= 2))
         tanker_list_.push_back(Tanker(time_%7, 1.0));
+
+    if((time_%(200-level_) == 0)&&(level_ >= 3))
+        flipper_list_.push_back(Flipper(time_%3 + 1, 1.0));
+
+    if((time_%(400-level_) == 0)&&(level_ >= 4))
+        tanker_list_.push_back(Tanker(time_%7 + 1, 1.0));
 }
 
 void Game::levelUp()
 {
+    int newLevel = level_;
+
+    if(score_ > 1000)
+        newLevel = 2;
+
+    if(score_ > 2500)
+        newLevel = 3;
+
+    if(score_ > 5000)
+        newLevel = 4;
+
+    if(score_ > 8500)
+        newLevel = static_cast<int> (score_ - 8500.0)/4000.0 + 5;
+
+    if(newLevel != level_)
+    {
+        level_ = newLevel;
+        startMorphing();
+    }  
 }
 
 Game::enm_types_ Game::resolve(std::string type)
@@ -136,12 +163,18 @@ void Game::printEndScreen()
 
 void Game::update()
 {   
+    // Check if leveled up
+    levelUp();
+
+    // Speed is 1 a level 1, 2.5 at level 2
+    float speed = level_*3.0/196.0 + 193.0/196.0;
+
     // Update ennemy positions
     for(auto &f : flipper_list_)
-        f.move(1, electric_well_.isCyclic_, electric_well_.polygonSize_);
+        f.move(1, speed, electric_well_.isCyclic_, electric_well_.polygonSize_);
 
     for(auto &t : tanker_list_)
-        t.move(1, electric_well_.isCyclic_, electric_well_.polygonSize_);
+        t.move(1, speed, electric_well_.isCyclic_, electric_well_.polygonSize_);
 
     // Update missile positions and check for collisions
     for(auto &m : player_missile_list_){
@@ -187,7 +220,7 @@ void Game::update()
             newFlippers.push_back(f);
         } else {
         // Points for each dead flipper
-            score_+= 150;
+            score_+= 150 + level_;
         }
     }
 
@@ -203,10 +236,10 @@ void Game::update()
             newTankers.push_back(t);
         } else {
         // Points for each dead flipper
-            score_+= 100;
+            score_+= 100 + level_;
         // Spawn 2 flippers (for now)
             flipper_list_.push_back(Flipper(t.lane_, t.position_));
-            flipper_list_.push_back(Flipper(t.lane_ + 1, t.position_));
+            flipper_list_.push_back(Flipper((t.lane_ + 1)%electric_well_.polygonSize_, t.position_));
         }
     }
 
@@ -217,6 +250,7 @@ void Game::update()
         if(collisionTest(f.lane_, player_.lane_, f.position_, player_.position_)){
             player_.loseLife();
             f.kill();
+            score_+= 100 + level_;
         } 
     }
 
@@ -224,6 +258,7 @@ void Game::update()
         if(collisionTest(t.lane_, player_.lane_, t.position_, player_.position_)){
             player_.loseLife();
             t.kill();
+            score_+= 100 + level_;
         } 
     }
 
@@ -231,11 +266,49 @@ void Game::update()
     time_++;
 }
 
+void Game::startMorphing(){
+    currentWellCopy_ = ElectricWell{level_ - 1};
+    nextWellCopy_ = ElectricWell{level_};
+
+    isMorphing_ = true;
+    morphingStep_ = 250;
+}
+
+void Game::morphLevel()
+{
+    morphingStep_--;
+
+    if(morphingStep_ == 0){
+        electric_well_ = nextWellCopy_;
+        return;
+    }
+
+    float t0 = static_cast<float> (250 - morphingStep_)/250;
+    float t1 = 1.0 - t0;
+
+    for(int p = 0; p < electric_well_.polygonSize_; p++){
+        electric_well_.backPolygon_[p] = {currentWellCopy_.backPolygon_[p].x * t1 + nextWellCopy_.backPolygon_[p].x * t0,
+                                          currentWellCopy_.backPolygon_[p].y * t1 + nextWellCopy_.backPolygon_[p].y * t0};
+                                        
+        electric_well_.frontPolygon_[p] = {currentWellCopy_.frontPolygon_[p].x * t1 + nextWellCopy_.frontPolygon_[p].x * t0,
+                                           currentWellCopy_.frontPolygon_[p].y * t1 + nextWellCopy_.frontPolygon_[p].y * t0};
+    }
+
+    electric_well_.lanes_.clear();
+    electric_well_.initLevelLanes();
+}
+
 void Game::draw(SDL_Renderer *renderer)
 {
     // Clear display
     SDL_SetRenderDrawColor(renderer, 0,0,0,255);
     SDL_RenderClear(renderer);
+
+    // If level is changing
+    if((isMorphing_)&&(morphingStep_ > 0))
+    {
+        morphLevel();
+    }
 
     // Draw electric well
     electric_well_.draw(renderer);

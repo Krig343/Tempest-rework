@@ -24,12 +24,14 @@ public:
 
 private:
     void initLevelPolygons(int level);
-    void initLevelLanes();
-    
+
 public:
     // Constructors
     ElectricWell(int level);
     
+    // Gameplay
+    void initLevelLanes();
+
     // Draw
     void highlightLane(SDL_Renderer *renderer, int lane);
     void draw(SDL_Renderer *renderer); // Print the electric well in its color

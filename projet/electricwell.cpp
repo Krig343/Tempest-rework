@@ -24,10 +24,12 @@ void ElectricWell::initLevelLanes()
 }
 
 void ElectricWell::initLevelPolygons(int level)
-{
-    switch(level)
+{   
+    
+    switch((level - 1)%4)
     {
-        case 1:
+        // Level 1
+        case 0:
             isCyclic_ = true;
             polygonSize_ = 16;
             color_ = {0, 0, 255, 255};
@@ -67,6 +69,129 @@ void ElectricWell::initLevelPolygons(int level)
             frontPolygon_.push_back({462,475});
 
             break;
+
+        // Level 2
+        case 1:
+            isCyclic_ = true;
+            polygonSize_ = 16;
+            color_ = {0, 0, 255, 255};
+
+            backPolygon_.push_back({400,350});
+            backPolygon_.push_back({375,350});
+            backPolygon_.push_back({350,350});
+            backPolygon_.push_back({350,325});
+            backPolygon_.push_back({350,300});
+            backPolygon_.push_back({350,275});
+            backPolygon_.push_back({350,250});
+            backPolygon_.push_back({375,250});
+            backPolygon_.push_back({400,250});
+            backPolygon_.push_back({425,250});
+            backPolygon_.push_back({450,250});
+            backPolygon_.push_back({450,275});
+            backPolygon_.push_back({450,300});
+            backPolygon_.push_back({450,325});
+            backPolygon_.push_back({450,350});
+            backPolygon_.push_back({425,350});
+
+            frontPolygon_.push_back({400,500});
+            frontPolygon_.push_back({300,500});
+            frontPolygon_.push_back({200,500});
+            frontPolygon_.push_back({200,400});
+            frontPolygon_.push_back({200,300});
+            frontPolygon_.push_back({200,200});
+            frontPolygon_.push_back({200,100});
+            frontPolygon_.push_back({300,100});
+            frontPolygon_.push_back({400,100});
+            frontPolygon_.push_back({500,100});
+            frontPolygon_.push_back({600,100});
+            frontPolygon_.push_back({600,200});
+            frontPolygon_.push_back({600,300});
+            frontPolygon_.push_back({600,400});
+            frontPolygon_.push_back({600,500});
+            frontPolygon_.push_back({500,500});
+            break;
+
+        // Level 3
+        case 2:
+            isCyclic_ = true;
+            polygonSize_ = 16;
+            color_ = {0, 0, 255, 255};
+
+            backPolygon_.push_back({400,440});
+            backPolygon_.push_back({392,440});
+            backPolygon_.push_back({376,440});
+            backPolygon_.push_back({360,440});
+            backPolygon_.push_back({368,427});
+            backPolygon_.push_back({376,414});
+            backPolygon_.push_back({384,401});
+            backPolygon_.push_back({392,388});
+            backPolygon_.push_back({400,376});
+            backPolygon_.push_back({408,389});
+            backPolygon_.push_back({416,402});
+            backPolygon_.push_back({424,415});
+            backPolygon_.push_back({432,428});
+            backPolygon_.push_back({440,440});
+            backPolygon_.push_back({424,440});
+            backPolygon_.push_back({408,440});
+
+            frontPolygon_.push_back({400,500});
+            frontPolygon_.push_back({350,500});
+            frontPolygon_.push_back({250,500});
+            frontPolygon_.push_back({150,500});
+            frontPolygon_.push_back({200,420});
+            frontPolygon_.push_back({250,340});
+            frontPolygon_.push_back({300,260});
+            frontPolygon_.push_back({350,180});
+            frontPolygon_.push_back({400,100});
+            frontPolygon_.push_back({450,180});
+            frontPolygon_.push_back({500,260});
+            frontPolygon_.push_back({550,340});
+            frontPolygon_.push_back({600,420});
+            frontPolygon_.push_back({650,500});
+            frontPolygon_.push_back({550,500});
+            frontPolygon_.push_back({450,500});
+            break;
+
+        // Level 4
+        case 3:
+            isCyclic_ = true;
+            polygonSize_ = 16;
+            color_ = {0, 0, 255, 255};
+
+            backPolygon_.push_back({400,320});
+            backPolygon_.push_back({395,315});
+            backPolygon_.push_back({395,305});
+            backPolygon_.push_back({385,305});
+            backPolygon_.push_back({380,300});
+            backPolygon_.push_back({385,295});
+            backPolygon_.push_back({395,295});
+            backPolygon_.push_back({395,285});
+            backPolygon_.push_back({400,280});
+            backPolygon_.push_back({405,285});
+            backPolygon_.push_back({405,295});
+            backPolygon_.push_back({415,295});
+            backPolygon_.push_back({420,300});
+            backPolygon_.push_back({415,305});
+            backPolygon_.push_back({405,305});
+            backPolygon_.push_back({405,315});
+
+            frontPolygon_.push_back({400,500});
+            frontPolygon_.push_back({350,450});
+            frontPolygon_.push_back({350,350});
+            frontPolygon_.push_back({250,350});
+            frontPolygon_.push_back({200,300});
+            frontPolygon_.push_back({250,250});
+            frontPolygon_.push_back({350,250});
+            frontPolygon_.push_back({350,150});
+            frontPolygon_.push_back({400,100});
+            frontPolygon_.push_back({450,150});
+            frontPolygon_.push_back({450,250});
+            frontPolygon_.push_back({550,250});
+            frontPolygon_.push_back({600,300});
+            frontPolygon_.push_back({550,350});
+            frontPolygon_.push_back({450,350});
+            frontPolygon_.push_back({450,450});
+            break;
         default:
             break;
     }
@@ -75,7 +200,7 @@ void ElectricWell::initLevelPolygons(int level)
 void ElectricWell::highlightLane(SDL_Renderer *renderer, int lane)
 {
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    
+
     SDL_RenderDrawLine(renderer, 
                        backPolygon_[lane].x,
                        backPolygon_[lane].y,

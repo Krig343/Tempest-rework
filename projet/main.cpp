@@ -77,11 +77,11 @@ int main(int argc, char **argv)
 
                 // Left or q to move clockwise
                 if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                    g.player_.move(1, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
+                    g.player_.move(1, 1.0, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
 
                 // Right or d to move anti-clockwise
                 if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                    g.player_.move(-1, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
+                    g.player_.move(-1, 1.0, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
 
                 // Space to fire
                 if (event.key.keysym.sym == SDLK_SPACE)
@@ -94,8 +94,6 @@ int main(int argc, char **argv)
         // Game loop
         g.update();
         quit = g.endGame();
-
-        std::cout << g.score_ << g.player_.lives_ << std::endl;
     }
 
     std::cout << "Final score : " << g.score_ << std::endl;

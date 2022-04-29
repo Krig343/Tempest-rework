@@ -21,7 +21,7 @@ void Flipper::initModelPolygon()
     modelPolygon_.push_back({-5,2});
 }
 
-void Flipper::move(int movement, bool isCyclic, int polygonSize)
+void Flipper::move(int movement, float speed, bool isCyclic, int polygonSize)
 {
     // Lane flip every 50 clock ticks
     if(timeBeforeFlip_ == 0){
@@ -40,5 +40,5 @@ void Flipper::move(int movement, bool isCyclic, int polygonSize)
     }
 
     // Flipper speed
-    position_ = std::max(0.0, position_ - 0.001);
+    position_ = std::max(0.0, position_ - 0.001*speed);
 }

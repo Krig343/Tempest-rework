@@ -32,9 +32,10 @@ private:
     }; // All the ennemi types
 
 public:
+    // Gameplay attributes
     Player player_;                                     // The player's blaster
     std::vector<Flipper> flipper_list_;                 // Current scene flippers list
-    std::vector<Tanker> tanker_list_;                 // Current scene tankers list
+    std::vector<Tanker> tanker_list_;                   // Current scene tankers list
     std::vector<Missile> ennemy_missile_list_;          // All the missiles launched by the ennemies
     std::vector<Missile> player_missile_list_;          // All the missiles launched by the player
     //std::vector<Spike> spike_list_;                   // The list of all the printed spikes
@@ -42,6 +43,12 @@ public:
     int level_;                                         // Current level
     int score_;                                         // Current score
     unsigned long time_;                                // Game "time"
+
+    // Graphic attributes
+    bool isMorphing_;
+    int morphingStep_;
+    ElectricWell currentWellCopy_;                       // Current level's copy
+    ElectricWell nextWellCopy_;                          // Next level's copy
  
 public:
     // Constructors
@@ -67,6 +74,8 @@ public:
 
     // Draw
     void draw(SDL_Renderer *renderer);
+    void startMorphing();
+    void morphLevel();
 
 private:
     enm_types_ resolve(std::string type);

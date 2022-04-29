@@ -27,7 +27,7 @@ void Player::initModelPolygon()
     modelPolygon_.push_back({-5,0});
 }
 
-void Player::move(int movement, bool isCyclic, int polygonSize)
+void Player::move(int movement, float speed, bool isCyclic, int polygonSize)
 {
     int newLane = lane_ + movement;
 

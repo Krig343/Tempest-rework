@@ -14,7 +14,7 @@ public:
     Player(const bool &shooting, const float &pos, const int &lane, const int &life, const bool &zapper);
 
     // Player controls
-    virtual void move(int movement, bool isCyclic, int polygonSize) override;
+    virtual void move(int movement, float speed, bool isCyclic, int polygonSize) override;
     inline void loseLife() { --lives_; };                // Decrease lives_
     inline void addLife() { ++lives_; };                 // Increase lives_ (don't know when yet)
     inline void useZapper() { used_zapper_ = true; };    // Sets used_zapper_ to true

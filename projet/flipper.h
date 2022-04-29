@@ -15,7 +15,7 @@ public:
     Flipper(const int &lane, const float &pos);
 
     // Controls
-    virtual void move(int movement, bool isCyclic, int polygonSize) override;
+    virtual void move(int movement, float speed, bool isCyclic, int polygonSize) override;
     inline void kill() { dead_ = true; };
 
     // Draw
