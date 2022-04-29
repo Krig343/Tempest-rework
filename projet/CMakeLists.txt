@@ -16,18 +16,14 @@ target_sources(${PROJECT_NAME}
                character.cpp
                player.h
                player.cpp
-               ennemi.h
-               ennemi.cpp
-               spiker.h
-               spiker.cpp
-               pulsar.h
-               pulsar.cpp
                electricwell.h
                electricwell.cpp
                lane.h
                lane.cpp
                missile.h
                missile.cpp
+               flipper.h
+               flipper.cpp
                main.cpp)
 
 target_include_directories(${PROJECT_NAME}

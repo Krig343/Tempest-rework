@@ -14,6 +14,9 @@ public:
 
     // Spiker controls
     void createSpike(); // Creates a collidable objet & print it
+
+    // Draw
+    virtual void initModelPolygon() override;
 };
 
 #endif // SPIKER_H

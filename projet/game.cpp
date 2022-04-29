@@ -5,8 +5,10 @@
 Game::Game() : player_{Player{false, 0.0, 0, 0, false}},
                electric_well_{ElectricWell{1}}
 {
+    // Game attributes
     score_ = 0;
     level_ = 1;
+    time_ = 0;
 }
 
 //---------------------------- Game controls -----------------------------------
@@ -18,7 +20,7 @@ Game::Game() : player_{Player{false, 0.0, 0, 0, false}},
  */
 bool Game::endGame()
 {
-    if (player_.lives_ == 0 || (level_ == 99 && ennemi_list_.size() == 0))
+    if (player_.lives_ == 0 || (level_ == 99 && flipper_list_.size() == 0))
     {
         printEndScreen();
         return true;
@@ -26,52 +28,17 @@ bool Game::endGame()
     return false;
 }
 
-void Game::movePlayer(int movement)
-{
-    int newLane = player_.lane_ + movement;
-
-    // To avoid % of negative integers
-    if((electric_well_.isCyclic_)&&(newLane < 0)){
-        player_.move(electric_well_.polygonSize_ - 1);
-        return;
-    }
-
-    if(electric_well_.isCyclic_)
-    {
-        player_.move(newLane%electric_well_.polygonSize_);
-    } else {
-        if(movement < 0)
-        {
-            player_.move(std::max(0, newLane));
-        } else {
-            player_.move(std::min(newLane, electric_well_.polygonSize_ - 2));
-        }
-    }
-}
-
 void Game::addPlayerMissile(int lane)
 {
-    player_missile_list_.push_back(Missile(lane, 0.0));
+    // Maximum of 5 missiles at all time
+    if(player_missile_list_.size() < 5)
+        player_missile_list_.push_back(Missile(lane, 0.0));
 }
 
-void Game::addCharacter(Ennemi &car)
+void Game::spawnEnnemies()
 {
-    ennemi_list_.emplace_back(car);
-}
-
-/* This function searches for the character car in the ennemi list and removes
- * it when found and stops with an error message if not
- */
-void Game::removeCharacter(const Ennemi &car)
-{
-    auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), car);
-    if (car_index == ennemi_list_.end())
-    {
-        std::cout << "L'élément " << car.type_ << " n'est pas dans la liste" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-    else
-        ennemi_list_.erase(car_index);
+    if(time_%250 == 0)
+        flipper_list_.push_back(Flipper(time_%3, 1.0));
 }
 
 void Game::levelUp()
@@ -81,13 +48,13 @@ void Game::levelUp()
 Game::enm_types_ Game::resolve(std::string type)
 {
     static const std::map<std::string, enm_types_> typeStrings{
-        {"Flipper", Flipper},
-        {"Tanker_flipper", Tanker_flipper},
-        {"Tanker_fuseball", Tanker_fuseball},
-        {"Tanker_pulsar", Tanker_pulsar},
-        {"Spiker", Spiker},
-        {"Fuseball", Fuseball},
-        {"Pulsar", Pulsar}};
+        {"Flipper", Flipper_t},
+        {"Tanker_flipper", Tanker_flipper_t},
+        {"Tanker_fuseball", Tanker_fuseball_t},
+        {"Tanker_pulsar", Tanker_pulsar_t},
+        {"Spiker", Spiker_t},
+        {"Fuseball", Fuseball_t},
+        {"Pulsar", Pulsar_t}};
 
     auto itr = typeStrings.find(type);
     if (itr != typeStrings.end())
@@ -102,58 +69,34 @@ void Game::addScore(const std::string &type)
 {
     switch (resolve(type))
     {
-    case Game::Flipper:
+    case Game::Flipper_t:
         score_ += 150;
         break;
-    case Game::Tanker_flipper:
+    case Game::Tanker_flipper_t:
         score_ += 100;
         break;
-    case Game::Tanker_fuseball:
+    case Game::Tanker_fuseball_t:
         score_ += 100;
         break;
-    case Game::Tanker_pulsar:
+    case Game::Tanker_pulsar_t:
         score_ += 100;
         break;
-    case Game::Spiker:
+    case Game::Spiker_t:
         score_ += 50;
         break;
-    case Game::Fuseball: // Add 500 and 750
+    case Game::Fuseball_t: // Add 500 and 750
         score_ += 250;
         break;
-    case Game::Pulsar:
+    case Game::Pulsar_t:
         score_ += 200;
         break;
     };
 }
 
-/* Tests the collision between objects. The collision test depends on the number
- * test_nb.
- * - 1 : collision test between an ennemi and the player
- * - 2 : collision between an ennemi and a missile
- * - 3 : collision between the player and a missile
- * - 4 : collision between the player and a Spike (maybe it will be an ennemi)
- */
-bool Game::collisionTest(const int &test_nb)
+/* Tests the collision between objects. */
+bool Game::collisionTest(const int &lane1, const int &lane2, const float &pos1, const float &pos2)
 {
-    switch (test_nb)
-    {
-    case 1:
-        for (auto e : ennemi_list_)
-        {
-            if (player_.position_ == e.position_)
-                return true;
-        }
-        break;
-    case 2:
-        // Collision between player's missiles and ennemies
-        break;
-    case 3:
-        // Collision between player and ennemie's missiles
-        break;
-    case 4:
-        // Collision between player and spike
-        break;
-    }
+    return (lane1 == lane2)&&(pos1*pos1 > pos2*pos2 - 0.025)&&(pos1*pos1 < pos2*pos2 + 0.025);
 }
 
 //--------------------------------- IO -----------------------------------------
@@ -190,23 +133,48 @@ void Game::printEndScreen()
 void Game::update()
 {   
     // Update ennemy positions
+    for(auto &f : flipper_list_)
+        f.move(1, electric_well_.isCyclic_, electric_well_.polygonSize_);
 
-    // Update missile positions
-    for(auto &m : player_missile_list_)
+    // Update missile positions and check for collisions
+    for(auto &m : player_missile_list_){
         m.move();
+
+        for(auto &f : flipper_list_){
+            if(collisionTest(f.lane_, m.lane_, f.position_, m.position_)){
+                m.kill();
+                f.kill();
+            }
+        }
+    }
+
+    // Spawn new ennemies
+    spawnEnnemies();
 
     // Check for dead missiles
     std::vector<Missile> newMissiles;
 
     for (auto m : player_missile_list_)
     {
-        if (m.position_ < 1.05)
+        if(!m.dead_)
             newMissiles.push_back(m);
     }
 
     player_missile_list_ = newMissiles;
 
-    // Check for collisons
+    // Check for dead ennemies
+    std::vector<Flipper> newFlippers;
+
+    for (auto f : flipper_list_)
+    {
+        if(!f.dead_)
+            newFlippers.push_back(f);
+    }
+
+    flipper_list_ = newFlippers;
+
+    // Update time
+    time_++;
 }
 
 void Game::draw(SDL_Renderer *renderer)
@@ -234,6 +202,12 @@ void Game::draw(SDL_Renderer *renderer)
     }
 
     // Draw ennemies
+    for(auto e : flipper_list_){
+        e.draw(renderer, 
+               electric_well_.lanes_[e.lane_].getScale(e.position_*e.position_), 
+               electric_well_.lanes_[e.lane_].getAngle(), 
+               electric_well_.lanes_[e.lane_].getPosition(e.position_*e.position_));
+    }
 
     // Draw spikes
 

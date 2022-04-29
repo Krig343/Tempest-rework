@@ -38,3 +38,8 @@ int Pulsar::pulse(int &lives, const int &lane)
     return lives;
     is_pulsing_ = false;
 }
+
+void Pulsar::initModelPolygon()
+{
+    
+}

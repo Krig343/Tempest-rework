@@ -17,6 +17,9 @@ public:
 
     // Pulsar controls
     int pulse(int &lives, const int &lane); // Pulses on its current lane
+
+    // Draw
+    virtual void initModelPolygon() override;
 };
 
 #endif // PULSAR_H

@@ -10,10 +10,6 @@ Character::Character(const bool &shooting,
 {
 }
 
-Character::Character(Character &c) : Character::Character(c.isShooting_, c.lane_, c.position_)
-{
-}
-
 //-------------------------- Caracter controls ---------------------------------
 
 void Character::shoot(SDL_Renderer *renderer)
@@ -21,11 +17,6 @@ void Character::shoot(SDL_Renderer *renderer)
     isShooting_ = true;
     // TODO : print the bullets and wait
     isShooting_ = false;
-}
-
-void Character::move(const int &lane)
-{
-    lane_ = lane;
 }
 
 void Character::draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position)
@@ -38,7 +29,7 @@ void Character::draw(SDL_Renderer *renderer, const float scale, const float angl
     for(auto p : modelPolygon_)
         scaledModel.push_back({p.x*scale/10.0,
                                p.y*scale/10.0});
-
+    
     // Rotating
     for(auto p : scaledModel)
         rotatedModel.push_back({p.x*cos(angle) - p.y*sin(angle),

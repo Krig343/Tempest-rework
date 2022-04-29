@@ -2,13 +2,15 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Spike::Spike(const int &pos) : position_{pos}
+Spike::Spike(const int &lane, const float &pos) : Ennemi::Ennemi(false,
+                                                                 pos,
+                                                                 lane,
+                                                                 "spike")
 {
 }
 
 //--------------------------------- IO -----------------------------------------
-
-void Spike::draw(SDL_Renderer *renderer)
+void Spike::initModelPolygon()
 {
-    // TODO
+    
 }

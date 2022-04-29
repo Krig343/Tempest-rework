@@ -19,6 +19,11 @@ Spiker::Spiker(Spiker &spik) : Spiker::Spiker(spik.isShooting_,
 {
 }
 
+void Spiker::initModelPolygon()
+{
+    
+}
+
 //--------------------------- Spiker controls ----------------------------------
 
 /* Creates an object of class Spike and calls its print method on the furterst

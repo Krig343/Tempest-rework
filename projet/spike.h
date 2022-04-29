@@ -2,18 +2,19 @@
 #define SPIKE_H
 
 #include <SDL.h> // Graphical interface
+#include "ennemi.h"
 
-class Spike
+class Spike : public Ennemi
 {
 private:
     int position_;
 
 public:
     // Constructors
-    Spike(const int &pos);
+    Spike(const int &lane, const float &pos);
 
-    // IO
-    void draw(SDL_Renderer *renderer);
+    // Draw
+    virtual void initModelPolygon() override;
 };
 
 #endif // SPIKE_H

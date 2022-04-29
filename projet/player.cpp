@@ -1,7 +1,6 @@
 #include "player.h"
 
 //----------------------------- Constructors -----------------------------------
-
 Player::Player(const bool &shooting,
                const float &pos,
                const int &lane,
@@ -26,4 +25,27 @@ void Player::initModelPolygon()
     modelPolygon_.push_back({5,0});
     modelPolygon_.push_back({-1,3});
     modelPolygon_.push_back({-5,0});
+}
+
+void Player::move(int movement, bool isCyclic, int polygonSize)
+{
+    int newLane = lane_ + movement;
+
+    // To avoid % of negative integers
+    if((isCyclic)&&(newLane < 0)){
+        lane_ = polygonSize - 1;
+        return;
+    }
+
+    if(isCyclic)
+    {
+        lane_ = newLane%polygonSize;
+    } else {
+        if(movement < 0)
+        {
+            lane_ = std::max(0, newLane);
+        } else {
+            lane_ = std::min(newLane, polygonSize - 2);
+        }
+    }
 }

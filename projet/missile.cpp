@@ -6,13 +6,19 @@ Missile::Missile(const int &lane, const float &pos) : lane_{lane},
                                                      position_{pos}
 {
     initModelPolygon();
+    dead_ = false;
 }
 
 //--------------------------- Missile controls ---------------------------------
 
 void Missile::move()
 {   
-    position_ += 0.05;
+    // Missile speed
+    position_ += 0.015;
+
+    // Dead when crossing the horizon
+    if(position_ > 1.0)
+        dead_ = true;
 }
 
 //--------------------------------- IO -----------------------------------------

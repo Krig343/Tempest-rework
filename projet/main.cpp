@@ -77,11 +77,11 @@ int main(int argc, char **argv)
 
                 // Left or q to move clockwise
                 if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                    g.movePlayer(1);
+                    g.player_.move(1, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
 
                 // Right or d to move anti-clockwise
                 if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                    g.movePlayer(-1);
+                    g.player_.move(-1, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
 
                 // Space to fire
                 if (event.key.keysym.sym == SDLK_SPACE)
