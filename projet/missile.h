@@ -5,7 +5,7 @@
 
 class Missile
 {
-private:
+public:
     int position_;
 
 public:
@@ -17,6 +17,14 @@ public:
 
     // IO
     void draw(SDL_Renderer *renderer);
+
+private:
+    friend inline bool operator==(const Missile &lhs, const Missile &rhs)
+    {
+        if (lhs.position_ == rhs.position_)
+            return true;
+        return false;
+    };
 };
 
 #endif // MISSILE_H

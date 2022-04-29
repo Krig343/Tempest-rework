@@ -6,11 +6,9 @@
 
 class Spike
 {
-private:
-    int position_;
-
 public:
     std::string type_;
+    int position_;
 
 public:
     // Constructors
@@ -18,6 +16,15 @@ public:
 
     // IO
     void draw(SDL_Renderer *renderer);
+
+private:
+    friend inline bool operator==(const Spike &lhs, const Spike &rhs)
+    {
+        if (lhs.type_ == rhs.type_ &&
+            lhs.position_ == rhs.position_)
+            return true;
+        return false;
+    };
 };
 
 #endif // SPIKE_H

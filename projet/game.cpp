@@ -34,19 +34,56 @@ void Game::addCharacter(Ennemi &car)
     ennemi_list_.emplace_back(car);
 }
 
-/* This function searches for the character car in the ennemi list and removes
+/* This function searches for the object rem_obj in the correct list and removes
  * it when found and stops with an error message if not
  */
-void Game::removeCharacter(const Ennemi &car)
+template <class T>
+void Game::removeObject(const T &rem_obj)
 {
-    auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), car);
-    if (car_index == ennemi_list_.end())
+    // Remove an ennemi
+    if constexpr (std::is_same_v<T, Ennemi>)
     {
-        std::cout << "L'élément " << car.type_ << " n'est pas dans la liste" << std::endl;
-        exit(EXIT_FAILURE);
+        auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), rem_obj);
+        if (car_index == ennemi_list_.end())
+        {
+            std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        else
+            ennemi_list_.erase(car_index);
     }
-    else
-        ennemi_list_.erase(car_index);
+
+    // Remove a spike
+    else if constexpr (std::is_same_v<T, Spike>)
+    {
+        auto spk_index = std::find(spike_list_.begin(), spike_list_.end(), rem_obj);
+        if (spk_index == spike_list_.end())
+        {
+            std::cout << "L'élément " << rem_obj.type_ << " n'est pas dans la liste" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        else
+            spike_list_.erase(spk_index);
+    }
+
+    // Remove a missile
+    else if constexpr (std::is_same_v<T, Missile>)
+    {
+        auto msl_index = std::find(player_missile_list_.begin(), player_missile_list_.end(), rem_obj);
+        if (msl_index == player_missile_list_.end())
+        {
+            msl_index = std::find(ennemi_missile_list_.begin(), ennemi_missile_list_.end(), rem_obj);
+            if (msl_index == ennemi_missile_list_.end())
+            {
+                std::cout << "Le missile n'est dans aucune liste" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+            else
+                ennemi_missile_list_.erase(msl_index);
+        }
+        else
+            player_missile_list_.erase(msl_index);
+    }
 }
 
 /* This function returns the ennemi type from the enm_types_ enum corresponding
@@ -323,27 +360,46 @@ void Game::addScore(const std::string &type)
  * - 3 : collision between the player and a missile
  * - 4 : collision between the player and a Spike (maybe it will be an ennemi)
  */
-bool Game::collisionTest(const int &test_nb)
+void Game::collisionTest()
 {
-    switch (test_nb)
-    {
-    case 1:
-        for (auto e : ennemi_list_)
+    // Collision between player and ennemies
+    for (auto e : ennemi_list_)
+        if (player_.position_ == e.position_)
         {
-            if (player_.position_ == e.position_)
-                return true;
+            player_.loseLife();
+            removeObject(e);
         }
-        break;
-    case 2:
-        // Collision between player's missiles and ennemies
-        break;
-    case 3:
-        // Collision between player and ennemie's missiles
-        break;
-    case 4:
-        // Collision between player and spike
-        break;
-    }
+
+    // Collision between player's missiles and ennemies
+    for (auto m : player_missile_list_)
+        for (auto e : ennemi_list_)
+            if (m.position_ == e.position_)
+            {
+                removeObject(e);
+                removeObject(m);
+            }
+
+    // Collision between player and ennemie's missiles
+    for (auto m : ennemi_missile_list_)
+        if (player_.position_ == m.position_)
+        {
+            removeObject(m);
+            player_.loseLife();
+        }
+
+    // Collision between player and spike
+    for (auto s : spike_list_)
+        if (player_.position_ == s.position_)
+            player_.loseLife();
+
+    // Collision between player's missile and spike
+    for (auto m : player_missile_list_)
+        for (auto s : spike_list_)
+            if (m.position_ == s.position_)
+            {
+                removeObject(m);
+                removeObject(s);
+            }
 }
 
 //--------------------------------- IO -----------------------------------------

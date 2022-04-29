@@ -35,8 +35,9 @@ int main(int argc, char **argv)
 
     // Init game components
 
-    std::array<Uint8, 4> color{255, 255, 255, 255};
+    std::array<Uint8, 4> color{255, 0, 0, 255};
     ElectricWell ew{color, "circle"};
+    ew.createCircle();
 
     bool quit = false;
     while (!quit)
@@ -78,6 +79,8 @@ int main(int argc, char **argv)
         }
 
         // Game loop
+        ew.draw(renderer);
+        SDL_RenderPresent(renderer);
     }
     quit = false;
     while (!quit)
