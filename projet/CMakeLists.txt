@@ -26,6 +26,8 @@ target_sources(${PROJECT_NAME}
                electricwell.cpp
                lane.h
                lane.cpp
+               missile.h
+               missile.cpp
                main.cpp)
 
 target_include_directories(${PROJECT_NAME}

@@ -41,13 +41,13 @@ public:
 
 public:
     // Constructors
-    Game(Player &player,
-         const ElectricWell &well,
-         const int &lvl,
-         const int &scr);
+    Game();
 
     // Game controls
+    void update();                           // Update game state
     bool endGame();                          // Stops the game and goes to the end screen
+    void movePlayer(int movement);           // Change the lane of the player
+    void addPlayerMissile(int lane);         // Spawn a player missile
     void addCharacter(Ennemi &car);          // Adds car to the character_list_
     void removeCharacter(const Ennemi &car); // Removes car from the caracter_list_
     void levelUp();                          // Increases level_ and changes the EW color and shape
@@ -59,6 +59,9 @@ public:
     void printScore();       // Prints the current score
     void printLevel();       // Prints the current level
     void printEndScreen();   // Prints the end screen
+
+    // Draw
+    void draw(SDL_Renderer *renderer);
 
 private:
     enm_types_ resolve(std::string type);

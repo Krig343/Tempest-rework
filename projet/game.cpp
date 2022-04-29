@@ -2,14 +2,11 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Game::Game(Player &player,
-           const ElectricWell &well,
-           const int &lvl,
-           const int &scr) : player_{player},
-                             electric_well_{well},
-                             level_{lvl},
-                             score_{scr}
+Game::Game() : player_{Player{false, 0.0, 0, 0, false}},
+               electric_well_{ElectricWell{1}}
 {
+    score_ = 0;
+    level_ = 1;
 }
 
 //---------------------------- Game controls -----------------------------------
@@ -27,6 +24,34 @@ bool Game::endGame()
         return true;
     }
     return false;
+}
+
+void Game::movePlayer(int movement)
+{
+    int newLane = player_.lane_ + movement;
+
+    // To avoid % of negative integers
+    if((electric_well_.isCyclic_)&&(newLane < 0)){
+        player_.move(electric_well_.polygonSize_ - 1);
+        return;
+    }
+
+    if(electric_well_.isCyclic_)
+    {
+        player_.move(newLane%electric_well_.polygonSize_);
+    } else {
+        if(movement < 0)
+        {
+            player_.move(std::min(0, newLane));
+        } else {
+            player_.move(std::max(newLane, electric_well_.polygonSize_ - 1));
+        }
+    }
+}
+
+void Game::addPlayerMissile(int lane)
+{
+    player_missile_list_.push_back(Missile(lane, 0.0));
 }
 
 void Game::addCharacter(Ennemi &car)
@@ -51,139 +76,6 @@ void Game::removeCharacter(const Ennemi &car)
 
 void Game::levelUp()
 {
-    ++level_;
-
-    if (level_ < 97)
-    {
-        switch (level_ % 16) // The list starts again every 16 levels until level 97
-        {
-        case 1:
-            electric_well_.shape_ = "Circle";
-            break;
-        case 2:
-            electric_well_.shape_ = "Square";
-            break;
-        case 3:
-            electric_well_.shape_ = "Plus";
-            break;
-        case 4:
-            electric_well_.shape_ = "Binoculars";
-            break;
-        case 5:
-            electric_well_.shape_ = "Cross";
-            break;
-        case 6:
-            electric_well_.shape_ = "Triangle";
-            break;
-        case 7:
-            electric_well_.shape_ = "X";
-            break;
-        case 8:
-            electric_well_.shape_ = "V";
-            break;
-        case 9:
-            electric_well_.shape_ = "Staires";
-            break;
-        case 10:
-            electric_well_.shape_ = "U";
-            break;
-        case 11:
-            electric_well_.shape_ = "Flat";
-            break;
-        case 12:
-            electric_well_.shape_ = "Heart";
-            break;
-        case 13:
-            electric_well_.shape_ = "Star";
-            break;
-        case 14:
-            electric_well_.shape_ = "W";
-            break;
-        case 15:
-            electric_well_.shape_ = "Bird";
-            break;
-        case 0:
-            electric_well_.shape_ = "Infinite";
-            break;
-        }
-    }
-    else // From level 97 the levels are chosen randomly
-    {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distrib(1, 16);
-        auto rndm_level = distrib(gen);
-        switch (rndm_level)
-        {
-        case 1:
-            electric_well_.shape_ = "Circle";
-            break;
-        case 2:
-            electric_well_.shape_ = "Square";
-            break;
-        case 3:
-            electric_well_.shape_ = "Plus";
-            break;
-        case 4:
-            electric_well_.shape_ = "Binoculars";
-            break;
-        case 5:
-            electric_well_.shape_ = "Cross";
-            break;
-        case 6:
-            electric_well_.shape_ = "Triangle";
-            break;
-        case 7:
-            electric_well_.shape_ = "X";
-            break;
-        case 8:
-            electric_well_.shape_ = "V";
-            break;
-        case 9:
-            electric_well_.shape_ = "Staires";
-            break;
-        case 10:
-            electric_well_.shape_ = "U";
-            break;
-        case 11:
-            electric_well_.shape_ = "Flat";
-            break;
-        case 12:
-            electric_well_.shape_ = "Heart";
-            break;
-        case 13:
-            electric_well_.shape_ = "Star";
-            break;
-        case 14:
-            electric_well_.shape_ = "W";
-            break;
-        case 15:
-            electric_well_.shape_ = "Bird";
-            break;
-        case 16:
-            electric_well_.shape_ = "Infinite";
-            break;
-        }
-    }
-
-    switch (level_) // Change the color for the next set of levels
-    {
-    case 17:
-        electric_well_.color_ = {255, 0, 0, 255}; //
-        break;
-    case 33:
-        electric_well_.color_ = {255, 255, 0, 255};
-        break;
-    case 49:
-        electric_well_.color_ = {0, 255, 255, 255};
-        break;
-    case 65:
-        electric_well_.color_ = {0, 0, 0, 255};
-        break;
-    case 81:
-        electric_well_.color_ = {0, 255, 0, 255};
-        break;
-    }
 }
 
 Game::enm_types_ Game::resolve(std::string type)
@@ -293,4 +185,56 @@ void Game::printLevel()
 void Game::printEndScreen()
 {
     // TODO
+}
+
+void Game::update()
+{   
+    // Update ennemy positions
+
+    // Update missile positions
+    for(auto &m : player_missile_list_)
+        m.move();
+
+    // Check for dead missiles
+    std::vector<Missile> newMissiles;
+
+    for (auto m : player_missile_list_)
+    {
+        if (m.position_ < 1.05)
+            newMissiles.push_back(m);
+    }
+
+    player_missile_list_ = newMissiles;
+
+    // Check for collisons
+}
+
+void Game::draw(SDL_Renderer *renderer)
+{
+    // Clear display
+    SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+    SDL_RenderClear(renderer);
+
+    // Draw electric well
+    electric_well_.draw(renderer);
+
+    // Draw player
+    player_.draw(renderer, 
+                 electric_well_.lanes_[player_.lane_].getScale(player_.position_), 
+                 electric_well_.lanes_[player_.lane_].getAngle(), 
+                 electric_well_.lanes_[player_.lane_].getPosition(player_.position_));
+
+    // Draw missiles
+    for(auto m : player_missile_list_){
+        m.draw(renderer, 
+               electric_well_.lanes_[m.lane_].getScale(m.position_*m.position_), 
+               electric_well_.lanes_[m.lane_].getAngle(), 
+               electric_well_.lanes_[m.lane_].getPosition(m.position_*m.position_));
+    }
+
+    // Draw ennemies
+
+    // Draw spikes
+
+    SDL_RenderPresent(renderer);
 }

@@ -10,11 +10,11 @@ void prepareFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &fl
     SDL_SetWindowFullscreen(window, flag);
 }
 
-void applyFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &width, const int &height, const int &w, const int &h, ElectricWell &ew)
+void applyFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &width, const int &height, const int &w, const int &h, Game game)
 {
     SDL_Rect rect{(w - width) / 2, (h - height) / 2, width, height};
     SDL_RenderSetViewport(renderer, &rect);
-    ew.draw(renderer);
+    game.draw(renderer);
     SDL_RenderPresent(renderer);
 }
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        std::cerr << "Pb init SDL" << std::endl;
+        std::cerr << "SDL initialization failed" << std::endl;
         return 0;
     }
 
@@ -33,25 +33,16 @@ int main(int argc, char **argv)
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     assert(renderer != NULL);
 
-    // Init game components
-    // Draw a square test
-    std::vector<Lane> list;
-    std::array<Uint8, 4> Color = {0, 0, 255, 255};
-    ElectricWell ew{Color, "square", list};
-
-    // Player player{false, 1, Color, 3, false};
-
-    // std::vector<Ennemi> ennemi_list;
-
-    // Game game{player, ennemi_list, ew, 1, 0};
-    ew.createSquare();
-
     bool quit = false;
-    ew.draw(renderer);
-    SDL_RenderPresent(renderer);
+
+    Game g{};
+
     while (!quit)
     {
+        g.draw(renderer);
+
         SDL_Event event;
+
         while (!quit && SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -60,36 +51,50 @@ int main(int argc, char **argv)
                 quit = true;
                 break;
             case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_ESCAPE) // Press "escape" to quit
+                // Escape to quit
+                if (event.key.keysym.sym == SDLK_ESCAPE)
                     quit = true;
-                if (event.key.keysym.sym == SDLK_f) // Press "f" to toggle fullscreen
+
+                // f to toggle fullscreen
+                if (event.key.keysym.sym == SDLK_f)
                 {
                     if (!fullscreen)
                     {
                         prepareFullscreen(window, renderer, SDL_WINDOW_FULLSCREEN);
                         int w, h;
                         SDL_GetWindowSize(window, &w, &h);
-                        applyFullscreen(window, renderer, width, height, w, h, ew);
+                        applyFullscreen(window, renderer, width, height, w, h, g);
                         fullscreen = true;
                     }
                     else
                     {
                         prepareFullscreen(window, renderer, 0);
                         SDL_SetWindowSize(window, width, height);
-                        applyFullscreen(window, renderer, width, height, width, height, ew);
+                        applyFullscreen(window, renderer, width, height, width, height, g);
                         fullscreen = false;
                     }
                 }
-                // if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                //     game.player_.move(1);
-                // if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                //     game.player_.move(-1);
+
+                // Left or q to move clockwise
+                if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
+                    g.movePlayer(1);
+
+                // Right or d to move anti-clockwise
+                if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
+                    g.movePlayer(-1);
+
+                // Space to fire
+                if (event.key.keysym.sym == SDLK_SPACE)
+                    g.addPlayerMissile(g.player_.lane_);
+
                 break;
             }
         }
 
         // Game loop
+        g.update();
     }
+
     SDL_Quit();
     return 0;
 }

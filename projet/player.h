@@ -13,13 +13,16 @@ public:
 
 public:
     // Constructors
-    Player(const bool &shooting, const int &pos, const int &lane, const std::array<Uint8, 4> &color, const int &life, const bool &zapper);
+    Player(const bool &shooting, const float &pos, const int &lane, const int &life, const bool &zapper);
 
     // Player controls
     inline void loseLife() { --lives_; };                // Decrease lives_
     inline void addLife() { ++lives_; };                 // Increase lives_ (don't know when yet)
     inline void useZapper() { used_zapper_ = true; };    // Sets used_zapper_ to true
     inline void regenZapper() { used_zapper_ = false; }; // Sets used_zapper_ to false
+
+    // Draw
+    virtual void initModelPolygon() override;
 };
 
 #endif // PLAYER_H

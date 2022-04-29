@@ -5,21 +5,18 @@
 Pulsar::Pulsar(const bool &shooting,
                const int &pos,
                const int &lane,
-               const std::array<Uint8, 4> &color,
                const std::string &tpe,
                bool pulse) : Ennemi::Ennemi(shooting,
                                             pos,
                                             lane,
-                                            color,
                                             "pulsar"),
                              is_pulsing_{pulse}
 {
 }
 
-Pulsar::Pulsar(Pulsar &puls) : Pulsar::Pulsar(puls.is_shooting_,
+Pulsar::Pulsar(Pulsar &puls) : Pulsar::Pulsar(puls.isShooting_,
                                               puls.position_,
-                                              puls.lane_number_,
-                                              puls.color_,
+                                              puls.lane_,
                                               "pulsar",
                                               puls.is_pulsing_)
 {
@@ -36,7 +33,7 @@ int Pulsar::pulse(int &lives, const int &lane)
 {
     // Change lane color
     is_pulsing_ = true;
-    if (lane == lane_number_)
+    if (lane == lane_)
         return --lives;
     return lives;
     is_pulsing_ = false;

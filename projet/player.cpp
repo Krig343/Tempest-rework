@@ -3,14 +3,27 @@
 //----------------------------- Constructors -----------------------------------
 
 Player::Player(const bool &shooting,
-               const int &pos,
+               const float &pos,
                const int &lane,
-               const std::array<Uint8, 4> &color,
-               const int &life, const bool &zapper) : Character::Character(shooting,
-                                                                           pos,
-                                                                           lane,
-                                                                           color),
-                                                      lives_{life},
-                                                      used_zapper_{zapper}
+               const int &life, 
+               const bool &zapper) : Character::Character(shooting, lane, pos),
+                                     lives_{life},
+                                     used_zapper_{zapper}
 {
+    initModelPolygon();
+}
+
+void Player::initModelPolygon()
+{
+    modelColor_ = {255, 255, 0, 255};
+
+    modelPolygon_.push_back({-5,0});
+    modelPolygon_.push_back({-1,-2});
+    modelPolygon_.push_back({-3,0});
+    modelPolygon_.push_back({-1,1});
+    modelPolygon_.push_back({3,0});
+    modelPolygon_.push_back({1,-2});
+    modelPolygon_.push_back({5,0});
+    modelPolygon_.push_back({-1,3});
+    modelPolygon_.push_back({-5,0});
 }
