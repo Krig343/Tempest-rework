@@ -1,11 +1,11 @@
 #ifndef SPIKER_H
 #define SPIKER_H
 
-#include "ennemi.h" // class ennemi
+#include "enemy.h" // class enemy
 
 /* A specific class for the spiker since it has a particular ability
  */
-class Spiker : public Ennemi
+class Spiker : public Enemy
 {
 public:
     // Constructors

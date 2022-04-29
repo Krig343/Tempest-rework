@@ -6,10 +6,10 @@ Pulsar::Pulsar(const bool &shooting,
                const int &pos,
                const int &lane,
                const std::string &tpe,
-               bool pulse) : Ennemi::Ennemi(shooting,
-                                            pos,
-                                            lane,
-                                            "pulsar"),
+               bool pulse) : Enemy::Enemy(shooting,
+                                          pos,
+                                          lane,
+                                          "pulsar"),
                              is_pulsing_{pulse}
 {
 }

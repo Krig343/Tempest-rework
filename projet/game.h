@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "ennemi.h"       // class ennemi
+#include "enemy.h"        // class enemy
 #include "player.h"       // class player
 #include "electricwell.h" // class electricwell
 #include "missile.h"      // class missile
@@ -30,11 +30,11 @@ private:
         Spiker,
         Fuseball,
         Pulsar
-    }; // All the ennemi types
+    }; // All the enemy types
 
 public:
     Player player_;                            // The player's blaster
-    std::vector<Ennemi> ennemi_list_;          // Current scene ennemies list
+    std::vector<Enemy> ennemi_list_;           // Current scene ennemies list
     std::vector<Missile> ennemi_missile_list_; // All the missiles launched by the ennemies
     std::vector<Missile> player_missile_list_; // All the missiles launched by the player
     std::vector<Spike> spike_list_;            // The list of all the printed spikes
@@ -48,7 +48,7 @@ public:
 
     // Game controls
     bool endGame(SDL_Renderer *renderer); // Stops the game and goes to the end screen
-    inline void addCharacter(Ennemi &car)
+    inline void addCharacter(Enemy &car)
     {
         ennemi_list_.push_back(car);
     }; // Adds car to the character_list_
@@ -76,7 +76,7 @@ public:
     void draw(SDL_Renderer *renderer);
 
 private:
-    enm_types_ resolve(std::string type); // Given string type, it returns the corresponding ennemi type from the enum
+    enm_types_ resolve(std::string type); // Given string type, it returns the corresponding enemy type from the enum
     void printLetter(const int &letter_index,
                      const int &offset_x,
                      const int &offset_y,

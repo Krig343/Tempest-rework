@@ -5,10 +5,10 @@
 Spiker::Spiker(const bool &shooting,
                const int &pos,
                const int &lane,
-               const std::string &tpe) : Ennemi::Ennemi(shooting,
-                                                        pos,
-                                                        lane,
-                                                        "spiker")
+               const std::string &tpe) : Enemy::Enemy(shooting,
+                                                      pos,
+                                                      lane,
+                                                      "spiker")
 {
 }
 

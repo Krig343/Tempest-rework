@@ -1,11 +1,11 @@
 #ifndef PULSAR_H
 #define PULSAR_H
 
-#include "ennemi.h" // class ennemi
+#include "enemy.h" // class enemy
 
 /* A specific class for the pulsar since it has a particular ability
  */
-class Pulsar : public Ennemi
+class Pulsar : public Enemy
 {
 private:
     bool is_pulsing_; // True if pulsing

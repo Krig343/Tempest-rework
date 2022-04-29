@@ -18,8 +18,8 @@ target_sources(${PROJECT_NAME}
                missile.cpp
                player.h
                player.cpp
-               ennemi.h
-               ennemi.cpp
+               enemy.h
+               enemy.cpp
                spiker.h
                spiker.cpp
                spike.h

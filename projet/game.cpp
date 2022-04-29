@@ -61,8 +61,8 @@ void Game::movePlayer(int movement)
 template <class T>
 void Game::removeObject(const T &rem_obj)
 {
-    // Remove an ennemi
-    if constexpr (std::is_same_v<T, Ennemi>)
+    // Remove an enemy
+    if constexpr (std::is_same_v<T, Enemy>)
     {
         auto car_index = std::find(ennemi_list_.begin(), ennemi_list_.end(), rem_obj);
         if (car_index == ennemi_list_.end())
@@ -107,7 +107,7 @@ void Game::removeObject(const T &rem_obj)
     }
 }
 
-/* This function returns the ennemi type from the enm_types_ enum corresponding
+/* This function returns the enemy type from the enm_types_ enum corresponding
  * to the type string in input
  */
 Game::enm_types_ Game::resolve(std::string type)
@@ -376,10 +376,10 @@ void Game::addScore(const std::string &type)
 
 /* Tests the collision between objects. The collision test depends on the number
  * test_nb.
- * - 1 : collision test between an ennemi and the player
- * - 2 : collision between an ennemi and a missile
+ * - 1 : collision test between an enemy and the player
+ * - 2 : collision between an enemy and a missile
  * - 3 : collision between the player and a missile
- * - 4 : collision between the player and a Spike (maybe it will be an ennemi)
+ * - 4 : collision between the player and a Spike (maybe it will be an enemy)
  */
 void Game::collisionTest()
 {
