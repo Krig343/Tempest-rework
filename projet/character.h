@@ -15,21 +15,21 @@
 class Character
 {
 public:
-    bool isShooting_;  // True when player is shooting
+    bool is_shooting_; // True when player is shooting
     int lane_;         // The lane number
     float position_;
+    std::array<Uint8, 4> model_color_;
 
 protected:
-    std::vector<SDL_Point> modelPolygon_;
-    std::array<Uint8, 4> modelColor_;
+    std::vector<SDL_Point> model_polygon_;
 
 public:
     // Constructors
-    Character(const bool &shooting, const int &lane, const float &pos);
+    Character(const bool &shooting, const float &pos, const int &lane);
 
     // Character controls
-    void shoot(SDL_Renderer *renderer);      // Sets isShooting_ at true
-    virtual void move(int movement, float speed, bool isCyclic, int polygonSize) = 0;  // Changes lane
+    void shoot(SDL_Renderer *renderer);                                               // Sets isShooting_ at true
+    virtual void move(int movement, float speed, bool isCyclic, int polygonSize) = 0; // Changes lane
 
     // Draw
     void draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position);

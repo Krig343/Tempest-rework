@@ -1,7 +1,7 @@
 #include "tanker.h"
 
 //----------------------------- Constructors -----------------------------------
-Tanker::Tanker(const int &lane, const float &pos) : Character::Character(false, lane, pos)
+Tanker::Tanker(const float &pos, const int &lane) : Character::Character(false, pos, lane)
 {
     initModelPolygon();
     dead_ = false;
@@ -9,25 +9,25 @@ Tanker::Tanker(const int &lane, const float &pos) : Character::Character(false, 
 
 void Tanker::initModelPolygon()
 {
-    modelColor_ = {255, 0, 255, 255};
+    model_color_ = {255, 0, 255, 255};
 
-    modelPolygon_.push_back({0,4});
-    modelPolygon_.push_back({0,1});
-    modelPolygon_.push_back({-1,0});
-    modelPolygon_.push_back({0,4});
-    modelPolygon_.push_back({-4,0});
-    modelPolygon_.push_back({-1,0});
-    modelPolygon_.push_back({0,-1});
-    modelPolygon_.push_back({-4,0});
-    modelPolygon_.push_back({0,-4});
-    modelPolygon_.push_back({0,-1});
-    modelPolygon_.push_back({1,0});
-    modelPolygon_.push_back({0,-4});
-    modelPolygon_.push_back({4,0});
-    modelPolygon_.push_back({1,0});
-    modelPolygon_.push_back({0,1});
-    modelPolygon_.push_back({4,0});
-    modelPolygon_.push_back({0,4});
+    model_polygon_.push_back({0, 4});
+    model_polygon_.push_back({0, 1});
+    model_polygon_.push_back({-1, 0});
+    model_polygon_.push_back({0, 4});
+    model_polygon_.push_back({-4, 0});
+    model_polygon_.push_back({-1, 0});
+    model_polygon_.push_back({0, -1});
+    model_polygon_.push_back({-4, 0});
+    model_polygon_.push_back({0, -4});
+    model_polygon_.push_back({0, -1});
+    model_polygon_.push_back({1, 0});
+    model_polygon_.push_back({0, -4});
+    model_polygon_.push_back({4, 0});
+    model_polygon_.push_back({1, 0});
+    model_polygon_.push_back({0, 1});
+    model_polygon_.push_back({4, 0});
+    model_polygon_.push_back({0, 4});
 }
 
 void Tanker::move(int movement, float speed, bool isCyclic, int polygonSize)
@@ -35,6 +35,6 @@ void Tanker::move(int movement, float speed, bool isCyclic, int polygonSize)
     // Tanker speed
     position_ = position_ - 0.0025*speed;
 
-    if(position_ < 0.0)
+    if (position_ < 0.0)
         kill();
 }

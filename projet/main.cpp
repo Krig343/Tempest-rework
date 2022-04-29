@@ -5,7 +5,7 @@
 
 void prepareFullscreen(SDL_Window *window, SDL_Renderer *renderer, const int &flag)
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_SetWindowFullscreen(window, flag);
 }
@@ -77,11 +77,11 @@ int main(int argc, char **argv)
 
                 // Left or q to move clockwise
                 if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_q)
-                    g.player_.move(1, 1.0, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
+                    g.player_.move(1, 1.0, g.electric_well_.is_cyclic_, g.electric_well_.polygon_size_);
 
                 // Right or d to move anti-clockwise
                 if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-                    g.player_.move(-1, 1.0, g.electric_well_.isCyclic_, g.electric_well_.polygonSize_);
+                    g.player_.move(-1, 1.0, g.electric_well_.is_cyclic_, g.electric_well_.polygon_size_);
 
                 // Space to fire
                 if (event.key.keysym.sym == SDLK_SPACE)
@@ -93,7 +93,24 @@ int main(int argc, char **argv)
 
         // Game loop
         g.update();
-        quit = g.endGame();
+        quit = g.endGame(renderer);
+    }
+    quit = false;
+    while (!quit)
+    {
+        SDL_Event event;
+        while (!quit && SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT: // Quits with the window cross
+                quit = true;
+                break;
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_ESCAPE) // Press "escape" to quit
+                    quit = true;
+            }
+        }
     }
 
     std::cout << "Final score : " << g.score_ << std::endl;

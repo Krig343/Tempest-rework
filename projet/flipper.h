@@ -7,12 +7,12 @@
 class Flipper : public Character
 {
 public:
-    int timeBeforeFlip_;
+    int time_before_flip_;
     bool dead_;
 
 public:
     // Constructors
-    Flipper(const int &lane, const float &pos);
+    Flipper(const float &pos, const int &lane);
 
     // Controls
     virtual void move(int movement, float speed, bool isCyclic, int polygonSize) override;

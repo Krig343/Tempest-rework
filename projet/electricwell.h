@@ -3,6 +3,7 @@
 
 #include <vector> // container vector
 #include "lane.h" // class lane
+#include <map>
 
 /* This class represents the the geometrical patern on whitch the player and the
  * ennemies evoluate. It has a unique color depending on the level, a shape and
@@ -13,22 +14,21 @@ class ElectricWell
 public:
     std::array<Uint8, 4> color_;
     int level_;
-    int polygonSize_;
-
-    bool isCyclic_;
-    
-    std::vector<SDL_Point> backPolygon_;
-    std::vector<SDL_Point> frontPolygon_;
-
+    std::string shape_;
+    int polygon_size_;
+    bool is_cyclic_;
+    std::vector<SDL_Point> back_polygon_;
+    std::vector<SDL_Point> front_polygon_;
     std::vector<Lane> lanes_;
+
+public:
+    // Constructors
+    ElectricWell(const int &level);
 
 private:
     void initLevelPolygons(int level);
 
 public:
-    // Constructors
-    ElectricWell(int level);
-    
     // Gameplay
     void initLevelLanes();
 

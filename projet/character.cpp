@@ -2,11 +2,11 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Character::Character(const bool &shooting, 
-                     const int &lane, 
-                     const float &pos) : isShooting_{shooting},
-                                         lane_{lane},
-                                         position_{pos}                       
+Character::Character(const bool &shooting,
+                     const float &pos,
+                     const int &lane) : is_shooting_{shooting},
+                                        position_{pos},
+                                        lane_{lane}
 {
 }
 
@@ -14,9 +14,9 @@ Character::Character(const bool &shooting,
 
 void Character::shoot(SDL_Renderer *renderer)
 {
-    isShooting_ = true;
+    is_shooting_ = true;
     // TODO : print the bullets and wait
-    isShooting_ = false;
+    is_shooting_ = false;
 }
 
 void Character::draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position)
@@ -26,25 +26,25 @@ void Character::draw(SDL_Renderer *renderer, const float scale, const float angl
     std::vector<SDL_Point> translatedModel;
 
     // Scaling
-    for(auto p : modelPolygon_)
-        scaledModel.push_back({p.x*scale/10.0,
-                               p.y*scale/10.0});
-    
+    for (auto p : model_polygon_)
+        scaledModel.push_back({p.x * scale / 10.0,
+                               p.y * scale / 10.0});
+
     // Rotating
-    for(auto p : scaledModel)
-        rotatedModel.push_back({p.x*cos(angle) - p.y*sin(angle),
-                                p.x*sin(angle) + p.y*cos(angle)});
+    for (auto p : scaledModel)
+        rotatedModel.push_back({p.x * cos(angle) - p.y * sin(angle),
+                                p.x * sin(angle) + p.y * cos(angle)});
 
     // Translating
-    for(auto p : rotatedModel)
+    for (auto p : rotatedModel)
         translatedModel.push_back({p.x + position.x,
                                    p.y + position.y});
 
-    SDL_SetRenderDrawColor(renderer, 
-                           modelColor_[0],
-                           modelColor_[1],
-                           modelColor_[2],
-                           modelColor_[3]);
+    SDL_SetRenderDrawColor(renderer,
+                           model_color_[0],
+                           model_color_[1],
+                           model_color_[2],
+                           model_color_[3]);
 
     SDL_RenderDrawLines(renderer, &translatedModel[0], translatedModel.size());
 }

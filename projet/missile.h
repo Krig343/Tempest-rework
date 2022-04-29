@@ -2,7 +2,7 @@
 #define MISSILE_H
 
 #include <SDL.h> // graphical interface
-#include <vector> 
+#include <vector>
 #include <array>
 #include <cmath>
 
@@ -14,8 +14,8 @@ public:
     bool dead_;
 
 protected:
-    std::vector<SDL_Point> modelPolygon_;
-    std::array<Uint8, 4> modelColor_;
+    std::vector<SDL_Point> model_polygon_;
+    std::array<Uint8, 4> model_color_;
 
 public:
     // Constructors
@@ -25,7 +25,7 @@ public:
     void move();
     inline void kill() { dead_ = true; };
 
-    // Draw
+    // IO
     void initModelPolygon();
     void draw(SDL_Renderer *renderer, const float scale, const float angle, const SDL_Point position);
 };

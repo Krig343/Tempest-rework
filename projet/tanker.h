@@ -11,7 +11,7 @@ public:
 
 public:
     // Constructors
-    Tanker(const int &lane, const float &pos);
+    Tanker(const float &pos, const int &lane);
 
     // Controls
     virtual void move(int movement, float speed, bool isCyclic, int polygonSize) override;
@@ -21,4 +21,4 @@ public:
     virtual void initModelPolygon() override;
 };
 
-#endif // TANKER
+#endif // TANKER_H

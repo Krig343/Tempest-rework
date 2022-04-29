@@ -2,23 +2,7 @@
 
 //----------------------------- Constructors -----------------------------------
 
-Pulsar::Pulsar(const bool &shooting,
-               const int &pos,
-               const int &lane,
-               const std::string &tpe,
-               bool pulse) : Ennemi::Ennemi(shooting,
-                                            pos,
-                                            lane,
-                                            "pulsar"),
-                             is_pulsing_{pulse}
-{
-}
-
-Pulsar::Pulsar(Pulsar &puls) : Pulsar::Pulsar(puls.isShooting_,
-                                              puls.position_,
-                                              puls.lane_,
-                                              "pulsar",
-                                              puls.is_pulsing_)
+Pulsar::Pulsar(const float &pos, const int &lane) : Character::Character(false, pos, lane)
 {
 }
 
@@ -41,5 +25,4 @@ int Pulsar::pulse(int &lives, const int &lane)
 
 void Pulsar::initModelPolygon()
 {
-    
 }
