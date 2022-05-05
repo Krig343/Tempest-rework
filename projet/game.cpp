@@ -22,7 +22,7 @@ Game::Game() : player_{Player{false, 0.0, 0, 5}},
  */
 bool Game::endGame(SDL_Renderer *renderer)
 {
-    if (player_.lives_ == 0 || (level_ == 6) && (flipper_list_.size() + tanker_list_.size() == 0))
+    if (player_.lives_ <= 0 || (level_ == 99) /*&& (flipper_list_.size() + tanker_list_.size() == 0)*/)
     {
         printEndScreen(renderer);
         return true;
@@ -84,8 +84,8 @@ bool Game::endGame(SDL_Renderer *renderer)
 
 void Game::addPlayerMissile(int lane)
 {
-    // Maximum of 5 * level
-    if (player_missile_list_.size() < (5 * level_))
+    // Maximum of 5 + level
+    if (player_missile_list_.size() < (5 + level_))
         player_missile_list_.push_back(Missile(lane, 0.0));
 }
 
@@ -110,6 +110,7 @@ void Game::spawnEnnemies()
 
 void Game::levelUp()
 {
+    // Should have cleared the enemies list with this system
     int newLevel = level_;
 
     if (score_ > 1000)
@@ -126,6 +127,7 @@ void Game::levelUp()
 
     if (newLevel != level_)
     {
+        player_.regenZapper();
         level_ = newLevel;
         startMorphing();
     }
@@ -153,8 +155,6 @@ Game::enm_types_ Game::resolve(std::string type)
 }
 
 /* This function adds one to the current level and
-            // Points for each dead flipper
-            score_ += 100; modifies the shape and the color
  * of the electricwell, as well as the color of the ennemies and the player
  */
 // template <class T>
@@ -358,55 +358,6 @@ void Game::addScore(const std::string &type)
     }
 }
 
-// /* Tests the collision between objects. The collision test depends on the number
-//  * test_nb.
-//  * - 1 : collision test between an enemy and the player
-//  * - 2 : collision between an enemy and a missile
-//  * - 3 : collision between the player and a missile
-//  * - 4 : collision between the player and a Spike (maybe it will be an enemy)
-//  */
-// void Game::collisionTest()
-// {
-//     // Collision between player and ennemies
-//     for (auto e : ennemi_list_)
-//         if (player_.position_ == e.position_)
-//         {
-//             player_.loseLife();
-//             removeObject(e);
-//         }
-
-//     // Collision between player's missiles and ennemies
-//     for (auto m : player_missile_list_)
-//         for (auto e : ennemi_list_)
-//             if (m.position_ == e.position_)
-//             {
-//                 removeObject(e);
-//                 removeObject(m);
-//             }
-
-//     // Collision between player and ennemie's missiles
-//     for (auto m : ennemi_missile_list_)
-//         if (player_.position_ == m.position_)
-//         {
-//             removeObject(m);
-//             player_.loseLife();
-//         }
-
-//     // Collision between player and spike
-//     for (auto s : spike_list_)
-//         if (player_.position_ == s.position_)
-//             player_.loseLife();
-
-//     // Collision between player's missile and spike
-//     for (auto m : player_missile_list_)
-//         for (auto s : spike_list_)
-//             if (m.position_ == s.position_)
-//             {
-//                 removeObject(m);
-//                 removeObject(s);
-//             }
-// }
-
 void Game::useZapper()
 {
     if (player_.zapper_left == 2)
@@ -417,6 +368,7 @@ void Game::useZapper()
     }
     else if (player_.zapper_left == 1)
     {
+        --player_.zapper_left;
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> distrib(1, 2);
@@ -562,9 +514,9 @@ void Game::printLevel(SDL_Renderer *renderer)
 void Game::printLifes(SDL_Renderer *renderer)
 {
     int w, h;
-    std::vector<int> letters = {44, 73, 70, 69, 83, 0, 26};
+    std::vector<int> letters = {44, 73, 70, 69, 83, 26, 0};
     SDL_GetRendererOutputSize(renderer, &w, &h);
-    printMessage(letters, renderer, (7 * w) / 15, 80);
+    printMessage(letters, renderer, (8 * w) / 15, 80);
     std::vector<int> numbers = decomposeNumbers(player_.lives_, true);
     printMessage(numbers, renderer, (9 * w) / 15, 80);
 }
@@ -599,7 +551,7 @@ void Game::printEndScreen(SDL_Renderer *renderer)
         message = {48, 82, 69, 83, 83, 0, 69, 88, 73, 84, 0, 84, 79, 0, 81, 85, 73, 84};
         printMessage(message, renderer, w / 2, 500);
     }
-    if (player_.lives_ == 0)
+    if (player_.lives_ <= 0)
     {
         // Game over
         message = {39, 65, 77, 69, 0, 79, 86, 69, 82};
@@ -689,7 +641,7 @@ void Game::update()
         else
         {
             // Points for each dead flipper
-            score_ += 150 + level_;
+            score_ += 150;
         }
     }
 
@@ -708,10 +660,10 @@ void Game::update()
         else
         {
             // Points for each dead flipper
-            score_ += 100 + level_;
+            score_ += 100;
             // Spawn 2 flippers (for now)
-            flipper_list_.push_back(Flipper(t.lane_, t.position_));
-            flipper_list_.push_back(Flipper((t.lane_ + 1) % electric_well_.polygon_size_, t.position_));
+            flipper_list_.push_back(Flipper(t.position_, t.lane_));
+            flipper_list_.push_back(Flipper(t.position_, (t.lane_ + 1) % electric_well_.polygon_size_));
         }
     }
 

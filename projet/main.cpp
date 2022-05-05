@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 
         SDL_Event event;
 
+        quit = g.endGame(renderer);
         while (!quit && SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -54,7 +55,6 @@ int main(int argc, char **argv)
                 // Escape to quit
                 if (event.key.keysym.sym == SDLK_ESCAPE)
                     quit = true;
-
                 // f to toggle fullscreen
                 if (event.key.keysym.sym == SDLK_f)
                 {
@@ -97,7 +97,6 @@ int main(int argc, char **argv)
 
         // Game loop
         g.update();
-        quit = g.endGame(renderer);
     }
     quit = false;
     while (!quit)
